@@ -9,15 +9,23 @@ module.exports = (sequelize, DataTypes) => {
   Todo.init({
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
+          msg: 'Please input todo title'
+        },
+        notNull: {
           msg: 'Please input todo title'
         }
       }
     },
     description: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: 'Please input todo description'
+        },
         notEmpty: {
           msg: 'Please input todo description'
         }
@@ -29,14 +37,21 @@ module.exports = (sequelize, DataTypes) => {
         isIn: {
           args: [['complete', 'incomplete']],
           msg: `Please input todo status complete or incomplete`
+        },
+        notEmpty: {
+          msg: 'Please input todo status'
         }
       }
     },
     due_date: {
       type: DataTypes.DATE,
+      allowNull: false,
       validate: {
         isDate: {
           msg: `Please input date formatted value`
+        },
+        notNull: {
+          msg: 'Please input todo date'
         }
       }
     }

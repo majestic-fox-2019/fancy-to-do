@@ -1,5 +1,5 @@
 function clientErrorHandler (err, req, res, next){
-    if(err.message.length > 0){
+    try {
         if(err.name == 'SequelizeDatabaseError'){
             next(err)
         } else {
@@ -7,12 +7,14 @@ function clientErrorHandler (err, req, res, next){
                 .status(err.statusCode || 400)
                 .json(err.message.split('\n'))
         }
-    } else {
+    }
+    catch(err){
         next(err)
     }
 }
 
 function serverErrorHandler(err, req, res, next){
+    err.message = 'Internal Server Error'
     res.status(500).json(err.message)
 }
 
