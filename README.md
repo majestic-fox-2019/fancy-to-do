@@ -124,14 +124,6 @@
     
   - **Status:** `500`
 
-    ```javascript
-  {
-        msg: "Server currently unable to handle this request"
-  }
-    ```
-
-
-
 ## GET To-do by ID
 
 ------
