@@ -29,22 +29,22 @@ These are the routes/endpoints this API has:
 ```javascript
 [
     {
-        "id": 7,
-        "title": "Check 4",
-        "description": "Check 4 Desc",
+        "id": 9,
+        "title": "Make docs",
+        "description": "Finish making docs",
         "status": false,
-        "due_date": "2020-02-27T09:09:24.284Z",
-        "createdAt": "2020-02-03T09:09:24.284Z",
-        "updatedAt": "2020-02-03T09:09:24.284Z"
+        "due_date": "2020-02-23T00:00:00.000Z",
+        "createdAt": "2020-02-03T12:40:15.030Z",
+        "updatedAt": "2020-02-03T12:40:15.030Z"
     },
     {
-        "id": 8,
-        "title": "Solve anchors",
-        "description": "Check 4 Desc",
+        "id": 10,
+        "title": "Learn Vue",
+        "description": "Learn hello world using Vue",
         "status": false,
-        "due_date": "2020-02-28T09:09:24.284Z",
-        "createdAt": "2020-02-03T10:24:12.887Z",
-        "updatedAt": "2020-02-03T10:24:12.887Z"
+        "due_date": "2020-03-01T00:00:00.000Z",
+        "createdAt": "2020-02-03T12:42:30.860Z",
+        "updatedAt": "2020-02-03T12:42:30.860Z"
     }
 ]
 ```
@@ -69,11 +69,11 @@ These are the routes/endpoints this API has:
 
 ```javascript
 {
-  "title": "Buy a Mac",
-  "description": "Buy it in Cupertino",
+  "title": "Learn Vue",
+  "description": "Learn hello world using Vue",
   "status": false,
-  "due_date": "2020-02-25T17:00:00.000Z",
-  "createdAt": "2020-02-03T09:09:24.284Z",
-  "updatedAt": "2020-02-03T09:09:24.284Z"
+  "due_date": "2020-03-01T00:00:00.000Z",
+  "updatedAt": "2020-02-03T12:42:30.860Z",
+  "createdAt": "2020-02-03T12:42:30.860Z"
 }
 ```
