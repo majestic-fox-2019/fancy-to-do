@@ -9,6 +9,7 @@
     <li>DELETE /todos/{ id }</li>
 </ul>
 
+<br><br>
 <h3>All Request</h3>
 <ul>
     <li>GET /todos
@@ -41,6 +42,7 @@
     </li>
 </ul>
 
+<br><br>
 <h3>Success Status</h3>
 <ul>
     <li>
@@ -150,4 +152,12 @@
             </pre>
         </ul>
     </li>
+</ul>
+
+<br><br>
+<h3>Error Status</h3>
+<ul>
+    <li>400 : Data is not valid</li>
+    <li>404 : Data is not found</li>
+    <li>500 : Internal Server Error</li>
 </ul>
