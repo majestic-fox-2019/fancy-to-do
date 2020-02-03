@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Tugas Portofolio phase 2 , Arona Nur Tetulis",
   "main": "node app.js",
-  "engine" : {
+  "engines" : {
     "npm" : "6.13.7",
     "node" : "10.15.1"
   },
