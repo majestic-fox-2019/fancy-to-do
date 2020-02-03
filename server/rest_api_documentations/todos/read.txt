@@ -1,0 +1,30 @@
+Example URL: 
+    
+    [GET] localhost:3000/todos
+
+
+Request header:
+
+{
+    "Content-Type": "application/json"
+}
+
+Request body:
+
+{
+
+}
+
+Response:
+
+[
+  {
+    "id": 1,
+    "title": "Memberi makan buaya",
+    "description": "Buaya betina dan jantan kasih makan ubi bakar",
+    "status": "todo",
+    "due_date": "2020-02-02T00:00:00.000Z",
+    "createdAt": "2020-02-03T11:02:21.280Z",
+    "updatedAt": "2020-02-03T11:02:21.280Z"
+  }
+]

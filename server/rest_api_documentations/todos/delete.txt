@@ -1,0 +1,50 @@
+Example URL: 
+    
+    [DELETE] localhost:3000/todos/1
+
+
+Request header:
+
+{
+    "Content-Type": "application/json"
+}
+
+Request body:
+
+{
+
+}
+
+
+Response:
+
+{
+  "id": 1,
+  "title": "Mandiin ayam orang part 5",
+  "description": "Mandi ayam orang 5x sehari",
+  "status": "Like status aku orang eaks",
+  "due_date": "2020-02-04T00:00:00.000Z",
+  "createdAt": "2020-02-03T11:02:21.280Z",
+  "updatedAt": "2020-02-03T11:14:54.017Z"
+}
+
+
+================================================== Error Response
+
+
+URL    [DELETE] localhost:3000/todos/12345678
+
+*asumsi id todos 12345678 tidak ada datanya
+
+Request body:
+
+{
+
+}
+
+
+Response:
+
+{
+  "Error": "No data found"
+}

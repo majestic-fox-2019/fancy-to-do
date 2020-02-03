@@ -1,0 +1,72 @@
+Example URL: 
+    
+    [POST] localhost:3000/todos
+
+
+Request header:
+
+{
+    "Content-Type": "application/json"
+}
+
+Request body:
+
+{
+	"title": "Memberi makan buaya",
+	"description": "Buaya betina dan jantan kasih makan ubi bakar",
+	"status": "todo",
+	"due_date": "2020-02-02"
+}
+
+Response:
+
+{
+  "id": 1,
+  "title": "Memberi makan buaya",
+  "description": "Buaya betina dan jantan kasih makan ubi bakar",
+  "status": "todo",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "updatedAt": "2020-02-03T11:02:21.280Z",
+  "createdAt": "2020-02-03T11:02:21.280Z"
+}
+
+================================================== Error Response
+
+
+
+Request body:
+
+{
+	"title": "",
+	"description": "Buaya betina dan jantan kasih makan ubi bakar",
+	"status": "todo",
+	"due_date": "2020-02-02"
+}
+
+
+Response:
+
+{
+  "Validations": [
+    "Title cannot be empty!"
+  ]
+}
+
+
+Request body:
+
+{
+	"title": "",
+	"description": "Buaya betina dan jantan kasih makan ubi bakar",
+	"status": "todo",
+	"due_date": "abc"
+}
+
+Response:
+
+{
+  "Validations": [
+    "Title cannot be empty!",
+    "Format date is invalid! format {YYYY/MM/DD}"
+  ]
+}
