@@ -2,11 +2,11 @@ const router = require('express').Router()
 const user = require('./user')
 const todo = require('./todo')
 const project = require('./project')
-const authorization = require('../middlewares/authorization')
+const authentication = require('../middlewares/authentication')
 
 router.use('/', user)
 
-router.use(authorization)
+router.use(authentication)
 
 router.use('/todos', todo)
 

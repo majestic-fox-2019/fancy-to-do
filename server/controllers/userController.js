@@ -10,7 +10,11 @@ class UserController {
             password: req.body.password
         })
         .then(createdUser => {
-            res.status(201).json(createdUser)
+            // res.status(201).json(createdUser)
+            let payload = {id: createdUser.id}
+            require('dotenv').config()
+            let token = jwt.sign(payload, process.env.JWT_SECRET)
+            res.status(201).json(token)
         })
         .catch(err => {
             res.status(500).json(err)

@@ -5,7 +5,17 @@ const { Model } = sequelize.Sequelize
 class Project extends Model {}
 
 Project.init({
-  name: DataTypes.STRING
+  name: DataTypes.STRING,
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isIn: {
+        args: [['On Progress', 'Finished']],
+        msg: 'Status not found'
+      }
+    }
+  }
 },{
   sequelize
 })
