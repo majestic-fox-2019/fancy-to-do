@@ -48,7 +48,7 @@ class TodoController {
           if(response !== null){
             res.status(200).json(response)
           }else{
-            throw createError(404, 'Not Found')
+            throw createError(404, {message : {error : 'Not Found'}})
           }
         })
         .catch(err => {
@@ -75,7 +75,7 @@ class TodoController {
           if(response[0] > 0){
             res.status(200).json(response[1][0])
           }else{
-            throw createError(404, 'Not Found')
+            throw createError(404, {message : {error : 'Not Found'}})
           }
         })
         .catch(err => {
@@ -102,7 +102,7 @@ class TodoController {
         })
         .then(response => {
           if(data === null){
-            throw createError(404, 'Not Found')
+            throw createError(404, {message : {error : 'Not Found'}})
           }else{
             res.status(200).json(data)
           }
