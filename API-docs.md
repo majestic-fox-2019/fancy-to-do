@@ -34,6 +34,7 @@ created by Muhammad Ali Mazhuda
 * url : http://localhost:3000/todos
 * method : POST
 * parameter sent : 
+
     |No|Name        |Type   |Mandatory
     |--|------------|-------|---------
     | 1|title       |String |required
@@ -58,6 +59,7 @@ created by Muhammad Ali Mazhuda
 * url : http://localhost:3000/todos/:id
 * method : PUT
 * parameter sent : 
+    
     |No|Name        |Type   |Mandatory
     |--|------------|-------|---------
     | 1|title       |String |required
@@ -65,12 +67,6 @@ created by Muhammad Ali Mazhuda
     | 3|status      |boolean|required
     | 4|due date    |Date   |required
 
-
-    |No|Code    |Name           |Comment
-    |--|--------|---------------|---------
-    | 1|400     |Bad Request    |Missing field on request
-    | 2|404     |Not Found      |Id not found
-    | 3|500     |Server Error   |Server Error
 
 * response : 
     ```
