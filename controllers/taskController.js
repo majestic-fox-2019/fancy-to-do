@@ -51,6 +51,26 @@ class TaskController {
     })
   }
 
+  static findOneData(req, res, next){
+    let id = req.params.id
+
+    Task.findByPk(id)
+    .then(result => {
+      let response = {}
+      if (result != null){
+        response.statusCode = 200,
+        response.response = result
+      } else {
+        response.statusCode = 404,
+        response.response = {error: 'error not found'}
+      }
+      next(response)
+    })
+    .catch(err => {
+      next(response)
+    })
+  }
+
 }
 
 module.exports = TaskController
