@@ -11,8 +11,12 @@
 
 <h3>All Request</h3>
 <ul>
-    <li>GET /todos      : No Request</li>
-    <li>GET /todos/{id} : Param Name: "id" | Param Type: Integer</li>
+    <li>GET /todos      : 
+    <pre>No Request</pre>
+    </li>
+    <li>GET /todos/{id} : 
+    <pre>Param Name: "id" | Param Type: Integer</pre>
+    </li>
     <li>
     POST /todos/{id} : 
     <pre>
@@ -32,7 +36,9 @@
         Body Name   : "due_time"    | Body Type: Date
     </pre>
     </li>
-    <li>DELETE /todos/{id} : Param Name: "id" | Param Type: Integer</li>
+    <li>DELETE /todos/{id} : 
+    <pre>Param Name: "id" | Param Type: Integer</pre>
+    </li>
 </ul>
 
 <h3>Success Status</h3>
