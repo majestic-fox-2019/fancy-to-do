@@ -15,9 +15,9 @@ class TodoController {
             if(result.length > 0){
               res.status(200).json(result)
             }else{
-              error.statusCode = 404
+              error.statusCode = 204
               error.data = 'Data is empty!'
-              next(message)
+              next(error)
             }
           })
           .catch(err => {
