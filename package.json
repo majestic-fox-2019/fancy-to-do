@@ -1,0 +1,17 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "Todolist portfolio",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "nodemon app.js"
+  },
+  "author": "Muhammad Anova Nurfaqih",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.18.1",
+    "sequelize": "^5.21.3"
+  }
+}
