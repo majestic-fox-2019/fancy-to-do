@@ -84,15 +84,22 @@ class ControllerTodos {
     }
 
     static destroy (req, res, next){
-                
-        TodoModel.destroy({
+        const findOne = TodoModel.findOne({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+
+        const destroy = TodoModel.destroy({
             where: {
                 id : Number(req.params.id)
             }
         })
+
+        Promise.all([findOne, destroy])
         .then(result =>{
-            if (result) {
-                res.status(200).json(result)
+            if (result[0]) {
+                res.status(200).json(result[0])
             } else {
                 throw {
                     statusCode: 404,
