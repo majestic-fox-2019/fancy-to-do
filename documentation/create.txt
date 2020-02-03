@@ -1,0 +1,26 @@
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+{
+	"title": "study",
+	"description": "coding",
+	"status": "on going",
+	"due_date": "2020-02-02"
+}
+
+Response:
+
+{
+  "id": 1,
+  "title": "study",
+  "description": "coding",
+  "status": "on going",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "updatedAt": "2020-02-03T11:03:20.920Z",
+  "createdAt": "2020-02-03T11:03:20.920Z"
+}
