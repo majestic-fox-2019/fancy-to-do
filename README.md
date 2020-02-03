@@ -77,9 +77,9 @@
     <li>
     GET /todos/{ id }
         <ul>
-            <li>Status Code <emsp>: 200</li>
-            <li>Returning <emsp>: an Objects</li>
-            <li>Example <emsp>: </li>
+            <li>Status Code : 200</li>
+            <li>Returning : an Objects</li>
+            <li>Example : </li>
             <pre>
             {
                     "id": 1,
