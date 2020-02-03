@@ -45,7 +45,7 @@ class ToDoController {
             id:req.params.id
         }})
         .then(data=>{
-            if(data > 0){
+            if(data){
                 res.status(200).json(data)
             }
             else{
@@ -100,12 +100,12 @@ class ToDoController {
     }
 
     static delete(req,res,next){
-        let isi = {}
+        let isi = null
         ToDo
         .findOne({where:{id:req.params.id}})
         .then(data=>{
              isi = data
-            if(data = 1){
+            if(data){
                 return ToDo.destroy({where:{id:req.params.id}})
             }
             else{
