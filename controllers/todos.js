@@ -81,15 +81,23 @@ class TodoController {
           if(response[0] > 0){
             res.status(200).json(response[1][0])
           }else{
-            error.statusCode = 404
-            error.data = 'Not found'
-            throw new Error(error)
+            if(err.name === 'SequelizeValidationError'){
+              error.statusCode = 404
+              error.data = 'Not found'
+              next(error)
+            }else{
+              next(err)
+            }
           }
         })
         .catch(err => {
-          error.statusCode = 400
-          error.data = Helper.errorFormatter(err.errors)
-          next(error)
+          if(err.name === 'SequelizeValidationError'){
+            error.statusCode = 404
+            error.data = 'Not found'
+            next(error)
+          }else{
+            next(err)
+          }
         })
     }
 
