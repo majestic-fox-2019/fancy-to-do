@@ -80,9 +80,9 @@ class TodoController {
         })
         .catch(err => {
           if(err.name === 'SequelizeValidationError'){
-            next(createError(400, {message : Helper.errorFormatter(err.errors) }))
+            next(createError(400, { message : Helper.errorFormatter(err.errors) }))
           }else{
-            next(error) 
+            next(err) 
           }
         })
     }
@@ -108,7 +108,7 @@ class TodoController {
           }
         })
         .catch(err => {
-          next(error)
+          next(err)
         })
     }
 
