@@ -53,22 +53,19 @@ class TodoController {
     static updateTodo(req, res, next){
         let { title, description, status, due_date } = req.body
 
-        let updatedData = ""
-        
         Todo
             .findByPk(req.params.id)
             .then(found => {
                 if(found){
-                    updatedData = found
-
-                    return Todo.update({
+                    return found.update({
                         title,
                         description,
                         status,
                         due_date
-                    }, { where: {
-                        id: req.params.id
-                    }})
+                    }, { 
+                        where: {
+                            id: req.params.id
+                        }, returning:true })
                 } else {
                     throw {
                         statusCode: 404,
@@ -77,7 +74,9 @@ class TodoController {
                 }
             })
             .then(updated => {
-                res.status(200).json(updatedData)
+
+
+                res.status(200).json(updated)
             })
             .catch(err => {
                 next(err)

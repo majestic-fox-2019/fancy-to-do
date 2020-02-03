@@ -13,7 +13,6 @@ function clientErrorHandler (err, req, res, next){
 }
 
 function serverErrorHandler(err, req, res, next){
-    // res.send(err)
     res.status(500).json(err.message)
 }
 
