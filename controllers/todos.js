@@ -90,11 +90,17 @@ class ControllerTodo {
 
   static delete(req, res, next) {
     let id = req.params.id
+    let isi = null
     Todo
-      .destroy({ where: { id: id } })
+      .findOne({ where: { id: id } })
+      .destroy({ where: { id: id }, returning: true })
       .then(result => {
-        if (result > 0) {
-          res.status(200).json(result)
+        isi = result
+        return isi.destroy({ where: { id: id } })
+      })
+      .then(resultDestroy => {
+        if (resultDestroy > 0) {
+          res.status(200).json(resultDestroy)
         } else {
           let err = {
             statusCode: '404',
