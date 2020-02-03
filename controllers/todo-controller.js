@@ -10,8 +10,7 @@ class TodoController {
       })
       .catch(err => {
         const errObj = {
-          statusCode: 500,
-          message: "Internal Server Error!"
+          statusCode: 500
         }
         next(errObj);
       });
@@ -39,8 +38,7 @@ class TodoController {
         }
         else {
           const errObj = {
-            statusCode: 500,
-            message: "Internal Server Error!"
+            statusCode: 500
           };
           next(errObj);
         }
@@ -52,21 +50,24 @@ class TodoController {
       .then(todos => {
         if (todos == null) {
           const errObj = {
-            statusCode: 404,
-            message: "Error! Not found."
+            statusCode: 404
           };
-          next(errObj);
+          throw errObj;
         }
         else {
           res.status(200).json(todos);
         }
       })
       .catch(err => {
-        const errObj = {
-          statusCode: 500,
-          message: "Internal Server Error!"
-        };
-        next(errObj);
+        if (err.statusCode != 500) {
+          next(err);
+        }
+        else {
+          const errObj = {
+            statusCode: 500
+          };
+          next(errObj);
+        }
       });
   }
 
@@ -79,35 +80,42 @@ class TodoController {
       updatedAt: Date.now()
     };
 
-    Todo.update(todoData, { where: { id: req.params.id } })
+    Todo.findByPk(req.params.id)
       .then(todo => {
-        if (todo.includes(0)) {
+        if (!todo) {
           const errObj = {
-            statusCode: 404,
-            message: "Error! Not found"
+            statusCode: 404
           };
-          next(errObj);
+          throw errObj;
         }
         else {
-          return Todo.findByPk(req.params.id);
+          return Todo.update(todoData, {
+            where: {
+              id: req.params.id
+            }
+          });
         }
+      })
+      .then(todo => {
+          return Todo.findByPk(req.params.id);
       })
       .then(todo => {
         res.status(200).json(todo);
       })
       .catch(err => {
-        if (err.message.includes("Validation error:")) {
+        if (typeof err.message != "undefined" && err.message.includes("Validation error:")) {
           const errObj = {
             statusCode: 400,
             message: err.message
           };
           next(errObj);
-        } else {
-          res.send(err);
-          console.log(err);
+        }
+        else if (err.statusCode == 404) {
+          next(err);
+        }
+        else {
           const errObj = {
-            statusCode: 500,
-            message: "Internal Server Error!"
+            statusCode: 500
           };
           next(errObj);
         }
@@ -121,9 +129,9 @@ class TodoController {
       .then(todo => {
         if (todo == null) {
           const errObj = {
-            statusCode: 404,
-            message: "Error! Not found"
+            statusCode: 404
           };
+          throw errObj;
         }
         else {
           deletedTodo = todo;
@@ -135,16 +143,7 @@ class TodoController {
         }
       })
       .then(todo => {
-        if (todo == null) {
-          const errObj = {
-            statusCode: 404,
-            message: "Error! Not found"
-          };
-          throw errObj;
-        }
-        else {
-          res.status(200).json(deletedTodo);
-        }
+        res.status(200).json(deletedTodo);
       })
       .catch(err => {
         if (err.statusCode == 404) {
@@ -152,15 +151,13 @@ class TodoController {
         }
         else {
           const errObj = {
-            statusCode: 500,
-            message: "Internal Server Error!"
+            statusCode: 500
           };
           next(errObj);
         }
       });
   }
 }
-
 
 module.exports = {
   TodoController
