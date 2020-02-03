@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "takin230793",
+    "database": "fancy-todo-majestic",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
