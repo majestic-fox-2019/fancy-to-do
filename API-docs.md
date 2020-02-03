@@ -35,7 +35,7 @@ created by Muhammad Ali Mazhuda
 * method : POST
 * parameter sent : 
     |No|Name        |Type   |Mandatory
-    |--|--------    |-------|---------
+    |--|------------|-------|---------
     | 1|title       |String |required
     | 2|description |String |required
     | 3|status      |boolean|required
@@ -59,11 +59,19 @@ created by Muhammad Ali Mazhuda
 * method : PUT
 * parameter sent : 
     |No|Name        |Type   |Mandatory
-    |--|--------    |-------|---------
+    |--|------------|-------|---------
     | 1|title       |String |required
     | 2|description |String |required
     | 3|status      |boolean|required
     | 4|due date    |Date   |required
+
+
+    |No|Code    |Name           |Comment
+    |--|--------|---------------|---------
+    | 1|400     |Bad Request    |Missing field on request
+    | 2|404     |Not Found      |Id not found
+    | 3|500     |Server Error   |Server Error
+
 * response : 
     ```
     {
@@ -100,7 +108,7 @@ created by Muhammad Ali Mazhuda
 ---
 
 |No|Code    |Name           |Comment
-|--|--------|-------        |---------
+|--|--------|---------------|---------
 | 1|400     |Bad Request    |Missing field on request
 | 2|404     |Not Found      |Id not found
 | 3|500     |Server Error   |Server Error
