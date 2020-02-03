@@ -1,1 +1,1 @@
-<h4>Documentation in <a href="documentation/index.html">here</a></h4>
+<h4>Documentation in <a href="documentation/index.html" target="_blank">here</a></h4>
