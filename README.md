@@ -1,12 +1,14 @@
 # fancy-to-do
 Fancy To-Do List API
-
 <br>
-1. POST /todos
-- Create a new todolist.
+<br>
+<br>
 
-Request Body:
-- Schema
+### **POST /todos**
+---
+*Create a new todolist.*
+> Request Body:
+* Schema
 
   Value:
     - title: string,
@@ -14,20 +16,22 @@ Request Body:
     - status: boolean,
     - due_date: date
 
-- Example
-
+  Example
+  ```javascript
   {
     "title": "Create Fancy Todo",
     "description": "Learn how to create RESTful API",
     "status": "false"
     "due_date": "2020-02-08"
   }
+  ```
+<br>
 
-Response:
-- 201
+> Response:
+* 201
 
   Example:
-
+  ```javascript
   {
     "id": 1,
     "title": "Create Fancy Todo",
@@ -35,26 +39,30 @@ Response:
     "status": "false"
     "due_date": "2020-02-08"
   }
+  ```
 
-- 400
+* 400
 
   Example:
-
+  ```javascript
   {
     "message": "Validation error: Title must be filled!"
   }
+  ```
 
-- 500
+* 500
 
 <br>
-2. GET /todos
-- show all todo list
 
-Response:
-- 200
+### **GET /todos**
+---
+*Show all todo list.*
+
+> Response:
+* 200
 
   Example:
-
+  ```javascript
   {
     "id": 1,
     "title": "Create Fancy Todo",
@@ -69,23 +77,28 @@ Response:
     "status": "false"
     "due_date": "2020-02-08"
   } 
+  ```
 
-- 500
+* 500
 
 <br>
-3. GET /todos/:id
-- show todo list by id
-
-Request Params:
 <br>
-id: integer <br>
-example: http://localhost:3000/todos/2
 
-Response:
-- 200
+### **GET /todos/:id**
+---
+*Show todo list by id.*
+> Request Params:
+
+  id: integer <br>
+  example: http://localhost:3000/todos/2
+
+<br>
+
+> Response:
+* 200
 
   Example:
-
+  ```javascript
   {
     "id": 2,
     "title": "Create Fancy Todo",
@@ -93,27 +106,32 @@ Response:
     "status": "false",
     "due_date": "2020-02-08"
   }
+  ```
 
-- 404
+* 404
   
   Example:
-
+  ```javascript
   {
     "message": "Error 404, command not found!"
   }
+  ```
 
 <br>
-4. PUT /todos/:id
-- update todo list by id
 
-Request params:
+### **PUT /todos/:id**
+---
+*Update todo list by id.*
+
+> Request params:<br>
+
+  id: integer <br>
+  example: http://localhost:3000/todos/2
+
 <br>
-id: integer <br>
-example: http://localhost:3000/todos/2
 
-
-Request Body:
-- Schema
+> Request Body:
+* Schema
 
   Value:
     - title: string,
@@ -121,20 +139,22 @@ Request Body:
     - status: boolean,
     - due_date: date
 
-- Example
-
+  Example
+  ```javascript
   {
     "title": "Create Fancy Todo",
     "description": "Learn how to create RESTful API",
     "status": "false"
     "due_date": "2020-02-08"
   }
+  ```
+<br>
 
+> Response:
+* 200
 
-Response:
-- 200
-
-  Example: <br>
+  Example:
+  ```javascript
   {
     "id": 2,
     "title": "Create Fancy Todo",
@@ -142,36 +162,46 @@ Response:
     "status": "false",
     "due_date": "2020-02-08"
   }
+  ```
 
-- 404
+* 404
   
-  Example: <br>
+  Example:
+  ```javascript
   {
     "message": "Validation error: Title must be filled!"
   }
+  ```
 
-- 400
+* 400
 
-  Example: <br>
+  Example:
+  ```javascript
   {
     "message": "Error 404, command not found!"
   }
+  ```
 
-- 500
+* 500
 
 <br>
-5. DELETE /todos/:id
-- delete todo list by id
 
-Request params: <br>
-id: integer <br>
-example: http://localhost:3000/todos/3
+### **DELETE /todos/:id**
+---
+*Delete todo list by id.*
 
+> Request params: <br>
 
-Response:
-- 200
+  id: integer <br>
+  example: http://localhost:3000/todos/3
 
-  Example: <br>
+<br>
+
+> Response:
+* 200
+
+  Example:
+  ```javascript
   {
     "id": 2,
     "title": "Create Fancy Todo",
@@ -179,12 +209,15 @@ Response:
     "status": "false",
     "due_date": "2020-02-08"
   }
+  ```
 
-- 404
+* 404
   
-  Example: <br>
+  Example:
+  ```javascript
   {
     "message": "Error 404, command not found!"
   }
+  ```
 
-- 500
+* 500
