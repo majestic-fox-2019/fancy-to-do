@@ -45,6 +45,23 @@ class TodoController {
         })
     }
 
+    static findById(req, res, next){
+      Todo
+        .findByPk(req.params.id)
+        .then(response => {
+          if(response !== null){
+            res.status(200).json(response)
+          }else{
+            error.statusCode = 404
+            error.data = "Not Found"
+            next(error)
+          }
+        })
+        .catch(err => {
+          next(err)
+        })
+    }
+
     static update(req, res, next){
       let objValue = {
         title : req.body.title,
@@ -62,7 +79,7 @@ class TodoController {
         })
         .then(response => {
           if(response[0] > 0){
-            res.status(200).json(response[1])
+            res.status(200).json(response[1][0])
           }else{
             error.statusCode = 404
             error.data = 'Not found'
