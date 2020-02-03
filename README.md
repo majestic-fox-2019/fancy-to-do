@@ -1,15 +1,12 @@
 # fancy-to-do
 Fancy To-Do List API
 
+<pre>
 All Routes :
-<br>
-GET    /todos
-<br>
-GET    /todos/{id}
-<br>
-POST   /todos
-<br>
-PUT    /todos/{id}
-<br>
-DELETE /todos/{id}
+    GET    /todos
+    GET    /todos/{id}
+    POST   /todos
+    PUT    /todos/{id}
+    DELETE /todos/{id}
+</pre>
 
