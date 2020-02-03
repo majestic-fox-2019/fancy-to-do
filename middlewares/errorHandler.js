@@ -14,8 +14,8 @@ function clientErrorHandler (err, req, res, next){
 }
 
 function serverErrorHandler(err, req, res, next){
-    err.message = 'Internal Server Error'
-    res.status(500).json(err.message)
+    err = { msg: 'Server currently unable to handle this request'}
+    res.status(500).json(err)
 }
 
 module.exports = { clientErrorHandler, serverErrorHandler }

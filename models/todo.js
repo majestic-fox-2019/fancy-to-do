@@ -35,11 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isIn: {
-          args: [['complete', 'incomplete']],
-          msg: `Please input todo status complete or incomplete`
-        },
-        notEmpty: {
-          msg: 'Please input todo status'
+          args: [['completed', 'incomplete']],
+          msg: `Please input todo status completed or incomplete`
         }
       }
     },
@@ -66,8 +63,8 @@ module.exports = (sequelize, DataTypes) => {
         todo.forEach(el => {
           el.dataValues.due_date = helper.changeFormatDate(new Date(el.dataValues.due_date))
         })
-      } else {
-        todo.dataValues.due_date = helper.changeFormatDate(new Date(el.dataValues.due_date))
+      } else if(todo) {
+          todo.dataValues.due_date = helper.changeFormatDate(new Date(todo.dataValues.due_date))
       }
     }
   } })

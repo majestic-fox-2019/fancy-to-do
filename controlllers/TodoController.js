@@ -7,7 +7,7 @@ class TodoController {
         Todo
             .findAll()
             .then(list => {
-                res.status(201).json(list)
+                res.status(200).json(list)
             })
             .catch(err => {
                 next(err)
@@ -52,7 +52,7 @@ class TodoController {
 
     static updateTodo(req, res, next){
         let { title, description, status, due_date } = req.body
-
+        
         Todo
             .findByPk(req.params.id)
             .then(found => {
@@ -62,9 +62,9 @@ class TodoController {
                         description,
                         status,
                         due_date
-                    }, 
-                    {
-                        returning:true 
+                    },
+                    {   
+                        returning:true
                     })
                 } else {
                     throw {
@@ -98,7 +98,7 @@ class TodoController {
                 } else {
                     throw {
                         statusCode: 404,
-                        message: 'Error! Data not found.'
+                        message: 'Error! Data not found'
                     }
                 }
             })
