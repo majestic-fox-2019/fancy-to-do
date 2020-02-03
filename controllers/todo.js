@@ -9,6 +9,7 @@ class Controller {
         })
         .catch(err =>{
             next(err)
+            res.send(err)
         })
     }
     static findOne(req, res, next){
@@ -19,7 +20,11 @@ class Controller {
             }
         })
         .then(data =>{
-            res.status(200).json(data)
+            if(!data){
+                next({name:'not found'})
+            }else{
+                res.status(200).json(data)
+            }
         })
         .catch(err =>{
             next(err)
@@ -38,8 +43,7 @@ class Controller {
             res.status(201).json(data)
         })
         .catch(err =>{
-            res.send(err.errors)
-            // next(err)
+            next(err)
         })
     }
     static update(req, res, next){
@@ -50,27 +54,40 @@ class Controller {
             description,
             status,
             due_date,
-        },{
-            where:{
-                id:req.params.id
-            }
+            },{
+                where:{
+                    id:req.params.id
+                },
+            returning:true
         })
         .then(data =>{
-            res.status(200).json(data)
+            if(data[0] === 0){
+                next({name:'not found'})
+            }else{
+                res.status(200).json(data)
+            }
         })
         .catch(err =>{
             next(err)
         })
     }
     static destroy(req, res, next){
-        Todo
-        .destroy({
+        const findOne = Todo.findOne({
             where:{
                 id:req.params.id
             }
         })
+        const destroy = Todo.destroy({
+                        where:{id:req.params.id}
+                    })
+        Promise.all([findOne, destroy])
         .then(data =>{
-            res.status(200).json(data)
+            console.log(data)
+            if(data[1] === 0){
+                next({name : 'not found'})
+            }else{
+                res.status(200).json(data[0])
+            }
         })
         .catch(err =>{
             next(err)
