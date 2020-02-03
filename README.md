@@ -3,7 +3,6 @@ Fancy To-Do List API
 
 Route on My Fancy To-Do LIST API is:
 <br>
-<br>
 ## 1. GET /todos
 
     To Find All Todos
