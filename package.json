@@ -1,0 +1,27 @@
+{
+  "name": "fancy-todo",
+  "version": "1.0.0",
+  "description": "phase 1 week 1 rest api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erneryn/fancy-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erneryn/fancy-todo/issues"
+  },
+  "homepage": "https://github.com/erneryn/fancy-todo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "js": "^0.1.0",
+    "pg": "^7.18.1",
+    "sequelize": "^5.21.3"
+  }
+}
