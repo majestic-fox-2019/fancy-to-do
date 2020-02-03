@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.Sequelize.Model
+  const helper = require('../helper/helper')
   class Todo extends Model {}
 
   Todo.init({
@@ -38,6 +39,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   },{ 
     hooks : {
+      afterFind(todo,opt){
+        if(Array.isArray(todo)){
+          todo.map(el => {
+            el.dataValues.due_date = helper.formatDate(new Date(el.due_date))  
+            el.dataValues.createdAt = helper.formatDate(new Date(el.createdAt))  
+            el.dataValues.updatedAt = helper.formatDate(new Date(el.updatedAt))  
+          })
+          
+        }
+      },  
       beforeCreate(todo ,opt) {
         if(!todo.status){
           todo.status = 'incomplete'
