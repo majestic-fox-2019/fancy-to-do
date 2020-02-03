@@ -62,10 +62,10 @@ class TodoController {
                         description,
                         status,
                         due_date
-                    }, { 
-                        where: {
-                            id: req.params.id
-                        }, returning:true })
+                    }, 
+                    {
+                        returning:true 
+                    })
                 } else {
                     throw {
                         statusCode: 404,
@@ -74,8 +74,6 @@ class TodoController {
                 }
             })
             .then(updated => {
-
-
                 res.status(200).json(updated)
             })
             .catch(err => {
