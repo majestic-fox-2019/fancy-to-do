@@ -13,9 +13,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/todos', todos);
 
 // Error Handling
-app.use(function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500);
-})
+const basicError = require('./error_handlers/basic_error');
+app.use(basicError)
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))

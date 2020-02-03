@@ -39,7 +39,10 @@ class TodoController {
                 if (todo) {
                     res.status(200).json(todo);
                 }else{
-                    res.status(404).json({msg: "error not found"});
+                    throw {
+                        statusCode: 404,
+                        message: "No data found"
+                    }
                 }
             })
             .catch(err => {
@@ -66,7 +69,10 @@ class TodoController {
                 if (result[0]) {
                     res.status(200).json(result[1][0]);
                 }else{
-                    res.status(404).json({msg: "error not found"});
+                    throw {
+                        statusCode: 404,
+                        message: "No data found"
+                    }
                 }
             })
             .catch(err => {
@@ -92,7 +98,10 @@ class TodoController {
                 if (deletedTodo) {                
                     res.status(200).json(deletedTodo);
                 }else{
-                    res.status(404).json({msg: "error not found"});
+                    throw {
+                        statusCode: 404,
+                        message: "No data found"
+                    }
                 }
             })
             .catch(err => {
