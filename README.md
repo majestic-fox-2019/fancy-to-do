@@ -1,25 +1,27 @@
 <h1>Fancy To-Do List API</h1>
 
-<h3>All Routes</h3>
+<h2 style="text-decoration:underline">All Routes</h2>
 <ul>
-    <li>GET /todos</li>
-    <li>GET /todos/{ id }</li>
-    <li>POST /todos</li>
-    <li>PUT /todos/{ id }</li>
-    <li>DELETE /todos/{ id }</li>
+    <li><span style="font-weight:850">GET</span>  /todos</li>
+    <li><span style="font-weight:850">GET</span>  /todos/{ id }</li>
+    <li><span style="font-weight:850">POST</span>  /todos</li>
+    <li><span style="font-weight:850">PUT</span>  /todos/{ id }</li>
+    <li><span style="font-weight:850">DELETE</span>  /todos/{ id }</li>
 </ul>
 
 <br><br>
-<h3>All Request</h3>
+<h2 style="text-decoration:underline">All Request</h2>
 <ul>
-    <li>GET /todos
+    <li>
+    <span style="font-weight:850">GET</span> /todos
     <pre>No Request</pre>
     </li>
-    <li>GET /todos/{ id }
-    <pre>Param Name: "id" | Param Type: Integer</pre>
+    <li>
+    <span style="font-weight:850">GET</span> /todos/{ id }
+    <pre>Params Name: "id" | Params Type: Integer</pre>
     </li>
     <li>
-    POST /todos/{ id }
+    <span style="font-weight:850">POST</span> /todos/{ id }
     <pre>
         Body Name: "name"       | Body Type: String
         Body Name: "title"      | Body Type: String
@@ -28,29 +30,30 @@
     </pre>
     </li>
     <li>
-    PUT /todos/{ id }
+    <span style="font-weight:850">PUT</span> /todos/{ id }
     <pre>
-        Param Name  : "id"          | Param Type: Integer
+        Params Name : "id"          | Params Type: Integer
         Body Name   : "name"        | Body Type: String
         Body Name   : "title"       | Body Type: String
         Body Name   : "status"      | Body Type: Boolean
         Body Name   : "due_time"    | Body Type: Date
     </pre>
     </li>
-    <li>DELETE /todos/{ id }
-    <pre>Param Name: "id" | Param Type: Integer</pre>
+    <li>
+    <span style="font-weight:850">DELETE</span> /todos/{ id }
+    <pre>Params Name: "id" | Params Type: Integer</pre>
     </li>
 </ul>
 
 <br><br>
-<h3>Success Status</h3>
+<h2 style="text-decoration:underline">Success Status</h2>
 <ul>
     <li>
     GET /todos
         <ul>
-            <li>Status Code : 200</li>
-            <li>Returning   : Array of Objects</li>
-            <li>Example     : </li>
+            <li>Status Code <span style="color:">200<span></li>
+            <li>Returning Array of Objects</li>
+            <li>Example :</li>
             <pre>
             [
                 {
@@ -79,9 +82,9 @@
     <li>
     GET /todos/{ id }
         <ul>
-            <li>Status Code : 200</li>
-            <li>Returning : an Objects</li>
-            <li>Example : </li>
+            <li>Status Code <span style="color:">200<span></li>
+            <li>Returning an Objects</li>
+            <li>Example :</li>
             <pre>
             {
                     "id": 1,
@@ -98,9 +101,9 @@
     <li>
     POST /todos/{ id }
         <ul>
-            <li>Status Code : 201</li>
-            <li>Returning   : an Objects</li>
-            <li>Example     : </li>
+            <li>Status Code <span style="color:">201<span></li>
+            <li>Returning an Objects</li>
+            <li>Example :</li>
             <pre>
             {
                     "id": 1,
@@ -117,9 +120,9 @@
     <li>
     PUT /todos/{ id }
         <ul>
-            <li>Status Code : 200</li>
-            <li>Returning   : an Objects</li>
-            <li>Example     : </li>
+            <li>Status Code <span style="color:">200<span></li>
+            <li>Returning an Objects</li>
+            <li>Example :</li>
             <pre>
             {
                     "id": 1,
@@ -136,9 +139,9 @@
     <li>
     DELETE /todos/{ id }
         <ul>
-            <li>Status Code : 200</li>
-            <li>Returning   : an Objects</li>
-            <li>Example     : </li>
+            <li>Status Code <span style="color:">200<span></li>
+            <li>Returning an Objects</li>
+            <li>Example :</li>
             <pre>
             {
                     "id": 1,
@@ -155,9 +158,9 @@
 </ul>
 
 <br><br>
-<h3>Error Status</h3>
+<h2 style="text-decoration:underline">Error Status</h2>
 <ul>
-    <li>400 : Data is not valid</li>
-    <li>404 : Data is not found</li>
-    <li>500 : Internal Server Error</li>
+    <li>400 : Data is not valid. This can be caused by not entering data in certain fields.</li>
+    <li>404 : Data is not found. This can be caused by entering params that do not match the params type, or the data that matches the params is not found</li>
+    <li>500 : Internal Server Error. This could be due to a technical error in the server, and report if this problem arises.</li>
 </ul>
