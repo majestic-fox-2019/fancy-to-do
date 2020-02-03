@@ -37,7 +37,7 @@ _/todos/:id_ | **GET** | {token: ACCESS_TOKEN} | none | Get all user's todos | (
 _/todos/:id_  | **POST**  | {token: ACCESS_TOKEN} | {title:string, description:string, due_date:date}  | Post a new Todo | (201) OK {object data}, (400) Error  |
 _/todos/:id_| **PUT** | {token: ACCESS_TOKEN} | {title:string, description:string, due_date:date} | Update a Todo | (200) OK {object data}, (401) Error |
 _/todos/:id_   | **DELETE** | {token: ACCESS_TOKEN} | none | Delete a todo | (200) OK {object data}, (401) Error |
-_/question/:id_ | **PATCH**| {token: ACCESS_TOKEN} | {status:string} | Update status todo | (200) OK {object data}, (401) Error |
+_/todos/:id_ | **PATCH**| {token: ACCESS_TOKEN} | {status:string} | Update status todo | (200) OK {object data}, (401) Error |
 
 ```
 $ npm install

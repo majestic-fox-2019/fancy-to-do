@@ -17,9 +17,7 @@ class UserController {
         })
       })
       .catch(err => {
-        err.Code = 500
-        // next(err)
-        res.status(500).json(err)
+        next(err)
       })
   }
 
@@ -31,7 +29,7 @@ class UserController {
     User.findOne({ where: { email: form.email } })
       .then(result => {
         if (!result) {
-          throw err
+          throw createError(404, 'User not found')
         } else {
           const valid = comparePass(form.password, result.password)
           if (valid) {
@@ -44,9 +42,7 @@ class UserController {
         }
       })
       .catch(err => {
-        err.Code = 500
-        // next(err)
-        res.status(500).json(err)
+        next(err)
       })
   }
 }
