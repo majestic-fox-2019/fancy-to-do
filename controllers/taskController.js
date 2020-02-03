@@ -71,6 +71,41 @@ class TaskController {
     })
   }
 
+  static update(req, res, next){
+    let taskId = {
+      where : {
+        id: req.params.id
+      }
+    }
+
+    let taskUpdate = {
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      due_date: req.body.due_date
+    }
+
+    Task.update(taskUpdate, taskId)
+    .then(result => {
+      let response = {}
+      if (result[0] >= 1){
+        response.statusCode = 200,
+        response.response = taskUpdate
+      } else {
+        response.statusCode = 404,
+        response.response = {error: 'error not found'}
+      }
+      next(response)
+    })
+    .catch(err => {
+      let errorMessage = {
+        statusCode: 400,
+        response: err.errors[0].type
+      }
+      next(errorMessage)
+    })
+  }
+
 }
 
 module.exports = TaskController
