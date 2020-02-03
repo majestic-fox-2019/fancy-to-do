@@ -5,7 +5,7 @@ function clientErrorHandler (err, req, res, next){
         } else {
             res
                 .status(err.statusCode || 400)
-                .json(err.message)
+                .json(err.message.split('\n'))
         }
     } else {
         next(err)

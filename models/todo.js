@@ -2,6 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize
 
+  const helper = require('../helpers/helper')
+
   class Todo extends Model {}
 
   Todo.init({
@@ -39,9 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, { sequelize, hooks: {
-    beforeCreate: (instance, option) => {
-      if(!instance.status){
-        instance.status = 'incomplete'
+    beforeCreate: (todo, option) => {
+      if(!todo.status){
+        todo.status = 'incomplete'
+      }
+    },
+    afterFind: (todo, option) => {
+      if(Array.isArray(todo)){
+        todo.forEach(el => {
+          el.dataValues.due_date = helper.changeFormatDate(new Date(el.dataValues.due_date))
+        })
+      } else {
+        todo.dataValues.due_date = helper.changeFormatDate(new Date(el.dataValues.due_date))
       }
     }
   } })
