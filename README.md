@@ -25,7 +25,15 @@ These are the routes/endpoints this API has:
 
 ## __GET__ _/todos_
 
-* Expected Output (If there are 2 tasks)
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### Response
 
 ```javascript
 [
@@ -66,7 +74,15 @@ These are the routes/endpoints this API has:
 
 <br>
 
-#### Expected Input
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### Request Body
 
 ```javascript
 {
@@ -77,7 +93,7 @@ These are the routes/endpoints this API has:
 }
 ```
 
-#### Expected Output
+#### Response
 
 ```javascript
 {
@@ -108,7 +124,16 @@ Example: http:localhost:3000/__10__
 > __10__ is the ID.
 
 
-#### Expected Output
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+
+#### Response
 
 ```javascript
 {
@@ -144,21 +169,25 @@ Example: http:localhost:3000/__10__
 * Due Date (Date)
 
 
-#### Expected Input
+#### Request Header
 
 ```javascript
 {
-    "id": 10,
-    "title": "Learn Vue MORE!",
-    "description": "Learn hello world using Vue",
-    "status": true,
-    "due_date": "2020-03-01T00:00:00.000Z",
-    "createdAt": "2020-02-03T12:42:30.860Z",
-    "updatedAt": "2020-02-03T12:42:30.860Z"
+  "Content-Type": "application/json"
 }
 ```
 
-#### Expected Output
+
+#### Request Body
+
+```javascript
+{
+    "title": "Learn Vue MORE!",
+    "status": true
+}
+```
+
+#### Response
 
 ```javascript
 {
@@ -192,7 +221,17 @@ Example: http:localhost:3000/__9__
 
 > __9__ is the ID.
 
-#### Expected Output
+
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+
+#### Response
 
 ```javascript
 {
