@@ -204,7 +204,7 @@ Internal Server Error
     Delete Todo
 
 * **EXAMPLE URL:**
-<br>
+
 http://localhost:3000/todos/1
 
 * **REQUEST HEADER**
