@@ -106,6 +106,35 @@ class TaskController {
     })
   }
 
+  static delete(req, res, next){
+    let taskId = req.params.id
+    let destroyTaskId = {
+      where: {
+        id: req.params.id
+      }
+    }
+    let data = {}
+    let response = {}
+    Task.findByPk(taskId)
+    .then(result => {
+      data = result
+      return Task.destroy(destroyTaskId)
+    })
+    .then(result => {
+      if (data === null){
+        response.statusCode = 404,
+        response.response = {error: 'error not found'}
+      } else {
+        response.statusCode = 200,
+        response.response = data
+      }
+      next(response)
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
+
 }
 
 module.exports = TaskController
