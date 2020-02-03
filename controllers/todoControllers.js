@@ -118,17 +118,11 @@ class todoController {
                 }
                 else{
                     let err ={
-                        statusError :400,
+                        statusError :404,
                         message :"error not found"
                     }
                     next(err)
                 }
-            })
-            .catch(err=>{
-                throw({
-                    statusError: 404,
-                    message : "Cannot get data"
-                })
             })
     }
 }

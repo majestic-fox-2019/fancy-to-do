@@ -5,5 +5,5 @@ router.get("/",todoController.getAll);
 router.post("/",todoController.createOne);
 router.put("/:id",todoController.updates);
 router.get("/:id",todoController.findOne);
-router.delete("/:id",todoController.delete)
+router.delete("/:id",todoController.delete);
 module.exports = router;

@@ -8,7 +8,7 @@ app.use("/",Router);
 
 app.use(function (err, req, res, next) {
     if(err.statusError){
-        res.status(err.statusError).json(err)
+        res.status(err.statusError).json(err.message)
     }   
     res.status(500).send('Something broke!')
   })
