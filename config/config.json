@@ -1,0 +1,17 @@
+{
+    "development": {
+      "username": "postgres",
+      "password": "postgres",
+      "database": "Todos",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "production": {
+      "username": "walfzrfgvlqgsx",
+      "password": "0c7e107ff9eb032edcbfd6e966468d12564c775a95cdfe698fe497baa5c627ce",
+      "database": "d53nfsp44tsbpc",
+      "host": "ec2-174-129-254-238.compute-1.amazonaws.com",
+      "dialect": "postgres"
+      
+    }
+}
