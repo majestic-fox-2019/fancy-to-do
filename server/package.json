@@ -1,0 +1,17 @@
+{
+  "name": "todosapp",
+  "version": "1.0.0",
+  "description": "World Class Todo's API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Onesinus SPT",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.18.1",
+    "sequelize": "^5.21.3"
+  }
+}
