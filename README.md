@@ -165,7 +165,9 @@ http://localhost:3000/todos/1
 
 * **RESPONSE**
 <br>
+
 If request success:
+
 ```javascript
 {
     "title": "Coding",
@@ -174,19 +176,25 @@ If request success:
     "due_date": "2000-12-31T17:00:00.000Z"
 }
 ```
+
 If request failed because id todo not found:
+
 ```javascript
 {
     "error": "error not found"
 }
 ```
+
 If request failed because validation is not complete:
+
 ```javascript
 {
     "error": "Validation Errors"
 }
 ```
+
 If request failed caused by server:
+
 ```javascript
 Internal Server Error
 ```
@@ -196,10 +204,10 @@ Internal Server Error
     Delete Todo
 
 * **EXAMPLE URL:**
-<br>
 http://localhost:3000/todos/1
 
 * **REQUEST HEADER**
+
 ```javascript
 {
     "Content-Type": "application/json; charset=utf-8"
@@ -207,8 +215,8 @@ http://localhost:3000/todos/1
 ```
 
 * **RESPONSE**
-<br>
 If request success:
+
 ```javascript
 {
     "id": 1,
