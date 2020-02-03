@@ -1,4 +1,5 @@
 const {Todo} = require("../models")
+const responseApi = require("../helper/format").responseApi
 class TodosController{
   static create(req,res,next){
     const {title, description, status, due_date} = req.body
@@ -8,7 +9,7 @@ class TodosController{
       .then(todo => {
         res
           .status(201)
-          .json(todo)
+          .json(responseApi(todo,"Success create todo"))
       })
       .catch(err => {
         next(err)
@@ -21,7 +22,7 @@ class TodosController{
       .then(todos => {
         res
           .status(200)
-          .json(todos)
+          .json(responseApi(todos))
       })
       .catch(err => {
         next(err)
@@ -36,7 +37,7 @@ class TodosController{
         if (todo){
           res
             .status(200)
-            .json(todo)
+            .json(responseApi(todo))
         }else{
           next({
             statusCode : 404,
@@ -71,7 +72,7 @@ class TodosController{
       .then(todo => {
         res
           .status(200)
-          .json(todo)
+          .json(responseApi(todo,"Success update todo"))
       })
       .catch(err => {
         next(err)
@@ -98,7 +99,7 @@ class TodosController{
       .then(todo => {
         res
           .status(200)
-          .json(deleted)
+          .json(responseApi(deleted,"Success delete todo"))
       })
       .catch(err => {
         next(err)
