@@ -2,7 +2,7 @@
   "name": "Rest-API",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "engines": {
     "node": "13.2.0",
     "npm": "6.13.1"
