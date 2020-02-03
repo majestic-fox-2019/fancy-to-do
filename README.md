@@ -1,7 +1,8 @@
 # FANCY TO-DO LIST API
+
 ### by Adam Rafiandri, forked from [Majestic Fox 2019](https://github.com/majestic-fox-2019/fancy-to-do "Majestic Fox 2019")
 
-This is my first project on Phase 2. 
+This is my first project on Phase 2.
 This simple Todo API gives what you need if you're only looking for some data to store your tasks.
 
 __LET'S JUMP INTO IT!!__
@@ -94,7 +95,6 @@ ID is automatically incremented and generated.
 
 
 <br>
-
 
 ## __GET__ _/todos/:id_
 
