@@ -93,14 +93,13 @@ class ControllerTodo {
     let isi = null
     Todo
       .findOne({ where: { id: id } })
-      .destroy({ where: { id: id }, returning: true })
       .then(result => {
         isi = result
-        return isi.destroy({ where: { id: id } })
+        return Todo.destroy({ where: { id: id }, returning: true })
       })
       .then(resultDestroy => {
         if (resultDestroy > 0) {
-          res.status(200).json(resultDestroy)
+          res.status(200).json(isi)
         } else {
           let err = {
             statusCode: '404',
