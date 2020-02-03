@@ -29,6 +29,28 @@ class TaskController {
 
   }
 
+  static list(req, res, next){
+    Task.findAll()
+    .then(result => {
+      let response = {}
+      if (result.length == 0){
+        response.statusCode = 200,
+        response.response = 'Data is empty.'
+      } else {
+        response.statusCode = 200,
+        response.response = result
+      }
+      next(response)
+    })
+    .catch(err => {
+      let error = {
+        statusCode: 500,
+        response: err
+      }
+      next(error)
+    })
+  }
+
 }
 
 module.exports = TaskController
