@@ -5,13 +5,15 @@ Route on My Fancy To-Do LIST API is:
 <br>
 <br>
 ## 1. GET /todos
+
     To Find All Todos
 
 * **URL:**
-<br>
+
 http://localhost:3000/todos
 
 * **REQUEST HEADER**
+
 ```javascript
 {
     "Content-Type": "application/json; charset=utf-8"
@@ -19,8 +21,9 @@ http://localhost:3000/todos
 ```
 
 * **RESPONSE**
-<br>
+
 If request success and data available on server:
+
 ```javascript
   [
     {
@@ -43,24 +46,30 @@ If request success and data available on server:
     }
 ]
 ```
+
 If request success but there is no data on server:
+
 ```javascript
 "Data is empty."
 ```
+
 If request failed caused by server:
+
 ```javascript
 Internal Server Error
 ```
 
 
 ## 2. GET      /todos/:id
+
     Find Todos by Id
 
 * **EXAMPLE URL:**
-<br>
+
 http://localhost:3000/todos/1
 
 * **REQUEST HEADER**
+
 ```javascript
 {
     "Content-Type": "application/json; charset=utf-8"
@@ -68,8 +77,9 @@ http://localhost:3000/todos/1
 ```
 
 * **RESPONSE**
-<br>
+
 If request success:
+
 ```javascript
 {
     "id": 1,
@@ -81,7 +91,9 @@ If request success:
     "updatedAt": "2020-02-03T12:21:11.139Z"
 }
 ```
+
 If request failed because id todo not found:
+
 ```javascript
 {
     "error": "error not found"
@@ -93,10 +105,11 @@ If request failed because id todo not found:
     Add/Create Todo
 
 * **EXAMPLE URL:**
-<br>
+
 http://localhost:3000/todos/1
 
 * **REQUEST HEADER**
+
 ```javascript
 {
     "Content-Type": "application/json; charset=utf-8"
@@ -104,6 +117,7 @@ http://localhost:3000/todos/1
 ```
 
 * **REQUEST BODY**
+
 ```javascript
 {
     "title": "Coding",
@@ -114,8 +128,9 @@ http://localhost:3000/todos/1
 ```
 
 * **RESPONSE**
-<br>
+
 If request success:
+
 ```javascript
 {
     "id": 1,
@@ -127,13 +142,17 @@ If request success:
     "createdAt": "2020-02-03T12:45:11.380Z"
 }
 ```
+
 If request failed because validation is not complete:
+
 ```javascript
 {
     "error": "Validation Errors"
 }
 ```
+
 If request failed caused by server:
+
 ```javascript
 Internal Server Error
 ```
@@ -143,7 +162,7 @@ Internal Server Error
     Update Todo
 
 * **EXAMPLE URL:**
-<br>
+
 http://localhost:3000/todos/1
 
 * **REQUEST HEADER**
@@ -164,7 +183,6 @@ http://localhost:3000/todos/1
 ```
 
 * **RESPONSE**
-<br>
 
 If request success:
 
