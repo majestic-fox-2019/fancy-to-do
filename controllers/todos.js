@@ -17,7 +17,7 @@ class TodoController {
             }else{
               error.statusCode = 204
               error.data = 'Data is empty!'
-              next(error)
+              throw new Error(error)
             }
           })
           .catch(err => {
@@ -36,7 +36,7 @@ class TodoController {
       Todo
         .create(objValue)
         .then(result => {
-          res.status(201).json(objValue)
+          res.status(201).json(result)
         })
         .catch(err => {
             error.statusCode = 400
@@ -54,7 +54,7 @@ class TodoController {
           }else{
             error.statusCode = 404
             error.data = "Not Found"
-            next(error)
+            throw new Error(error)
           }
         })
         .catch(err => {
@@ -83,7 +83,7 @@ class TodoController {
           }else{
             error.statusCode = 404
             error.data = 'Not found'
-            next(error)
+            throw new Error(error)
           }
         })
         .catch(err => {
@@ -111,7 +111,7 @@ class TodoController {
           if(data === null){
             error.statusCode = 404
             error.data = 'Not found'
-            next(error)
+            throw new Error(error)
           }else{
             res.status(200).json(data)
           }
