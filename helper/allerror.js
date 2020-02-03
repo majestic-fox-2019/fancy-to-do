@@ -1,11 +1,9 @@
 function allerror(err) {
   
-  let obj = {
-    errors : []
-  }
+  let obj = {}
 
   for (let i = 0; i < err.length; i++) {
-      obj.errors.push(err[i].message)
+      obj[err[i].path]=err[i].message
   }
 
   return obj

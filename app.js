@@ -13,10 +13,14 @@ app.use('/', routes)
 const allerror =require('./helper/allerror')
 
 app.use((err,req,res,next)=>{
-  
+  console.log(err)
   if(err.statusCode){
-    let dataError = allerror(err.data)
-  res.status(err.statusCode).json(dataError)
+    if(typeof err.data == 'string'){
+      res.status(err.statusCode).json(err.data)
+    }else{
+      let dataError = allerror(err.data)
+      res.status(err.statusCode).json(dataError)
+    }
   }else{
      res.sendStatus(500)
    }

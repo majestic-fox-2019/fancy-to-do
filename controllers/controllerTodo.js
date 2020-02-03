@@ -32,7 +32,7 @@ class ControllerTodo{
           statusCode : 204,
           data : 'Data is Empty'
         }
-        next(message)
+        throw message
       }
     })
     .catch(err=>{
@@ -49,19 +49,10 @@ class ControllerTodo{
           statusCode : 404,
           data : 'Error Not Found'
         }
-        next(message)
+        throw message
       }else{
         res.status(200).json(result)
       }
-      // if(result.length>0){
-      //   res.status(200).json(result)
-      // }else{
-      //   const message ={
-      //     statusCode : 404,
-      //     msg : 'Error Not Found'
-      //   }
-      //   next(message)
-      // }
     })
     .catch(err=>{
       next(err)
@@ -88,17 +79,20 @@ class ControllerTodo{
         let objErr={}
         objErr.statusCode = 404
         objErr.data = 'Not Found'
-        next(objErr)
+        throw objErr
       }else{
         res.status(200).json(result[1])
       }
     })
     .catch(err=>{
-    
-      let objErr={}
-       objErr.statusCode = 400
-       objErr.data = err.errors
-      next(objErr)
+      if(err.name == "SequelizeValidationError"){
+        let objErr={}
+        objErr.statusCode = 400
+        objErr.data = err.errors
+        next(objErr)
+      }else{
+        next(err)
+      }
       
     })
   }
@@ -121,7 +115,7 @@ class ControllerTodo{
         let objErr={}
         objErr.statusCode = 404
         objErr.data = 'Not Found'
-        next(objErr)
+        throw objErr
       }else{
         res.status(200).json(data)
       }
