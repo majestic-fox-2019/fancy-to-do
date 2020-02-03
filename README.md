@@ -47,7 +47,7 @@
     GET /todos
         <ul>
             <li>Status Code : 200</li>
-            <li>Returning      : Array of Objects</li>
+            <li>Returning   : Array of Objects</li>
             <li>Example     : </li>
             <pre>
             [
@@ -77,9 +77,9 @@
     <li>
     GET /todos/{ id }
         <ul>
-            <li>Status Code : 200</li>
-            <li>Returning   : an Objects</li>
-            <li>Example     : </li>
+            <li>Status Code <emsp>: 200</li>
+            <li>Returning <emsp>: an Objects</li>
+            <li>Example <emsp>: </li>
             <pre>
             {
                     "id": 1,
