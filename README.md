@@ -3,22 +3,22 @@
 <h3>All Routes</h3>
 <ul>
     <li>GET /todos</li>
-    <li>GET /todos/{id}</li>
+    <li>GET /todos/{ id }</li>
     <li>POST /todos</li>
-    <li>PUT /todos/{id}</li>
-    <li>DELETE /todos/{id}</li>
+    <li>PUT /todos/{ id }</li>
+    <li>DELETE /todos/{ id }</li>
 </ul>
 
 <h3>All Request</h3>
 <ul>
-    <li>GET /todos      : 
+    <li>GET /todos
     <pre>No Request</pre>
     </li>
-    <li>GET /todos/{id} : 
+    <li>GET /todos/{ id }
     <pre>Param Name: "id" | Param Type: Integer</pre>
     </li>
     <li>
-    POST /todos/{id} : 
+    POST /todos/{ id }
     <pre>
         Body Name: "name"       | Body Type: String
         Body Name: "title"      | Body Type: String
@@ -27,7 +27,7 @@
     </pre>
     </li>
     <li>
-    PUT /todos/{id} : 
+    PUT /todos/{ id }
     <pre>
         Param Name  : "id"          | Param Type: Integer
         Body Name   : "name"        | Body Type: String
@@ -36,7 +36,7 @@
         Body Name   : "due_time"    | Body Type: Date
     </pre>
     </li>
-    <li>DELETE /todos/{id} : 
+    <li>DELETE /todos/{ id }
     <pre>Param Name: "id" | Param Type: Integer</pre>
     </li>
 </ul>
@@ -44,11 +44,11 @@
 <h3>Success Status</h3>
 <ul>
     <li>
-    GET /todos : 
+    GET /todos
         <ul>
-            <li>Status Code: 200</li>
-            <li>Return Array of Objects</li>
-            <li>Example: </li>
+            <li>Status Code : 200</li>
+            <li>Returning      : Array of Objects</li>
+            <li>Example     : </li>
             <pre>
             [
                 {
@@ -75,11 +75,11 @@
         </ul>
     </li>
     <li>
-    GET /todos/{id} : 
+    GET /todos/{ id }
         <ul>
-            <li>Status Code: 200</li>
-            <li>Return an Objects</li>
-            <li>Example: </li>
+            <li>Status Code : 200</li>
+            <li>Returning   : an Objects</li>
+            <li>Example     : </li>
             <pre>
             {
                     "id": 1,
@@ -94,11 +94,11 @@
         </ul>
     </li>
     <li>
-    POST /todos/{id} : 
+    POST /todos/{ id }
         <ul>
-            <li>Status Code: 201</li>
-            <li>Return an Objects</li>
-            <li>Example: </li>
+            <li>Status Code : 201</li>
+            <li>Returning   : an Objects</li>
+            <li>Example     : </li>
             <pre>
             {
                     "id": 1,
@@ -113,11 +113,11 @@
         </ul>
     </li>
     <li>
-    PUT /todos/{id} : 
+    PUT /todos/{ id }
         <ul>
-            <li>Status Code: 200</li>
-            <li>Return an Objects</li>
-            <li>Example: </li>
+            <li>Status Code : 200</li>
+            <li>Returning   : an Objects</li>
+            <li>Example     : </li>
             <pre>
             {
                     "id": 1,
@@ -132,11 +132,11 @@
         </ul>
     </li>
     <li>
-    DELETE /todos/{id} : 
+    DELETE /todos/{ id }
         <ul>
-            <li>Status Code: 200</li>
-            <li>Return an Objects</li>
-            <li>Example: </li>
+            <li>Status Code : 200</li>
+            <li>Returning   : an Objects</li>
+            <li>Example     : </li>
             <pre>
             {
                     "id": 1,
