@@ -30,11 +30,12 @@ class ControllerTodo {
     Todo
       .findAll()
       .then(result => {
-        res.send(result)
-        // res.status(200).json(result)
+
+        res.status(200).json(result)
       })
       .catch(err => {
         next(err)
+
       })
   }
 
@@ -43,7 +44,7 @@ class ControllerTodo {
     Todo
       .findOne({ where: { id: id } })
       .then(result => {
-        if (result > 0) {
+        if (result) {
           res.status(200).json(result)
         } else {
           let err = {
@@ -51,11 +52,9 @@ class ControllerTodo {
             message: 'server not found'
           }
           next(err)
-          // res.send(err)
         }
       })
       .catch(err => {
-        // res.send(err)
         next(err)
       })
   }
@@ -84,7 +83,6 @@ class ControllerTodo {
           err.statusCode = '500'
         }
         next(err)
-
       })
   }
 

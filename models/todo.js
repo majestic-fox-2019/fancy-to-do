@@ -36,14 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { args: true, msg: 'kolom Date ga boleh kosong' },
         notEmpty: { args: true, msg: 'kolom Date ga boleh kosong' }
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, { sequelize })
-  // const Todo = sequelize.define('Todo', {
-  //   title: DataTypes.STRING,
-  //   description: DataTypes.STRING,
-  //   status: DataTypes.STRING,
-  //   due_date: DataTypes.DATE
-  // }, {});
+
   Todo.associate = function (models) {
     // associations can be defined here
     Todo.belongsTo(models.User)
