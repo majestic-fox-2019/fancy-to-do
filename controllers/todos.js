@@ -1,10 +1,6 @@
 const { Todo } = require('../models/index')
 const Helper = require('../helper/helper')
-
-let error = {
-  statusCode : '',
-  data : ''
-}
+const createError = require('http-errors')
 
 class TodoController {
 
@@ -15,9 +11,7 @@ class TodoController {
             if(result.length > 0){
               res.status(200).json(result)
             }else{
-              error.statusCode = 204
-              error.data = 'Data is empty!'
-              throw new Error(error)
+              throw createError(200, 'Data is empty!')
             }
           })
           .catch(err => {
@@ -39,9 +33,11 @@ class TodoController {
           res.status(201).json(result)
         })
         .catch(err => {
-            error.statusCode = 400
-            error.data = Helper.errorFormatter(err.errors)
-            next(error)
+          if(err.name === 'SequelizeValidationError'){
+            next(createError(400, {message : Helper.errorFormatter(err.errors) }))
+          }else{
+            next(err)
+          }
         })
     }
 
@@ -52,9 +48,7 @@ class TodoController {
           if(response !== null){
             res.status(200).json(response)
           }else{
-            error.statusCode = 404
-            error.data = "Not Found"
-            throw new Error(error)
+            throw createError(404, 'Not Found')
           }
         })
         .catch(err => {
@@ -81,22 +75,14 @@ class TodoController {
           if(response[0] > 0){
             res.status(200).json(response[1][0])
           }else{
-            if(err.name === 'SequelizeValidationError'){
-              error.statusCode = 404
-              error.data = 'Not found'
-              next(error)
-            }else{
-              next(err)
-            }
+            throw createError(404, 'Not Found')
           }
         })
         .catch(err => {
           if(err.name === 'SequelizeValidationError'){
-            error.statusCode = 404
-            error.data = 'Not found'
-            next(error)
+            next(createError(400, {message : Helper.errorFormatter(err.errors) }))
           }else{
-            next(err)
+            next(error) 
           }
         })
     }
@@ -108,8 +94,7 @@ class TodoController {
         .findByPk(req.params.id)
         .then(response => {
           data = response
-            return Todo
-            .destroy({
+            return Todo.destroy({
               where : {
                 id : req.params.id
               }
@@ -117,9 +102,7 @@ class TodoController {
         })
         .then(response => {
           if(data === null){
-            error.statusCode = 404
-            error.data = 'Not found'
-            throw new Error(error)
+            throw createError(404, 'Not Found')
           }else{
             res.status(200).json(data)
           }
