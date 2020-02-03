@@ -1,0 +1,20 @@
+POST /todos
+
+Request body:
+{
+    "title": "Menyiram kebon",
+    "description" : "Menyiram Pohon Mangga",
+    "status" : "Belum",
+    "due_date" : "2020-01-12"
+}
+
+Response:
+{
+    "id" : 2,
+    "title": "Menyiram kebon",
+    "description" : "Menyiram Pohon Mangga",
+    "status" : "Belum",
+    "due_date" : "2020-01-12",
+    "createdAt": "2020-02-03T08:44:10.301Z",
+    "updatedAt": "2020-02-03T08:44:10.301Z"
+}
