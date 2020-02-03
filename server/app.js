@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: false}));
 // Routes
 app.use('/todos', todos);
 
-// Error Handling
+// Middleware Error Handling
 const basicError = require('./error_handlers/basic_error');
 app.use(basicError)
 
