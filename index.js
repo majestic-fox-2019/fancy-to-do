@@ -10,6 +10,12 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/todos", todoRouter);
 
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(err.statusCode).json(err);
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
