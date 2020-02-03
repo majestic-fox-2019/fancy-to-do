@@ -11,16 +11,20 @@ module.exports = (sequelize, DataTypes) => {
 
   Todo.init({
     title: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     description: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     status: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      defaultValue: "undone"
     },
     due_date: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
     sequelize
