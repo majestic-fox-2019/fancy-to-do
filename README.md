@@ -16,54 +16,28 @@
         <ul>
             <li>Status Code: 200</li>
             <li>Return Array of Objects</li>
-            <li>ex: </li>
+            <li>Example: </li>
             <pre>
             [
                 {
-                    "id": 6,
-                    "title": "Learn Node js",
-                    "description": "Somethings",
-                    "status": true,
-                    "due_date": "2020-02-03T07:18:21.000Z",
-                    "createdAt": "2020-02-03T07:22:39.255Z",
-                    "updatedAt": "2020-02-03T07:22:39.255Z"
-                },
-                {
-                    "id": 7,
-                    "title": "Learn Node js",
-                    "description": "Somethings",
-                    "status": false,
-                    "due_date": "2020-02-03T07:18:21.000Z",
-                    "createdAt": "2020-02-03T07:22:43.321Z",
-                    "updatedAt": "2020-02-03T07:22:43.321Z"
-                },
-                {
-                    "id": 8,
-                    "title": "Learn Node js 222",
-                    "description": "Hehe",
-                    "status": false,
-                    "due_date": "2020-02-03T07:18:21.000Z",
-                    "createdAt": "2020-02-03T08:22:04.980Z",
-                    "updatedAt": "2020-02-03T08:22:04.980Z"
-                },
-                {
-                    "id": 9,
-                    "title": "asasc",
-                    "description": "asncakv",
-                    "status": false,
-                    "due_date": "2020-02-03T07:18:21.000Z",
-                    "createdAt": "2020-02-03T08:26:37.254Z",
-                    "updatedAt": "2020-02-03T08:26:37.254Z"
-                },
-                {
                     "id": 1,
-                    "title": "jvh",
-                    "description": "asncakv",
-                    "status": false,
-                    "due_date": "2020-02-03T07:18:21.000Z",
-                    "createdAt": "2020-02-03T07:18:10.572Z",
-                    "updatedAt": "2020-02-03T09:34:20.004Z"
-                }
+                    "title": "Todo's Title",                 ==> type: String
+                    "description": "Todo's Description",     ==> type: String
+                    "status": false,                         ==> type: Boolean
+                    "due_date": "2020-02-03T07:18:21.000Z",  ==> type: Date
+                    "createdAt": "2020-02-03T07:22:39.255Z", ==> type: Date
+                    "updatedAt": "2020-02-03T07:22:39.255Z"  ==> type: Date
+                },
+                {
+                    "id": 2,
+                    "title": "Todo's Title",                 ==> type: String
+                    "description": "Todo's Description",     ==> type: String
+                    "status": false,                         ==> type: Boolean
+                    "due_date": "2020-02-03T07:18:21.000Z",  ==> type: Date
+                    "createdAt": "2020-02-03T07:22:39.255Z", ==> type: Date
+                    "updatedAt": "2020-02-03T07:22:39.255Z"  ==> type: Date
+                },
+                ...
             ]
             </pre>
         </ul>
