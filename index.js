@@ -12,7 +12,22 @@ app.use("/todos", todoRouter);
 
 app.use((err, req, res, next) => {
   if (err) {
-    res.status(err.statusCode).json(err);
+    // res.status(err.statusCode).json(err);
+    switch (err.statusCode) {
+      case 404:
+        err.message = "Error! Not Found.";
+        res.status(err.statusCode).json(err);
+        break;
+      
+      case 500:
+        err.message = "Internal Server Error!";
+        res.status(err.statusCode).json(err);
+      break;
+    
+      default:
+        res.status(err.statusCode).json(err);
+        break;
+    }
   }
 });
 
