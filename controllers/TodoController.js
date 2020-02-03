@@ -1,4 +1,5 @@
 const { Todo } = require('../models')
+const validasiError = require('../helper/validasiErrorMessage')
 
 class TodoController {
   static getTodolist(req, res, next){
@@ -19,26 +20,28 @@ class TodoController {
       due_date: req.body.due_date
     }
 
-    Todos.create(addTodo)
+    Todo.create(addTodo)
       .then(result => {
         res.status(201).json(result)
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        res.status(400).json(validasiError(err.errors))
       })
   }
 
   static detailTodo(req, res, next){
     const id_todo = Number(req.params.id)
 
-    Todo.findByPk({
-      where: { id : id_todo}
-    })
+    Todo.findByPk(id_todo)
     .then(result => {
-      res.status(200).json(result)
+      if(result){
+        res.status(200).json(result)
+      }else{
+        throw { message: 'Error not found' }
+      }
     })
     .catch(err => {
-      res.status(400).json(err.message)
+      res.status(404).json(err)
     })
   }
 
@@ -53,36 +56,41 @@ class TodoController {
     const id_todo = Number(req.params.id)
 
     Todo.update(updateTodo, {
-      where : { id : id_todo }
+      where : { id : id_todo }, returning : true
     })
       .then(result => {
-        if (result[0] === 0) {
-          throw new Error("Update data fail nih, iseng ah")
+        let dataUpdate = null
+        if (result[0] !== 0) {
+          dataUpdate = result[1][0]
+          res.status(200).json(dataUpdate)
         } else {
-          res.status(200).json(result)
+          res.status(404).json({
+            message: 'Error Not Found'
+          })
         }
       })
       .catch(err => {
-        res.status(400).json(err.message)
+        res.status(400).json(validasiError(err.errors))
       })
   }
 
   static destroyTodolist(req, res, next){
     const id_todo = Number(req.params.id)
-
-    Todo.destroy(id_todo)
+    let dataDelete
+    Todo.findByPk(id_todo)
       .then(result => {
-        res.json({
-          statusCode: 200,
-          message: 'Delete successful',
-          payload: result
-        })
+        if(result){
+          dataDelete = result
+          return result.destroy()
+        }else{
+          throw { message: 'Error not found' }
+        }
+      })
+      .then(() => {
+        res.status(200).json(dataDelete)
       })
       .catch(err => {
-        throw {
-          statusCode: 400,
-          message: 'Delete failed!'
-        }
+        res.status(404).json(err)
       })
   }
 }
