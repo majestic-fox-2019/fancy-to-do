@@ -4,17 +4,10 @@ class TodoController {
   static getTodolist(req, res, next){
     Todo.findAll()
     .then(result => {
-      res.json({
-        statusCode: 200,
-        message: 'Get data successful',
-        payload: result
-      })
+      res.status(200).json(result)
     })
     .catch(err => {
-      throw {
-        statusCode : 404,
-        message : 'Get data error!'
-      }
+      res.status(500).json(err.message)
     })
   }
 
@@ -26,29 +19,12 @@ class TodoController {
       due_date: req.body.due_date
     }
 
-    Todo.create(addTodo)
+    Todos.create(addTodo)
       .then(result => {
-        res.json({
-          statusCode: 201,
-          message: 'Create successful',
-          payload: result
-        })
+        res.status(201).json(result)
       })
       .catch(err => {
-        console.log(err)
-        if(err.message === 'Title must be filled'){
-          throw {
-            statusCode: 400,
-            message: 'Add todolist failed! Title must be filled'
-          }  
-        }else if(err.message === 'Description must be filled'){
-          throw {
-            statusCode: 400,
-            message: 'Add todolist failed! Description must be filled'
-          }
-        }else{
-          next(err)
-        }
+        res.status(400).json(err.message)
       })
   }
 
@@ -59,17 +35,10 @@ class TodoController {
       where: { id : id_todo}
     })
     .then(result => {
-      res.json({
-        statusCode: 200,
-        message: 'Get detail data successful',
-        payload: result
-      })
+      res.status(200).json(result)
     })
     .catch(err => {
-      throw {
-        statusCode: 404,
-        message: 'Get detail data failed!'
-      }
+      res.status(400).json(err.message)
     })
   }
 
@@ -87,17 +56,14 @@ class TodoController {
       where : { id : id_todo }
     })
       .then(result => {
-        res.json({
-          statusCode: 200,
-          message: 'Update data successful',
-          payload: updateTodo
-        })
+        if (result[0] === 0) {
+          throw new Error("Update data fail nih, iseng ah")
+        } else {
+          res.status(200).json(result)
+        }
       })
       .catch(err => {
-        throw {
-          statusCode: 404,
-          message: 'Update data failed!'
-        }
+        res.status(400).json(err.message)
       })
   }
 
