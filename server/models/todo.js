@@ -57,6 +57,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please fill in all fields'
         }
       }
+    },
+    ProjectId: {
+      type: DataTypes.INTEGER
     }
   },
   {
@@ -65,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Todo.associate = function(models) {
     Todo.belongsTo(models.User)
+    Todo.belongsTo(models.Project)
   };
   return Todo;
 };

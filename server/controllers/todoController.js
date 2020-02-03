@@ -75,7 +75,8 @@ class TodoController {
                 },{
                     where: {
                         id: req.params.id
-                    }
+                    },
+                    returning: true
                 })
             }
         })
@@ -101,7 +102,10 @@ class TodoController {
                 return Todo.update({
                     status: req.body.status
                 },{
-                    id: req.params.id
+                    where: {
+                        id: req.params.id
+                    },
+                    returning: true
                 })
             }
         })

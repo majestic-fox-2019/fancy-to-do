@@ -12,4 +12,5 @@ router.delete('/:id', controller.delete)
 router.put('/:id', controller.updateOne)
 
 router.patch('/:id', controller.changeStatus)
+
 module.exports = router
