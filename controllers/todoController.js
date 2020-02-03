@@ -1,4 +1,6 @@
 const { Todo } = require('../models')
+const createError = require('http-errors')
+
 
 class TodoController {
   static findAll(req, res, next) {
@@ -26,8 +28,7 @@ class TodoController {
       })
       .catch(err => {
         if (err.message) {
-          err.StatusCode = 400
-          // message: 'Error 400, command not found!'
+          err.status = 400
         }
         next(err)
       })
@@ -43,15 +44,17 @@ class TodoController {
         }
       })
       .then(result => {
-        if (result > 0) {
+        if (result) {
           res.status(200).json(result)
         } else {
-          let err = {
-            StatusCode: '404',
-            message: 'Error 404, command not found!'
-          }
-          next(err)
+          // let err = {
+          //   StatusCode: '404',
+          //   message: 'Error 404, command not found!'
+          // }
+          // next(err)
+          throw (createError(404, 'Error 404, command not found!'))
         }
+        // res.send(result)
       })
       .catch(err => {
         next(err)
@@ -79,19 +82,27 @@ class TodoController {
         if (result[0] > 0) {
           res.status(200).json(result[1][0])
         } else {
-          let err = {
-            StatusCode: '400',
-            message: 'Error 400, command not found!'
-          }
-          next(err)
+          // let err = {
+          //   StatusCode: '400',
+          //   message: 'Error 400, command not found!'
+          // }
+          // next(err)
+          throw createError(404, 'Error 404, command not found!')
         }
       })
       .catch(err => {
-        if (err.message) {
-          err.StatusCode = '400'
+        // console.log(err)
+        // if (err.message) {
+        //   err.status = 400
+        // }
+        // next(err)
+        if (err.name === "SequelizeValidationError") {
+          next(createError(400, { message: err.message }))
         }
         next(err)
+
         // res.send(err.message)
+        // res.send(err)
       })
   }
 
@@ -114,11 +125,12 @@ class TodoController {
         if (result == 1) {
           res.status(200).json(deleted)
         } else {
-          let err = {
-            StatusCode: '404',
-            message: 'Error 404, command not found!'
-          }
-          next(err)
+          // let err = {
+          //   StatusCode: '404',
+          //   message: 'Error 404, command not found!'
+          // }
+          // next(err)
+          throw (createError(404, 'Error 404, command not found!'))
         }
         // res.send(result)
       })
