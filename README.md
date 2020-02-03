@@ -102,7 +102,7 @@
 ## Path
 
 ```javascript
-    [GitHub](http://localhost:3000/todos)
+    [GitHub](http://localhost:3000/todos/:id)
 ```
 
 ## Method
@@ -115,6 +115,89 @@
 | description | STRING |
 | status | INTEGER |
 | due_date | Date |
+
+## Path Parameter
+| params      | Data type   |
+| --------- | ------- |
+| id | INTEGER |
+
+## Query String
+**Query string** is empty.
+
+## Response
+### Status **200** (Ok)
+```javascript
+{
+    "id": 3,
+    "title": "Ngoding 2",
+    "description": "Hayuk mari ngoding",
+    "status": 1,
+    "due_date": "2001-01-01T00:00:00.000Z",
+    "createdAt": "2020-02-03T14:38:14.670Z",
+    "updatedAt": "2020-02-03T14:54:13.888Z"
+}
+```
+### Status **404** (Data not found)
+```javascript
+{
+    "error": "Not Found"
+}
+```
+# **How to get single todo item by ID ?**
+
+## Path
+
+```javascript
+    [GitHub](http://localhost:3000/todos:id)
+```
+
+## Method
+### **GET**
+## Request Body / Value
+**Path Parameter** is empty
+
+
+## Path Parameter
+| params      | Data type   |
+| --------- | ------- |
+| id | INTEGER |
+
+## Query String
+**Query string** is empty.
+
+## Response
+### Status **200** (Ok)
+```javascript
+{
+    "id": 3,
+    "title": "Ngoding 2",
+    "description": "Hayuk mari ngoding",
+    "status": 1,
+    "due_date": "2001-01-01T00:00:00.000Z",
+    "createdAt": "2020-02-03T14:38:14.670Z",
+    "updatedAt": "2020-02-03T14:54:13.888Z"
+}
+```
+### Status **404** (Data not found)
+```javascript
+{
+    "error": "Not Found"
+}
+```
+
+# **How to delete single todo item by ID ?**
+
+## Path
+
+```javascript
+    [GitHub](http://localhost:3000/todos:id)
+```
+
+## Method
+### **DELETE**
+## Request Body / Value
+**Path Parameter** is empty
+
 
 ## Path Parameter
 | params      | Data type   |
