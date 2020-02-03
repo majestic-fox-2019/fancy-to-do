@@ -22,7 +22,7 @@ class TaskController {
     .catch(err => {
       let errorMessage = {
         statusCode: 400,
-        response: err.errors[0].type
+        response: {error : "Validation Errors"} 
       }
       next(errorMessage)
       })
@@ -30,7 +30,7 @@ class TaskController {
   }
 
   static list(req, res, next){
-    Task.findAll()
+    Task.findAll({ order: [['id', 'ASC']]})
     .then(result => {
       let response = {}
       if (result.length == 0){
@@ -100,7 +100,7 @@ class TaskController {
     .catch(err => {
       let errorMessage = {
         statusCode: 400,
-        response: err.errors[0].type
+        response: {error : "Validation Errors"}
       }
       next(errorMessage)
     })
