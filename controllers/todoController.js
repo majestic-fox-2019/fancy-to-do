@@ -22,17 +22,13 @@ class TodoController {
     Todo
       .create(todo)
       .then(result => {
-        if (result) {
-          res.status(201).json(result)
-        } else {
-          let err = {
-            StatusCode: '400',
-            message: 'Error 400, command not found!'
-          }
-          next(err)
-        }
+        res.status(201).json(result)
       })
       .catch(err => {
+        if (err.message) {
+          err.StatusCode = 400
+          // message: 'Error 400, command not found!'
+        }
         next(err)
       })
   }
