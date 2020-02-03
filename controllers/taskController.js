@@ -1,5 +1,6 @@
 const Index = require('../models/index')
 const Task = Index.Task
+const createError = require('http-errors')
 
 class TaskController {
 
@@ -13,41 +14,25 @@ class TaskController {
     
     Task.create(addTask)
     .then(result => {
-      let response = {
-        statusCode: 201,
-        response: result
-      }
-      next(response)
+      res.status(201).json(result)
     })
     .catch(err => {
-      let errorMessage = {
-        statusCode: 400,
-        response: {error : "Validation Errors"} 
-      }
-      next(errorMessage)
-      })
+      next(createError(400, {message: {error:"Validation Errors"}}))
+    })
 
   }
 
   static list(req, res, next){
     Task.findAll({ order: [['id', 'ASC']]})
     .then(result => {
-      let response = {}
       if (result.length == 0){
-        response.statusCode = 200,
-        response.response = 'Data is empty.'
+        throw createError(200, 'Data is empty.')
       } else {
-        response.statusCode = 200,
-        response.response = result
+        res.status(200).json(result)
       }
-      next(response)
     })
     .catch(err => {
-      let error = {
-        statusCode: 500,
-        response: err
-      }
-      next(error)
+      next(err)
     })
   }
 
@@ -56,18 +41,14 @@ class TaskController {
 
     Task.findByPk(id)
     .then(result => {
-      let response = {}
       if (result != null){
-        response.statusCode = 200,
-        response.response = result
+        res.status(200).json(result)
       } else {
-        response.statusCode = 404,
-        response.response = {error: 'error not found'}
+        throw createError(404, {message: { error : 'error not found'}})
       }
-      next(response)
     })
     .catch(err => {
-      next(response)
+      next(err)
     })
   }
 
@@ -87,22 +68,14 @@ class TaskController {
 
     Task.update(taskUpdate, taskId)
     .then(result => {
-      let response = {}
       if (result[0] >= 1){
-        response.statusCode = 200,
-        response.response = taskUpdate
+        res.status(200).json(taskUpdate)
       } else {
-        response.statusCode = 404,
-        response.response = {error: 'error not found'}
+        throw createError(404, {message: { error : 'error not found'}})
       }
-      next(response)
     })
     .catch(err => {
-      let errorMessage = {
-        statusCode: 400,
-        response: {error : "Validation Errors"}
-      }
-      next(errorMessage)
+      next(createError(400, {message: {error:"Validation Errors"}}))
     })
   }
 
@@ -114,7 +87,6 @@ class TaskController {
       }
     }
     let data = {}
-    let response = {}
     Task.findByPk(taskId)
     .then(result => {
       data = result
@@ -122,13 +94,10 @@ class TaskController {
     })
     .then(result => {
       if (data === null){
-        response.statusCode = 404,
-        response.response = {error: 'error not found'}
+        throw createError(404, {message: { error : 'error not found'}})
       } else {
-        response.statusCode = 200,
-        response.response = data
+        res.status(200).json(data)
       }
-      next(response)
     })
     .catch(err => {
       next(err)
