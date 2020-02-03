@@ -216,7 +216,7 @@ http://localhost:3000/todos/1
 ```
 
 * **RESPONSE**
-<br>
+
 If request success:
 
 ```javascript
