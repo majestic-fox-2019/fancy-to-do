@@ -3,9 +3,8 @@
 const { Todo } = require("../models")
 
 class TodoController {
-    static createTodo(req, res) {
+    static createTodo(req, res, next) {
         const { title, description, due_date } = req.body
-        console.log(req.body);
         Todo.create({
             title,
             description,
@@ -13,21 +12,18 @@ class TodoController {
             due_date
         })
             .then((result) => {
-                console.log(result);
                 res.status(201).json(result)
-            }).catch((err) => {
-                res.status(err.status).json(err)
-            });
+            })
+            .catch(next);
     }
-    static findAll(req, res) {
+    static findAll(req, res, next) {
         Todo.findAll()
             .then((result) => {
                 res.status(200).json(result)
-            }).catch((err) => {
-                res.status(err.status).json(err)
-            });
+            })
+            .catch(next);
     }
-    static findOne(req, res) {
+    static findOne(req, res, next) {
         Todo.findOne({
             where: {
                 id: req.params.id
@@ -35,65 +31,74 @@ class TodoController {
         })
             .then((result) => {
                 if (!result) {
-                    res.status(404).json("not found")
+                    next({
+                        status: 404,
+                        msg: "not found"
+                    })
                 } else {
                     res.status(200).json(result)
                 }
-            }).catch((err) => {
-                res.status(err.status).json(err)
-            });
+            })
+            .catch(next);
     }
-    static update(req, res) {
+    static update(req, res, next) {
         const { title, description } = req.body
-        Todo.update({
-            title,
-            description
-        }, {
+        let arr = []
+        Todo.findOne({
             where: {
                 id: req.params.id
             }
         })
             .then((result) => {
+                arr = result
                 if (!result) {
-                    res.status(404).json("not found")
+                    next({
+                        status: 404,
+                        msg: "not found"
+                    })
                 } else {
-                    return Todo.findOne({
+                    return Todo.update({
+                        title,
+                        description,
+                        updateAt: new Date()
+                    }, {
                         where: {
                             id: req.params.id
                         }
                     })
+                        .then(() => {
+                            res.status(200).json(arr)
+                        })
                 }
             })
-            .then((result) => {
-                res.status(200).json(result)
-            })
-            .catch((err) => {
-                res.status(err.status).json(err)
-            });
+            .catch(next);
     }
-    static remove(req, res) {
-        Todo.destroy({
+    static remove(req, res, next) {
+        let todo = null
+        Todo.findOne({
             where: {
                 id: req.params.id
             }
         })
             .then((result) => {
+                todo = result
                 if (!result) {
-                    res.status(404).json("not found")
+                    next({
+                        status: 404,
+                        msg: "not found "
+                    })
                 } else {
-                    return Todo.findOne({
+                    return Todo.destroy({
                         where: {
                             id: req.params.id
                         }
                     })
+                        .then(() => {
+                            res.status(200).json(todo)
+                        })
                 }
             })
-            .then((result) => {
-                res.status(200).json(result)
-            })
-            .catch((err) => {
-                res.status(err.status).json(err)
-            });
+            .catch(next);
     }
 }
 
