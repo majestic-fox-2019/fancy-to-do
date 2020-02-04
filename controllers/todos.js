@@ -1,14 +1,30 @@
 const Model = require('../models')
 const Todo = Model.Todo
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
+const axios = require("axios")
+
 
 
 class ControllerTodo {
 
+
+  static holiday(req, res, next) {
+    axios({
+      method: 'get',
+      url: 'https://calendarific.com/api/v2/holidays?api_key=7bf75cec69a82f20047b714a76c74330fc57a0d0&country=US&year=2020'
+    })
+      .then(dataHoliday => {
+        res.status(201).json(dataHoliday.data)
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
+
   static create(req, res, next) {
     let body = req.body
-    let token = req.headers.token
-    let decode = jwt.verify(token, process.env.JWT_RAHAYU)
+    // let token = req.headers.token
+    // let decode = jwt.verify(token, process.env.JWT_RAHAYU)
 
     Todo
       .create({
@@ -16,7 +32,7 @@ class ControllerTodo {
         description: body.description,
         status: body.status,
         due_date: body.due_date,
-        UserId: decode.id
+        UserId: req.user.id
       })
       .then(result => {
         res.status(201).json(result)
@@ -35,12 +51,10 @@ class ControllerTodo {
     Todo
       .findAll()
       .then(result => {
-
         res.status(200).json(result)
       })
       .catch(err => {
         next(err)
-
       })
   }
 
