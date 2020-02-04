@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        isEmail: {
+          args: true,
+          msg: "format email wrong"
+        },
         notEmpty: {
           args: true,
           msg: "empty email"
@@ -58,16 +62,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: "empty picture"
-        },
-        notNull: {
-          msg: 'Please enter your picture'
-        },
-      }
     }
   }, {
     hooks: {

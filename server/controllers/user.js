@@ -7,6 +7,12 @@ const { checkPassword } = require('../helpers/bcrypt')
 class UserController {
     static register(req, res, next) {
         const { email, password, fullname, picture } = req.body
+        if (password.length < 6) {
+            next({
+                status: 400,
+                msg: "password length min character 6"
+            })
+        }
         User.create({
             email,
             password,
@@ -15,7 +21,7 @@ class UserController {
         })
             .then((user) => {
                 const token = createToken(user)
-                req.status(201).json({ user, token })
+                res.status(201).json({ user, token })
             }).catch(next);
     }
     static login(req, res, next) {
@@ -30,7 +36,7 @@ class UserController {
                     const pwd = checkPassword(password, user.password)
                     if (pwd) {
                         const token = createToken(user)
-                        req.status(201).json({ user, token })
+                        res.status(201).json({ user, token })
                     } else {
                         next({
                             status: 400,
