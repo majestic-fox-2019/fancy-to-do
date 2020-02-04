@@ -1,9 +1,11 @@
 "use strict"
 
-const router = require('express').Router()
+"use strict"
+
+const router = require("express").Router()
 const TodoController = require("../controllers/todo")
 const authenticate = require("../middleware/authentication")
-const authorize = require('../middleware/authorize')
+const authorize = require("../middleware/authorize")
 
 router.use(authenticate)
 router.post("/", TodoController.createTodo)

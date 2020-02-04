@@ -1,10 +1,10 @@
 "use strict"
 
-const { User } = require('../models')
-const { verifyToken } = require('../helpers/jwt')
+const { User } = require("../models")
+const { verifyToken } = require("../helpers/jwt")
 
 function authentication(req, res, next) {
-    if (req.headers.hasOwnProperty('token')) {
+    if (req.headers.hasOwnProperty("token")) {
         try {
             const decoded = verifyToken(req.headers.token)
             console.log(decoded);

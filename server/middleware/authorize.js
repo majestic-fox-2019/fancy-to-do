@@ -1,6 +1,6 @@
 "use strict"
 
-const { Todo } = require('../models')
+const { Todo } = require("../models")
 
 function authorized(req, res, next) {
     Todo.findOne({
@@ -12,14 +12,14 @@ function authorized(req, res, next) {
             if (!todo) {
                 next({
                     status: 404,
-                    message: 'data not found'
+                    message: "data not found"
                 })
             } else if (todo.UserId === req.user.id) {
                 next()
             } else {
                 next({
                     status: 401,
-                    message: 'Unauthorized'
+                    message: "Unauthorized"
                 })
             }
         })
