@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const gneratePassword = require('../helpers/generatePassword')
 
 module.exports = (sequelize, DataTypes) => {
   const {Model} = sequelize.Sequelize

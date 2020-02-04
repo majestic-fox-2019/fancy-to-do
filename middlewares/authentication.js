@@ -1,15 +1,25 @@
-// if (process.env.NODE_ENV === 'development') {
-//     require('dotenv').config()
-// }
-const jwt = require('jsonwebtoken')
-
-module.exports = function(req, res, next){
+module.exports = (req, res, next) =>{
+    const {verifyToken} = require('../helpers/verifyToken')
+    const {User} = require('../models')
+    const createError = require('http-errors')
+    
     try {
-        const token = req.headers.token
-        const user = jwt.verify(token, process.env.SECRET_CODE)
-        req.user = user
-        next()
+        const userToken = verifyToken(req.headers.token)
+        User
+        .findOne({
+            where:{
+                id: userToken.id
+            }
+        })
+        .then(data =>{
+            if (data) {
+                req.user = userToken.id
+                next()
+            }else{
+                throw next(createError(404, 'User Not Found'))
+            }
+        })
     } catch (error) {
-        res.status(404).json(error)
+        next(error)
     }
 }

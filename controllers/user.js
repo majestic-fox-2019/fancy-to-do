@@ -1,55 +1,74 @@
-if (process.env.NODE_ENV === 'development') {
-    require('dotenv').config()
-}
-const {User} = require('../models')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const {User, Todo} = require('../models')
+const createError = require('http-errors')
+const {generateToken} = require('../helpers/generateToken')
+const {comparePassword} = require('../helpers/comparePassword')
 
 class Controller{
     static register(req, res, next){
         const {email, password} = req.body
         User
-        .create({
-            email,
-            password
+        .findOne({
+            where:{
+                email:email
+            }
+        })
+        .then(data =>{
+            if(data){
+                throw createError(409, 'Email already register')
+            }else{
+                return User.create({
+                    email,
+                    password
+                })
+            }
         })
         .then(data =>{
             res.status(200).json(data)
         })
         .catch(err =>{
-            res.status(400).json(err)
+            next(err)
         })
     }
     
     static login(req, res, next){
+        const { email, password } = req.body
         User
         .findOne({
-            where:{email:req.body.email}
+            where:{email:email}
         })
         .then(data =>{
-            console.log(data.password)
-            console.log(req.body.password)
-            // console.log(bcrypt.compare(req.body.password, data.password))
             if (!data) {
-                console.log('masuk then')
-                next({name:'not found'})
+                throw createError(404, 'User Not Found') 
             }else{
-                if (bcrypt.compareSync(req.body.password, data.password)) {
-                    console.log('masuk else')
-
-                    let userData = {
+                if (comparePassword(password, data.password)) {
+                    const payload = {
                         id: data.id,
                         email:data.email
                     }
-                    res.status(200).json({token: jwt.sign(userData, process.env.SECRET_CODE)})
+                    const token = generateToken(payload)
+                    res.status(200).json({token: token})
                 }else{
-                    next({name: 'token invalid'})
+                    throw createError(401, 'Invalid Email or Password')
                 }
             }
         })
         .catch(err =>{
-            console.log('masuk catch')
-            res.status(500).json(err)
+            next(err)
+        })
+    }
+    static listTodo(req, res, next){
+        User
+        .findOne({
+            include: Todo,
+            where:{
+                id:req.user.id
+            }
+        })
+        .then(data =>{
+            res.json(data.Todos)
+        })
+        .catch(err =>{
+            next(err)
         })
     }
 }

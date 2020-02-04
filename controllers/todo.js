@@ -1,15 +1,21 @@
 const {Todo} = require('../models')
+const createError = require('http-errors')
 
 class Controller {
     static findAll(req, res, next){
         Todo
-        .findAll()
+        .findAll({
+            where:{UserId:req.user}
+        })
         .then(data =>{
-            res.status(200).json(data)
+            if (data.length > 0) {
+                res.status(200).json(data)
+            } else {
+                throw createError(404, 'Data Not Found')
+            }
         })
         .catch(err =>{
             next(err)
-            res.send(err)
         })
     }
     static findOne(req, res, next){
@@ -20,10 +26,10 @@ class Controller {
             }
         })
         .then(data =>{
-            if(!data){
-                next({name:'not found'})
-            }else{
+            if(data){
                 res.status(200).json(data)
+            }else{
+                throw createError(404, `Data Not found`)
             }
         })
         .catch(err =>{
@@ -31,7 +37,7 @@ class Controller {
         })
     }
     static create(req, res, next){
-        console.log(req.user)
+        console.log(req.user)        
         const {title, description, status, due_date} = req.body
         Todo
         .create({
@@ -39,7 +45,7 @@ class Controller {
             description,
             status,
             due_date,
-            UserId : req.user.id
+            UserId : req.user
         })
         .then(data =>{
             res.status(201).json(data)
@@ -50,24 +56,30 @@ class Controller {
     }
     static update(req, res, next){
         const {title, description, status, due_date} = req.body
-        Todo
-        .update({
-            title,
-            description,
-            status,
-            due_date,
-            },{
-                where:{
-                    id:req.params.id
-                },
-            returning:true
+        Todo.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then( data =>{
+            if (data.UserId === req.user) {
+                return Todo.update({
+                    title,
+                    description,
+                    status,
+                    due_date,
+                    },{
+                        where:{
+                            id:req.params.id
+                        },
+                    returning:true
+                })
+            }else{
+                throw createError(403, 'Forbiden Acces')
+            }
         })
         .then(data =>{
-            if(data[0] === 0){
-                next({name:'not found'})
-            }else{
-                res.status(200).json(data)
-            }
+            res.status(200).json(data[1][0])
         })
         .catch(err =>{
             next(err)
@@ -84,11 +96,10 @@ class Controller {
                     })
         Promise.all([findOne, destroy])
         .then(data =>{
-            console.log(data)
-            if(data[1] === 0){
-                next({name : 'not found'})
-            }else{
+            if (data[0] !== null && data[1] === 1) {
                 res.status(200).json(data[0])
+            } else {
+                throw createError(404, 'Data Not Found')
             }
         })
         .catch(err =>{
