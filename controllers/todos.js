@@ -22,9 +22,6 @@ class ControllerTodo {
   }
 
   static create(req, res, next) {
-    let body = req.body
-    // let token = req.headers.token
-    // let decode = jwt.verify(token, process.env.JWT_RAHAYU)
 
     Todo
       .create({

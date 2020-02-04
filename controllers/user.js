@@ -2,15 +2,32 @@ const Model = require('../models')
 const User = Model.User
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const axios = require('axios')
+const instance = axios.create({
+  baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=V6JII1DEYA02ODXRXLCJ&'
+});
 
 class ControllerUser {
   static register(req, res, next) {
+
     let body = req.body
-    User
-      .create({
-        username: body.username,
-        email: body.email,
-        password: body.password
+
+    instance.get(`&email=${req.body.email}`)
+      .then(validateResult => {
+        if (validateResult.data.is_verified == "True") {
+          // console.log('ga masoook')
+          return User.create({
+            username: body.username,
+            email: body.email,
+            password: body.password
+          })
+        } else {
+          let err = {
+            statusCode: '400',
+            message: 'Bad Request'
+          }
+          next(err)
+        }
       })
       .then(result => {
         res.status(201).json(result)
