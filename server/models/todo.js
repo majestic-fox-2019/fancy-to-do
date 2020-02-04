@@ -1,4 +1,9 @@
 'use strict';
+const User = require('../models').User
+const email = require('../helpers/api')
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize
 
@@ -62,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     }
-  }, {sequelize});
+  }, {
+        sequelize
+      });
 
   Todo.associate = function(models) {
     // associations can be defined here
