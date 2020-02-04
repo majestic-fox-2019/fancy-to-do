@@ -1,14 +1,24 @@
-
+if( process.env.NODE_ENV === 'development'){
+  require('dotenv').config()
+}
 const express = require('express')
 const app = express()
 const port = 3000
+
+const authentication = require('./middleware/authentication')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
-const routes = require('./routes/index')
-app.use('/', routes)
+const user = require('./routes/routeUser')
+app.use('/', user)
+
+app.use(authentication)
+
+const todo = require('./routes/routeTodo')
+app.use('/todos', todo)
+
 
 const allerror =require('./helper/allerror')
 

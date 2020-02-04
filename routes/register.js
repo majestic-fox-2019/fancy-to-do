@@ -1,8 +1,8 @@
 // var express = require('express')
 // var router =express.Router()
-// const Todos = require('./routeTodo')
+// const Register = require('./routeUser')
 
-// router.use('/todos',Todos)
+// router.use('/register',Register)
 
 
 

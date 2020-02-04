@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {msg : "Description cannot be empty"}
       }
     }, 
-    status: DataTypes.BOOLEAN,
+    status: DataTypes.STRING,
     due_date: DataTypes.DATE
   },{sequelize})
 
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
   Todo.associate = function(models) {
+    Todo.belongsTo(models.User)
     // associations can be defined here
   };
   return Todo;
