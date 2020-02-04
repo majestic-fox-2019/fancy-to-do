@@ -1,5 +1,9 @@
 "use strict";
 
+if (process.env.NODE_ENV == 'development') {
+  require("dotenv").config();
+}
+
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
