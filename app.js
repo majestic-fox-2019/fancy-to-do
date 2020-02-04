@@ -6,6 +6,8 @@ const app = express()
 const port = 3000
 
 const authentication = require('./middleware/authentication')
+const errorhandling = require('./middleware/errorhandling')
+const allerror = require('./helper/allerror')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
@@ -20,14 +22,18 @@ const todo = require('./routes/routeTodo')
 app.use('/todos', todo)
 
 
-const allerror =require('./helper/allerror')
+// app.use(errorhandling)
+
 
 app.use((err,req,res,next)=>{
-  console.log(err)
+ 
   if(err.statusCode){
     if(typeof err.data == 'string'){
-      res.status(err.statusCode).json(err.data)
-    }else{
+      res.status(err.statusCode).json({
+        message: err.data
+      })
+    }
+    else{
       let dataError = allerror(err.data)
       res.status(err.statusCode).json(dataError)
     }

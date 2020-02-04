@@ -1,6 +1,7 @@
 const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const createError = require('http-errors')
 
 
 class ControllerUser {
@@ -16,11 +17,7 @@ class ControllerUser {
         res.status(201).json(result)
       })
       .catch(err=>{
-  
-        let objErr={}
-         objErr.statusCode = 400
-         objErr.data = err.errors
-        next(objErr)
+        next(err)
       })
     }
 
@@ -37,11 +34,11 @@ class ControllerUser {
     })
     .then(result=>{
       if(result == null){
-        const message = {
-          statusCode : 400,
-          data : 'Error Email Not Found'
-        }
-        throw message
+        let objErr={}
+        objErr.statusCode = 404
+        objErr.data = 'Email Not Found'
+        throw objErr
+        
       }else{
         
         if(bcrypt.compareSync(data.password, result.dataValues.password)){
@@ -52,9 +49,10 @@ class ControllerUser {
           res.status(200).json({token: jwt.sign(newObj, process.env.SECRET_CODE)})
         }else{
           let objErr={}
-          objErr.statusCode = 404
-          objErr.data = 'Pasword wrong'
+        objErr.statusCode = 404
+        objErr.data = 'Invalid Username or Password'
         throw objErr
+      
         }
       }
     })

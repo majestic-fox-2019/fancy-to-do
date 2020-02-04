@@ -1,6 +1,30 @@
 const { Todo } = require('../models')
-
+const createError = require('http-errors')
 class ControllerTodo{
+
+  static findall(req,res,next){
+    Todo.findAll({
+      where: {UserId: req.user.id},
+      order: [['id','ASC']]
+    })
+    .then(result=>{
+      console.log(result,"++++++++++++++++++")
+      console.log(result.length)
+      if(result.length>0){
+        res.status(200).json(result)
+      }else {
+        const message ={
+          statusCode : 204,
+          data : 'Data is Empty'
+        }
+        // throw message
+        res.status(204).json({message: 'data is empty'})
+      }
+    })
+    .catch(err=>{
+      next(err)
+    })
+  }
 
   static create(req,res,next){
     let data = {
@@ -23,28 +47,9 @@ class ControllerTodo{
     })
   }
 
-  static findall(req,res,next){
-    Todo.findAll()
-    .then(result=>{
-      if(result.length>0){
-        res.status(200).json(result)
-      }else{
-        const message ={
-          statusCode : 204,
-          data : 'Data is Empty'
-        }
-        throw message
-      }
-    })
-    .catch(err=>{
-      next(err)
-    })
-  }
-
   static findone(req,res,next){
     Todo.findByPk(req.params.id)
     .then(result=>{
-    console.log(result)
       if(result == null){
         const message = {
           statusCode : 404,

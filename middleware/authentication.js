@@ -1,5 +1,6 @@
 
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 
 module.exports = function authenticated (req,res,next){
   try {
@@ -13,6 +14,6 @@ module.exports = function authenticated (req,res,next){
         objErr.statusCode = 401
         objErr.data = 'Unathentication'
         next(objErr)
-
+    //throw createError(403,'ForbiddenError')
   }
 }
