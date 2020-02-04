@@ -1,7 +1,15 @@
 const { Todo } = require("../models")
+const errorMaker = require("../helpers/errMessageMaker");
 class todoController {
     static getAll(req,res,next){
-        Todo.findAll()
+        Todo.findAll(
+            {
+                where:
+                {
+                    UserId: req.user.id
+                }
+            }
+        )
             .then(data=>{
                 res.status(201).json({
                     message:"success",
@@ -10,33 +18,44 @@ class todoController {
             })
     }
     static createOne(req,res,next){
+        let user = req.user;
+        console.log(req.user)
         const objInput = {
             Title:req.body.title,
             Description:req.body.description,
             Status:req.body.status,
-            Due_date:req.body.due_date 
+            Due_date:req.body.due_date,
+            UserId:user.id
         }
         Todo
             .create(objInput)
             .then(result => {
                 res.status(201).json({
                     message:"success",
-                    data :objInput
+                    data :result
                 });
             })
             .catch(err=>{  
-                if(err){
-                    err.statusError= 400
+                let objError ={
+                    statusError :400,
+                    message :errorMaker(err)
                 }
-                next(err)
+                next(objError)
             })
     }
     static findOne(req,res,next){
         const id = req.params.id;
         Todo
-            .findByPk(id)
+            .findOne(
+                {
+                    where:
+                    {
+                        id:id,
+                        UserId:req.user.id 
+                    }
+                }
+            )
             .then(data=>{
-                console.log(data)
                 if(data){
                     res.status(200).json({
                        data
@@ -50,12 +69,6 @@ class todoController {
                     next(err)
                 }
             })
-            .catch(err=>{
-                throw({
-                    statusError: 404,
-                    message : "Cannot get data"
-                })
-            })
     }
     static updates(req,res,next){
         const objInput = {
@@ -67,14 +80,16 @@ class todoController {
         Todo   
             .update(objInput,{
                 where:{
-                    id: req.params.id
+                    id: Number(req.params.id),
+                    UserId:req.user.id
                 },
                 returning: true,
-                plain : true
+                // plain : true
             })
             .then(data=>{
-                if(data.length>0){
-                    res.send(data)
+                console.log(data)
+                if(data[0]>0){
+                    console.log(data[0])
                     res.status(200).json({
                         message:"success",
                         result : data[1]
@@ -86,13 +101,15 @@ class todoController {
                         message :"data not found"
                     }
                     next(err)
+                    
                 }
             })
             .catch(err=>{
-                if(err){
-                    err.statusError = 400
+                let objError ={
+                    statusError :400,
+                    message :errorMaker(err)
                 }
-                next(err)
+                next(objError)
             })
     }
     static delete(req,res,next){
@@ -105,7 +122,8 @@ class todoController {
                 return Todo
                     .destroy({
                         where:{
-                            id:req.params.id
+                            id:req.params.id,
+                            UserId:req.user.id
                         }
                     })
             })

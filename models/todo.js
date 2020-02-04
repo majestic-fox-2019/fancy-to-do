@@ -38,13 +38,14 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      Due_date: DataTypes.DATE
+      Due_date: DataTypes.DATE,
+      UserId: DataTypes.INTEGER
     },
     {
       sequelize
     })
   Todo.associate = function(models) {
-    // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };
