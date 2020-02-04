@@ -68,14 +68,19 @@ class TaskController {
 
     Task.update(taskUpdate, taskId)
     .then(result => {
-      if (result[0] >= 1){
-        res.status(200).json(taskUpdate)
-      } else {
+      console.log(result)
+      if (result[0] === 0){
         throw createError(404, {message: { error : 'error not found'}})
+      } else {
+        res.status(200).json(taskUpdate)
       }
     })
     .catch(err => {
-      next(createError(400, {message: {error:"Validation Errors"}}))
+      if (err.name == "SequelizeValidationError") {
+        next(createError(400, {message: {error:"Validation Errors"}}))
+      } else {
+        next(err)
+      }
     })
   }
 

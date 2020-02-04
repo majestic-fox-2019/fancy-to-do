@@ -4,7 +4,6 @@ const createError = require('http-errors')
 class UserController {
 
   static register(req, res, next){
-
     let userData = {
       email: req.body.email,
       password: req.body.password
@@ -18,6 +17,10 @@ class UserController {
       next(createError(400, {message: {error:"Validation Errors"}}))
     });
   }
+
+  // static login(req, res, next){
+
+  // }
 
 }
 
