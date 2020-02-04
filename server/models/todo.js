@@ -54,7 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: 'Please enter your date'
         },
-        isDate: true
+        isDate: {
+          args: true,
+          msg: "invalid format date"
+        }
       }
     },
     UserId: DataTypes.INTEGER

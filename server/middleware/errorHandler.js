@@ -5,6 +5,10 @@ module.exports = (err, req, res, next) => {
         res.status(err.status).json(err.msg)
     } else if (err.status && err.message) {
         res.status(err.status).json(err.message)
+    } else if (err.name === "JsonWebTokenError") {
+        res.status(401).json("Unauthorized Invalid Token")
+    } else if (err.name === "CastError") {
+        res.status(404).json("Data Not Found")
     } else if (err.errors[0].validatorKey) {
         const arr = []
         err.errors.forEach(err => {
