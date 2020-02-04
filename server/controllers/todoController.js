@@ -1,4 +1,5 @@
 const { Todo } = require('../models');
+const createError = require('http-errors');
 
 class todoController {
   // create
@@ -43,9 +44,7 @@ class todoController {
           res.json(result);
         }
         else {
-          const err = new Error("Not Found");
-          err.status = 404;
-          throw err;
+          next(createError(404));
         }
       })
       .catch((err) => {
@@ -64,11 +63,15 @@ class todoController {
     Todo.update(todoUpdate, {
       where: {
         id
-      }
+      },
+      returning: true
     })
       .then((result) => {
+        if (!result[0]) {
+          next(createError(404));
+        }
         res.status(200);
-        res.json(result);
+        res.json(result[1]);
       })
       .catch((err) => {
         next(err)
@@ -77,17 +80,31 @@ class todoController {
   // delete by id
   static deleteById(req, res, next) {
     const { id } = req.params;
-    Todo.destroy({
+    let foundOne = null;
+    Todo.findOne({
       where: {
         id
       }
     })
       .then((result) => {
+        if (!result) {
+          next(createError(404));
+        }
+        else {
+          foundOne = result;
+          return Todo.destroy({
+            where: {
+              id
+            }
+          })
+        }
+      })
+      .then(() => {
         res.status(200);
-        res.json(result);
+        res.json(foundOne);
       })
       .catch((err) => {
-        next(err)
+        next(err);
       });
   }
 }
