@@ -2,39 +2,30 @@
 
 const { User } = require("../models")
 const { verifyToken } = require("../helpers/jwt")
+const createError = require("http-errors")
 
 function authentication(req, res, next) {
-    if (req.headers.hasOwnProperty("token")) {
-        try {
-            const decoded = verifyToken(req.headers.token)
-            console.log(decoded);
-            User.findOne({
-                where: {
-                    id: decoded.id
-                }
-            })
-                .then((user) => {
+    try {
+        const decoded = verifyToken(req.headers.token)
+        User.findOne({
+            where: {
+                id: decoded.id
+            }
+        })
+            .then((user) => {
+                if (user) {
                     req.user = {
                         id: user.id,
-                        email: user.email,
-                        password: user.password,
-                        fullname: user.fullname,
                     }
                     next()
-                }).catch((err) => {
-                    next(err)
-                });
-        } catch{
-            next({
-                status: 400,
-                message: "Not found token"
-            })
-        }
-    } else {
-        next({
-            status: 403,
-            message: "You are not login"
-        })
+                } else {
+                    next(createError(404, "user not found"))
+                }
+            }).catch((err) => {
+                next(createError(err))
+            });
+    } catch (err) {
+        next(err)
     }
 }
 

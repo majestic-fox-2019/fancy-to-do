@@ -56,7 +56,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDate: true
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize
   });

@@ -1,6 +1,7 @@
 "use strict"
 
 const { Todo } = require("../models")
+const createError = require('http-errors')
 
 function authorized(req, res, next) {
     Todo.findOne({
@@ -10,17 +11,11 @@ function authorized(req, res, next) {
     })
         .then(todo => {
             if (!todo) {
-                next({
-                    status: 404,
-                    message: "data not found"
-                })
+                next(createError(404, "data not found"))
             } else if (todo.UserId === req.user.id) {
                 next()
             } else {
-                next({
-                    status: 401,
-                    message: "Unauthorized"
-                })
+                next(createError(401, "Unauthorized"))
             }
         })
         .catch(next)

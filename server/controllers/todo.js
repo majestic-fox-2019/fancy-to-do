@@ -1,6 +1,7 @@
 "use strict"
 
 const { Todo } = require("../models")
+const createError = require("http-errors")
 
 class TodoController {
     static createTodo(req, res, next) {
@@ -35,10 +36,7 @@ class TodoController {
         })
             .then((result) => {
                 if (!result) {
-                    next({
-                        status: 404,
-                        msg: "not found todo"
-                    })
+                    next(createError(404, "not found todo"))
                 } else {
                     res.status(200).json(result)
                 }
@@ -58,10 +56,7 @@ class TodoController {
         })
             .then((result) => {
                 if (result[0] === 0) {
-                    next({
-                        status: 404,
-                        msg: "not found todo"
-                    })
+                    next(createError(404, "not found todo"))
                 } else {
                     return Todo.findOne({
                         where: {
@@ -82,10 +77,7 @@ class TodoController {
         })
             .then((result) => {
                 if (result === 0) {
-                    next({
-                        status: 404,
-                        msg: "not found todo"
-                    })
+                    next(createError(404, "not found todo"))
                 } else {
                     return Todo.findOne({
                         where: {
