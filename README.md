@@ -5,9 +5,7 @@ Fancy To-Do List API
 ## Create Todo
 Membuat Todo
 
-URL : `/todos`
-
-Method : `POST`
+`POST` `/todos`
 
 Request Body :
 ```json
@@ -37,11 +35,9 @@ Success Response :
 ## Show All Todo
 Menampilkan semua Todo
 
-URL :
+`GET` `/todos`
 
-Method :
-
-Request Body : 
+Request Body : `200`
 
 Success Status Code : 
 
@@ -50,12 +46,10 @@ Success Response :
 ## Show Todo by Id
 Menampilkan 1 Todo dengan Id tertentu
 
-URL : 
+`GET` `/todos/:id`
 
-Method : 
-
-Request Body : 
-
-Success Status Code : 
+Success Status Code : `200`
 
 Success Response : 
+
+## 

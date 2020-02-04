@@ -1,4 +1,7 @@
-console.log(`"${process.env.NODE_ENV}"`);
+if (process.env.NODE_ENV === "development") {
+  console.log(`"${process.env.NODE_ENV}"`);
+  require('dotenv').config();
+}
 
 const createError = require('http-errors');
 const express = require('express');
@@ -25,7 +28,7 @@ app.use(function (req, res, next) {
 // logErrors
 app.use(function (err, req, res, next) {
   console.error(err)
-  console.error(err.status);
+  console.log(err.message);
   next(err)
 });
 // // clientErrorHandler
