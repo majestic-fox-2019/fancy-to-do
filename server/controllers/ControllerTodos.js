@@ -7,13 +7,14 @@ class ControllerTodos {
         
         let {title, description, status, due_date } = req.body
         
-        // res.status(200).json(req.body)
+        // res.status(200).json(req.user)
         TodoModel.create(
                 {
                     title,
                     description,
                     status,
-                    due_date
+                    due_date,
+                    UserId : req.user.id
                 }
                     )
         .then(result =>{

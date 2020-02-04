@@ -1,5 +1,4 @@
 "use strict"
-
 const bcrypt = require('bcrypt');
 
 class Login {

@@ -1,9 +1,11 @@
 "use strict"
 const UserModel = require('../models').User
+const jwt = require('jsonwebtoken');
+const Login = require('../helpers/login')
 
 class ControllerUser {
 
-    static create (req, res, next){
+    static register (req, res, next){
         
         let { username, email, password } = req.body
         
@@ -21,6 +23,34 @@ class ControllerUser {
         .catch (err=>{
             next(err)
         })
+    }
+
+    static login (req, res, next){
+        const {email, password} = req.body
+        
+        UserModel.findOne({
+            where : {
+                email: email,
+            }
+        })
+        .then(result =>{
+            if (result && Login.compare(password, result.password)) {
+                var token = jwt.sign({
+                    id: result.id,
+                    email:  result.email
+                }, process.env.secretCode);
+                res.status(200).json({token})
+            } else {
+                throw {
+                    statusCode: 400,
+                    msg: 'Your Email or Password is wrong!'
+                }
+            }
+        })
+        .catch (err =>{
+            next(err)
+        })
+        
     }
 
     static read (req, res, next){
