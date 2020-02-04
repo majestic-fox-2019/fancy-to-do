@@ -7,7 +7,8 @@ class todoController {
                 where:
                 {
                     UserId: req.user.id
-                }
+                },
+                individualHooks:true
             }
         )
             .then(data=>{
