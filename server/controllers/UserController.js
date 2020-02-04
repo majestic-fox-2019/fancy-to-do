@@ -108,10 +108,12 @@ class UserController {
     }
 
     static login(req, res, next) {
-        const {username, password} = req.body;
+        const {email, password} = req.body;
         User
             .findOne({
-                username
+                where: {
+                    email
+                }
             })
             .then(user => {
                 if (user && isAuthorized(password, user.password)) {
@@ -124,7 +126,7 @@ class UserController {
                 }else{
                     throw {
                         statusCode: 400,
-                        message: "Invalid username or password"
+                        message: "Invalid email or password"
                     }
                 }
             })

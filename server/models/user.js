@@ -8,7 +8,19 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   User.init({
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isExist: function(value) {
+          return User.count({ where: { email: value } })
+            .then(count => {
+              if (count != 0) {
+                throw new Error('Email is already exist.');
+              }
+          });
+        }
+      }
+    },
     password: DataTypes.STRING,
     token: DataTypes.STRING
   }, {
