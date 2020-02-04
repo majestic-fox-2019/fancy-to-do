@@ -1,4 +1,7 @@
 'use strict';
+
+const axios = require('axios');
+
 module.exports = (sequelize, DataTypes) => {
 
   const { Model } = sequelize.Sequelize
@@ -64,8 +67,34 @@ module.exports = (sequelize, DataTypes) => {
     },
     UserId: {
       type: DataTypes.INTEGER
+    },
+    language: {
+      type: DataTypes.STRING
     }
-  }, { sequelize })
+  }, {
+    sequelize,
+    hooks: {
+      beforeCreate: (todo, options) => {
+
+        return axios({
+          headers: {
+            'Authorization': `Bearer ${process.env.API_KEY}`
+          },
+          method: 'post',
+          url: 'https://ws.detectlanguage.com/0.2/detect',
+          data: {
+            'q': todo.title
+          }
+        })
+          .then(response => {
+            todo.language = response.data.data.detections[0].language
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    }
+  })
 
   Todo.associate = function (models) {
     // associations can be defined here

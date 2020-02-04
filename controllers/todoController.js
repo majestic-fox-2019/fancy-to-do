@@ -29,7 +29,7 @@ class TodoController {
       UserId: req.user.id
     }
 
-    console.log(todo, '< ini details')
+    // console.log(todo, '< ini details')
 
     Todo
       .create(todo)
