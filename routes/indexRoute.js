@@ -5,8 +5,8 @@ const UserController = require('../controllers/userController')
 const authentication = require('../middlewares/authentication')
 
 IndexRoute.post('/login', UserController.login)
+IndexRoute.use('/user', UserRoute)
 IndexRoute.use(authentication)
 IndexRoute.use('/todos', TaskRoute)
-IndexRoute.use('/user', UserRoute)
 
 module.exports = IndexRoute
