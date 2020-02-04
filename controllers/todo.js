@@ -9,14 +9,14 @@ class TodoController {
             if (todos.length > 0) {
                 res.status(200).json(todos)
             } else {
-                res.status(200).json({ message: 'Tidak ada data' })
+                throw createError(404, 'Data not found')
             }
         }).catch(err => next(err))
     }
 
     static addTodo(req, res, next) {
         const { title, description, status, due_date } = req.body
-        Todo.create({ title, description, status, due_date })
+        Todo.create({ title, description, status, due_date, UserId: req.loggedUserId })
             .then(result => {
                 res.status(201).json(result)
             }).catch(err => {
@@ -30,32 +30,34 @@ class TodoController {
         }).then(todo => {
             if (todo) {
                 res.status(200).json(todo)
-            } else (
-                next(createError(404, `Not found`))
-            )
+            } else {
+                throw createError(404, `Data Not found`)
+            }
         }).catch(err => next(err))
     }
 
     static editTodo(req, res, next) {
         const { title, description, status, due_date } = req.body
-        Todo.update({
-            title,
-            description,
-            status,
-            due_date
-        }, {
-            where: { id: req.params.id },
-            returning: true,
-            individualHooks: true
-        }).then(todo => {
-            if (todo[0] == 0) {
-                next(createError(404, `Not Found`))
-            } else {
-                res.status(200).json(todo[1][0])
+
+        Todo.findOne({
+            where: {
+                id: req.params.id
             }
-        }).catch(err => {
-            next(err)
-        })
+        }).then(todo => {
+            if (todo.UserId == req.loggedUserId) {
+                return Todo.update(
+                    { title, description, status, due_date },
+                    {
+                        where: { id: req.params.id },
+                        returning: true,
+                        individualHooks: true
+                    })
+            } else {
+                throw createError(403, 'You do not have access to this action')
+            }
+        }).then(result => {
+            res.status(200).json(result[1][0])
+        }).catch(err => next(err))
     }
 
     static deleteTodo(req, res, next) {
@@ -71,7 +73,7 @@ class TodoController {
                 if (result[0] !== null && result[1] === 1) {
                     res.status(200).json(result[0])
                 } else {
-                    next(createError(404, `Not Found`))
+                    throw createError(404, `Data Not Found`)
                 }
             }).catch(err => next(err))
     }

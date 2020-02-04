@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    UserId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
     due_date: {
       type: DataTypes.DATE,
@@ -61,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Todo.associate = function (models) {
-    // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };
