@@ -1,5 +1,9 @@
 "use strict";
 
+if (process.env.NODE_ENV == 'development') {
+  require("dotenv").config();
+}
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
@@ -18,11 +22,11 @@ class UserController {
               id: user.id,
               email: user.email
             };
-            res.status(200).json({ token: jwt.sign({ user: userData }, process.env.secret_key) });
+            res.status(200).json({ token: jwt.sign(userData, process.env.secret_key) });
             next();
           }
           else {
-            throw createError(401, "Wrong email or password!");
+            throw createError(400, "Wrong email or password!");
           }
         }
       })
@@ -46,7 +50,13 @@ class UserController {
         res.status(201).json({ email: userData.email });
       })
       .catch(err => {
-        next({ status_code: 400 });
+        if (err.status != 500) {
+          res.status(err.status).json(err);
+        } else {
+          res.status(500).json({
+            message: "Internal server error!"
+          });
+        }
       });
   }
 }
