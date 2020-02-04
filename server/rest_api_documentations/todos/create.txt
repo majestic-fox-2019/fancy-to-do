@@ -1,3 +1,7 @@
+Codes and description
+200: Sukses
+
+
 Example URL: 
     
     [POST] localhost:3000/todos
