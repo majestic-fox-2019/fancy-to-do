@@ -1,11 +1,15 @@
 'use strict'
 
-const { Todo } = require('../models')
+const { Todo, User } = require('../models')
 
 class TodoController {
     static showAll(req, res, next){
         Todo
-            .findAll()
+            .findAll({
+                where: {
+                    UserId: req.user.id
+                }
+            })
             .then(list => {
                 res.status(200).json(list)
             })
@@ -16,7 +20,11 @@ class TodoController {
 
     static findById(req, res, next){
         Todo
-            .findByPk(req.params.id)
+            .findOne({
+                where: {
+                    id: req.params.id,
+                }
+            })
             .then(found => {
                 if (found){
                     res.status(200).json(found)
@@ -34,13 +42,14 @@ class TodoController {
 
     static createTodo(req, res, next){
         let { title, description, status, due_date } = req.body
-
+        let id = req.user.id
         Todo
             .create({
                 title,
                 description,
                 status,
-                due_date
+                due_date,
+                UserId: id
             })
             .then(created => {
                 res.status(201).json(created)
@@ -54,7 +63,12 @@ class TodoController {
         let { title, description, status, due_date } = req.body
         
         Todo
-            .findByPk(req.params.id)
+            .findOne({
+                where: {
+                    id: req.params.id,
+                    UserId: req.user.id
+                }
+            })
             .then(found => {
                 if(found){
                     return found.update({
@@ -104,6 +118,29 @@ class TodoController {
             })
             .then(result => {
                 res.status(200).json(deletedData)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static authorization(req, res, next){
+        Todo
+            .findOne({
+                where: {
+                    id: req.params.id,
+                    UserId: req.user.id
+                }
+            })
+            .then(found => {
+                if(found){
+                    next()
+                } else {
+                    throw {
+                        statusCode: 401,
+                        message: 'Unauthorized Access'
+                    }
+                }
             })
             .catch(err => {
                 next(err)

@@ -51,9 +51,12 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please input todo date'
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
     }
   }, { sequelize, hooks: {
-    beforeCreate: (todo, option) => {
+    beforeValidate: (todo, option) => {
       if(!todo.status){
         todo.status = 'incomplete'
       }
@@ -71,6 +74,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Todo.associate = function(models) {
     // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };
