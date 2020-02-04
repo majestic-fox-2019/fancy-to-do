@@ -1,4 +1,4 @@
 node_modules
-config/config copy.json
+config/config.json
 .DS_Store
-.env copy
+.env
