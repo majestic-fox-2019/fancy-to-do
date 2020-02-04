@@ -1,5 +1,5 @@
 const modelTodo = require("../models").Todo
-
+const modelProject = require("../models").Project
 class TodoController {
     static createTodo(req, res, next) {
         let UserId = req.payload.id
@@ -46,7 +46,6 @@ class TodoController {
     }
 
     static editTodo(req, res, next) {
-
         let { description, title, due_date, status } = req.body
         modelTodo.update(
             { description, title, due_date, status },
@@ -88,9 +87,26 @@ class TodoController {
     }
 
     static getMine(req, res, next) {
-        modelTodo.findAll({ where: { UserId: req.payload.id } })
+        modelTodo.findAll(
+            // { order: ['id', 'DESC'] },
+            { where: { UserId: req.payload.id } })
             .then(myTodos => {
                 if (myTodos) {
+                    // let detail = []
+                    // for (let i of myTodos) {
+                    //     if (i.ProjectId == null) {
+                    //         detail.push({ id: i.id, detail: "Individual" })
+                    //     } else {
+                    //         modelProject.findOne({ where: { id: i.ProjectId } })
+                    //             .then(ketemu => {
+                    //                 // console.log(ketemu.dataValues.name, "=====")
+                    //                 detail.push({ id: i.id, detail: ketemu.dataValues.name })
+                    //             })
+                    //             .catch(err => {
+                    //                 next(err)
+                    //             })
+                    //     }
+                    // }
                     res.status(200).json(myTodos)
                 }
             })

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo Todo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="loginRegPage" class="center">
+        <div class="alert alert-danger" role="alert" id="errorMessage">
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="login-tab" data-toggle="tab" href="#Login" role="tab"
+                    aria-controls="Login" aria-selected="true">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Register-tab" data-toggle="tab" href="#Register" role="tab"
+                    aria-controls="Register" aria-selected="false">Register</a>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="Login" role="tabpanel" aria-labelledby="login-tab">
+                <form>
+                    <div class="form-group">
+                        <label for="titleTodo">Email address</label>
+                        <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="passwordLogin">
+                    </div>
+                    <div class="d-flex mx-auto justify-content-end">
+                        <div class="btn btn-primary" id="login">Log In!</div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="Register" role="tabpanel" aria-labelledby="register-tab">
+                <form>
+                    <div class="form-group">
+                        <label for="usernameRegister">Username</label>
+                        <input type="text" class="form-control" id="usernameRegister">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailRegister">Email address</label>
+                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordRegister">Password</label>
+                        <input type="password" class="form-control" id="passwordRegister">
+                    </div>
+                    <div class="d-flex mx-auto justify-content-end">
+                        <div class="btn btn-primary" id="registerButton">Submit</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="main">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">TodoTodo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <div class="dropdown">
+                    <button class="btn btn-secondary ml-2 dropdown-toggle" type="button" id="UsernameButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a id="logout" class="text-align-right">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="d-flex mx-auto mt-3 justify-content-end mr-2">
+            <div class="col justify-content-end">
+                <div class="btn btn-primary" data-toggle="modal" data-target="#newTodoModal">New Todo</div>
+            </div>
+            <div class="modal fade" id="newTodoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleTodo">Title</label>
+                                    <input type="text" class="form-control" id="titleTodo" aria-describedby="titleTodo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionModal">Description</label>
+                                    <input type="text" class="form-control" id="descriptionModal">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateModal">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateModal">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="createTodo">Save To
+                                do</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex mt-3 mx-auto">
+            <div class="col-6 col-sm-2 col-md-6">
+                <div class="card overflow-auto">
+                    <div class="card-header" id="notDone">
+                        Not Done
+                    </div>
+                    <div class="card-body">
+                        <table class="table notDone">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Due Date</th>
+                                    <th>Owner</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bodyNotDone"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-sm-2 col-md-6">
+                <div class="card overflow-auto">
+                    <div class="card-header text-align-center" id="headerDone">
+                        Done
+                    </div>
+                    <div class="card-body">
+                        <table class="table doneAlready">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Due Date</th>
+                                    <th>Owner</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bodyDone"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="modal" tabindex="-1" role="dialog" id="modalku">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Todo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="titleEdit">Title</label>
+                                    <input type="text" class="form-control" id="titleEdit" aria-describedby="titleTodo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionEdit">Description</label>
+                                    <input type="text" class="form-control" id="descriptionEdit">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDateEdit">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDateEdit">
+                                </div>
+                                <div class="form-group">
+                                    <label for="statusEdit">Status</label>
+                                    <select class="form-control" id="statusEdit">
+                                        <option value="Done">Done</option>
+                                        <option value="Not Done">Not Done</option>
+                                    </select>
+                                </div>
+
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="editThis">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="modal" tabindex="-1" role="dialog" id="modalDelete">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Todo!?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h1>This Action is dangerous. It can not be undone!</h1>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="deleteTodo">Delete!</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No! Keep my to
+                                do!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/js/fontawesome.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

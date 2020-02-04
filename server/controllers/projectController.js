@@ -84,27 +84,42 @@ class ControlProject {
     }
 
     static addMember(req, res, next) {
+
         modelUser.findOne({ where: { email: req.body.email } })
             .then(userFound => {
                 if (userFound) {
-                    return modelProjectUser.create({
-                        UserId: userFound.id,
-                        ProjectId: req.ProjectId
+                    return modelProjectUser.findOne({
+                        where: {
+                            ProjectId: req.ProjectId,
+                            UserId: userFound.id
+                        }
                     })
                 } else {
                     next({ code: 404, message: "User not found" })
                 }
             })
-            .then(projectUserCreated => {
-                res.status(201).json(projectUserCreated)
+            .then(userJoined => {
+                if (userJoined) {
+                    next({ code: 400, message: "User have already in this project" })
+                } else {
+                    return modelProjectUser.create({
+                        UserId: userFound.id,
+                        ProjectId: req.ProjectId
+                    })
+                        .then(projectUserCreated => {
+
+                            res.status(201).json(projectUserCreated)
+                        })
+                }
             })
+
             .catch(err => {
                 next(err)
             })
     }
 
     static getMyProjects(req, res, next) {
-        modelProjectUser.findAll({ where: { UserId: req.payload.id }, include: modelProject })
+        modelProjectUser.findAll({ where: { UserId: req.payload.id }, include: [modelProject] })
             .then(allMyProjects => {
                 if (allMyProjects) {
                     res.status(200).json(allMyProjects)
@@ -116,9 +131,39 @@ class ControlProject {
     }
 
     static allProject(req, res, next) {
-        modelProject.findAll()
+        modelProjectUser.findAll({ include: [modelProject, modelUser] })
             .then(allProjects => {
                 res.status(200).json(allProjects)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static allTodoInProject(req, res, next) {
+        modelTodo.findAll({ where: { ProjectId: req.params.idProject } })
+            .then(allTodosfound => {
+                res.status(200).json(allTodosfound)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static getAllMemberinProject(req, res, next) {
+        modelProjectUser.findAll({ where: { ProjectId: req.params.idProject }, include: modelUser })
+            .then(allMembers => {
+                res.status(200).json(allMembers)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static getProjectById(req, res, next) {
+        modelProject.findOne({ where: { id: req.params.id } })
+            .then(ketemu => {
+                res.status(200).json(ketemu)
             })
             .catch(err => {
                 next(err)

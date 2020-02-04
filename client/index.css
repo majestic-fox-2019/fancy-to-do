@@ -1,0 +1,28 @@
+.center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#logout:hover{
+    cursor: pointer;
+    color: red
+}
+
+#headerDone{
+    background-color: lightgreen;
+    font-weight: bold;
+    text-align: center
+}
+
+#notDone{
+    background-color: lightcoral;
+    font-weight: bold;
+    text-align: center
+}
+
+.card{
+    height: 55vh
+}
