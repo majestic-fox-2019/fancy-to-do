@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
         notNull: true
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, {sequelize});
 
   Task.associate = function(models) {

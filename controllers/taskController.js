@@ -9,7 +9,8 @@ class TaskController {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.user.id
     }
     
     Task.create(addTask)
@@ -23,7 +24,7 @@ class TaskController {
   }
 
   static list(req, res, next){
-    Task.findAll({ order: [['id', 'ASC']]})
+    Task.findAll({ where: { UserId: req.user.id }, order: [['id', 'ASC']]})
     .then(result => {
       if (result.length == 0){
         throw createError(200, 'Data is empty.')
@@ -42,7 +43,11 @@ class TaskController {
     Task.findByPk(id)
     .then(result => {
       if (result != null){
-        res.status(200).json(result)
+        if (result.UserId !== req.user.id || !req.user){
+          throw createError(401, {message: { error : 'Not Authorized'}})
+        } else {
+          res.status(200).json(result)
+        }
       } else {
         throw createError(404, {message: { error : 'error not found'}})
       }
@@ -66,9 +71,15 @@ class TaskController {
       due_date: req.body.due_date
     }
 
-    Task.update(taskUpdate, taskId)
+    Task.findByPk(req.params.id)
     .then(result => {
-      console.log(result)
+      if (result.UserId !== req.user.id || !req.user){
+        throw createError(401, {message: { error : 'Not Authorized'}})
+      } else {
+        return Task.update(taskUpdate, taskId)
+      }
+    })
+    .then(result => {
       if (result[0] === 0){
         throw createError(404, {message: { error : 'error not found'}})
       } else {
@@ -82,6 +93,7 @@ class TaskController {
         next(err)
       }
     })
+    
   }
 
   static delete(req, res, next){
