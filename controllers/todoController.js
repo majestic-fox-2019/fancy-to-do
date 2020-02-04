@@ -1,12 +1,12 @@
 const {Todo} = require('../models')
-
 class Controller{
   static create(req, res, next){
     let data = {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.user.id
     }
     Todo.create(data)
       .then(result=>{
@@ -17,9 +17,17 @@ class Controller{
       })
   }
   static list(req, res, next){
-    Todo.findAll()
+    Todo.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    })
       .then(result=>{
-        res.status(200).json(result)
+        if(result.length == 0){
+          res.status(204).json(result)
+        }else{
+          res.status(200).json(result)
+        }
       })
       .catch(err=>{
         next(err)
@@ -51,7 +59,7 @@ class Controller{
       returning: true
     })
       .then(result=>{
-        if(result){
+        if(result[0] !== 0){
           res.status(200).json(result[1][0])
         }else{
           throw {

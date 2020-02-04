@@ -1,8 +1,11 @@
-const express = require('express')
-const route = express.Router()
+const route = require('express').Router()
 const todo = require('./todo')
+const user = require('./user')
 
+
+route.use('/user',user)
 route.use('/todo',todo)
+
 
 
 module.exports = route

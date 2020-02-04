@@ -30,14 +30,21 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'please input date'
+        },
+        isDate: {
+          args: true,
+          msg: 'please use date format. ex:2020-12-29'
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER
     }
-    
   },{sequelize})
 
   Todo.associate = function(models) {
     // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };
