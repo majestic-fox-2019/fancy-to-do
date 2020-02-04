@@ -7,6 +7,7 @@ function authentication(req, res, next) {
     if (req.headers.hasOwnProperty('token')) {
         try {
             const decoded = verifyToken(req.headers.token)
+            console.log(decoded);
             User.findOne({
                 where: {
                     id: decoded.id
@@ -17,7 +18,7 @@ function authentication(req, res, next) {
                         id: user.id,
                         email: user.email,
                         password: user.password,
-                        username: user.username,
+                        fullname: user.fullname,
                     }
                     next()
                 }).catch((err) => {

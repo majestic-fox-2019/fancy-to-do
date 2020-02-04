@@ -9,15 +9,19 @@ class TodoController {
             title,
             description,
             status: "not complete",
-            due_date
+            due_date,
+            UserId: req.user.id
         })
             .then((result) => {
                 res.status(201).json(result)
-            })
-            .catch(next);
+            }).catch(next);
     }
     static findAll(req, res, next) {
-        Todo.findAll()
+        Todo.findAll({
+            where: {
+                UserId: req.user.id
+            }
+        })
             .then((result) => {
                 res.status(200).json(result)
             })
@@ -33,72 +37,67 @@ class TodoController {
                 if (!result) {
                     next({
                         status: 404,
-                        msg: "not found"
+                        msg: "not found todo"
                     })
                 } else {
                     res.status(200).json(result)
                 }
-            })
-            .catch(next);
+            }).catch(next);
     }
     static update(req, res, next) {
-        const { title, description } = req.body
-        let arr = []
-        Todo.findOne({
+        const { title, description, status } = req.body
+        Todo.update({
+            title,
+            description,
+            status,
+            updateAt: new Date()
+        }, {
             where: {
                 id: req.params.id
             }
         })
             .then((result) => {
-                arr = result
-                if (!result) {
+                if (result[0] === 0) {
                     next({
                         status: 404,
-                        msg: "not found"
+                        msg: "not found todo"
                     })
                 } else {
-                    return Todo.update({
-                        title,
-                        description,
-                        updateAt: new Date()
-                    }, {
+                    return Todo.findOne({
                         where: {
                             id: req.params.id
                         }
                     })
-                        .then(() => {
-                            res.status(200).json(arr)
-                        })
+                        .then((hasil) => {
+                            res.status(200).json(hasil)
+                        }).catch(next);
                 }
-            })
-            .catch(next);
+            }).catch(next);
     }
     static remove(req, res, next) {
-        let todo = null
-        Todo.findOne({
+        Todo.destroy({
             where: {
                 id: req.params.id
             }
         })
             .then((result) => {
-                todo = result
-                if (!result) {
+                if (result === 0) {
                     next({
                         status: 404,
-                        msg: "not found "
+                        msg: "not found todo"
                     })
                 } else {
-                    return Todo.destroy({
+                    return Todo.findOne({
                         where: {
                             id: req.params.id
                         }
                     })
-                        .then(() => {
-                            res.status(200).json(todo)
+                        .then((hasil) => {
+                            res.status(200).json(hasil)
                         })
+                        .catch(next);
                 }
-            })
-            .catch(next);
+            }).catch(next);
     }
 }
 
