@@ -15,7 +15,8 @@ Project.init({
         msg: 'Status not found'
       }
     }
-  }
+  },
+  owner: DataTypes.INTEGER
 },{
   sequelize
 })
