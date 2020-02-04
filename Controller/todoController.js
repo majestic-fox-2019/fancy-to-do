@@ -1,28 +1,31 @@
 const {ToDo} = require('../models')
 
+
+
 class ToDoController {
 
+    
     static create(req,res,next){
+        // let token = req.headers.token
+        // let decoded = jwt.verify(token,"ini rahasia")
         let isi = {
             title:req.body.title,
             description:req.body.description,
             status:req.body.status,
-            due_date:req.body.due_date
+            due_date:req.body.due_date,
+            UserId:req.user.id
         }
         ToDo
         .create(isi)
         .then(data=>{
                 res.status(201).json(data)
-
+            // console.log(req.payloads)
             
             
         })
         .catch(err=>{
             if(err.message != 0){
-                err.StatusCode = '400'
-            }
-            else{
-                err.StatusCode = '500'
+                err.StatusCode = 400
             }
             next(err)
         })
@@ -30,7 +33,9 @@ class ToDoController {
 
     static findAll(req,res,next){
         ToDo
-        .findAll()
+        .findAll({where:{
+            UserId:req.user.id
+        },individualHooks:true})
         .then(data=>{
             res.status(200).json(data)
         })
@@ -42,22 +47,26 @@ class ToDoController {
     static findOne(req,res,next){
         ToDo
         .findOne({where:{
-            id:req.params.id
+            id:req.params.id,
+            UserId:req.user.id
         }})
         .then(data=>{
             if(data){
                 res.status(200).json(data)
             }
             else{
-                let err= {
+            
+                let msg= {
                     StatusCode :'404',
-                    message:'error not found'
+                    message:'command not found'
                 }
-                next(err)
-
+                next(msg)
+                // throw createError(404,'Error 404,command not found')
+                
             }
         })
         .catch(err=>{
+            console.log(err)
             next(err)
         })
     }
@@ -71,7 +80,7 @@ class ToDoController {
         }
         ToDo
         .update(isi,{
-            where: { id: req.params.id },
+            where: { id: req.params.id , UserId:req.user.id },
             returning: true
           })
         .then(data=>{
@@ -85,15 +94,13 @@ class ToDoController {
                     message:'command not found'
                 }
                 next(msg)
+                // throw createError(404,'Error 404,command not found')
 
             }
         })
         .catch(err=>{
             if(err.message != 0){
-                err.StatusCode = '400'
-            }
-            else{
-                err.StatusCode = '500'
+                err.StatusCode = 400
             }
             next(err)
         })
@@ -106,7 +113,7 @@ class ToDoController {
         .then(data=>{
              isi = data
             if(data){
-                return ToDo.destroy({where:{id:req.params.id}})
+                return ToDo.destroy({where:{id:req.params.id,UserId:req.user.id}})
             }
             else{
                 let msg= {
@@ -114,6 +121,7 @@ class ToDoController {
                     message:'command not found'
                 }
                 next(msg)
+                // throw createError(404,'Error 404,command not found')
             }
         })
         .then(data=>{
@@ -125,6 +133,7 @@ class ToDoController {
             next(err)
         })
     }
+
 }
 
 module.exports = ToDoController

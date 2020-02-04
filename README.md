@@ -1,20 +1,34 @@
 # fancy-to-do
 Fancy To-Do List API
 
-1. POST /todos (create)
+# 1. POST /todos (create)
 Diperlukannya field title,description,status,due_date untuk membuat sebuah instance di table ToDos.
 
 Jika proses penginputan terdapat field yang kosong maka akan muncul pesan error field yang diinput tidak boleh kosong dengan error status 400.
 
-Request Body: 
+* ### Schema
+Value :
+
+* title: string,
+* description: string,
+* status: boolean,
+* due_date: date
+
+Request Body:
+```javascript 
 {
 	"title": "Learn REST API",
 	"description":"Learn how to create RESTful API with Express and Sequelize",
 	"status":true,
 	"due_date":"2020-01-29"
 }
+```
 
 Response:
+
+* 201
+
+```javascript
 {
     "id": 16,
     "title": "Learn REST API",
@@ -24,17 +38,32 @@ Response:
     "updatedAt": "2020-02-03T10:54:12.837Z",
     "createdAt": "2020-02-03T10:54:12.837Z"
 }
+```
+* 400
+
+    Example
+   ```javascript
+    {
+    "message": "Validation error: description must be filled"
+    }
+
+   ``` 
+
 
 Response yang akan didapatkan jika berhasil  adalah menampilkan instance yang dibuat dalam bentuk JSON dan terbentuknya instance baru di dalam database.
 
-2. Get /todos (findAll)
+
+# 2. Get /todos (findAll)
 digunakan untuk menampilkan semua data yang ada di table ToDos
 
 Contoh:
-Request Parameter:
-http://localhost:3000/todos
 
-Response:
+* Request Parameter:
+```javascript
+http://localhost:3000/todos
+```
+* Response:
+```javascript
 [
     {
         "id": 15,
@@ -46,14 +75,18 @@ Response:
         "updatedAt": "2020-02-03T09:42:18.954Z"
     }
 ]
+```
 
-3. Get /todos/:id (findOne)
+# 3. Get /todos/:id (findOne)
 digunakan untuk menampilkan sebuah instance sesuai dengan inputan id oleh pengguna, jika tidak ditemukan maka akan muncul error message command not found dengan status error 404. Jika ditemukan maka yang ditampilkan adalah sesuai inputan id oleh pengguna
 
-Request parameter:
+* Request parameter:
+```javascript
 http://localhost:3000/todos/12
+```
 
-response:
+* response:
+```javascript
 {
     "id": 12,
     "title": "makandsd",
@@ -63,14 +96,18 @@ response:
     "createdAt": "2020-02-03T08:44:32.290Z",
     "updatedAt": "2020-02-03T08:44:32.290Z"
 }
+```
 
-4. Put /todos/:id (update)
+# 4. Put /todos/:id (update)
 Digunakan untuk update todos berdasarkan id yang diinput. Apabila id tidak ditemukan maka akan muncul status error 404 dengan message command not found. Jika ditemukan maka yang ditampilkan adalah hasil update yang diisi oleh pengguna.
 
 request parameter:
+```javascript
 http://localhost:3000/todos/12
+```
 
 request body:
+```javascript
 {
     "title": "berlari",
     "description": "berlari di taman",
@@ -79,8 +116,10 @@ request body:
     "createdAt": "2020-02-03T08:44:32.290Z",
     "updatedAt": "2020-02-03T08:44:32.290Z"
 }
+```
 
 response :
+```javascript
 {
     "id": 12,
     "title": "berlari",
@@ -90,14 +129,18 @@ response :
     "createdAt": "2020-02-03T08:44:32.290Z",
     "updatedAt": "2020-02-03T11:07:34.782Z"
 }
+```
 
-5. Delete todos/:id
+# 5. Delete todos/:id
 Digunakan untuk menghapus data sesuai dengan inputan id  oleh user. jika id yang diinput salah maka akan muncul error status 404 dengan message command not found. Jika berhasil maka yang akan ditampilkan adalah data yang berhasil dihapus oleh user
 
 request parameter:
+```javascript
 http://localhost:3000/todos/12
+```
 
 response:
+```javascript
 {
     "id": 12,
     "title": "berlari",
@@ -107,3 +150,4 @@ response:
     "createdAt": "2020-02-03T08:44:32.290Z",
     "updatedAt": "2020-02-03T11:07:34.782Z"
 }
+```
