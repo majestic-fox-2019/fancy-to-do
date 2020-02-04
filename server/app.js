@@ -7,8 +7,12 @@ const express       = require('express');
 const basicError    = require('./middlewares/basic_error');
 const authenticated = require('./middlewares/authentication');
 
-const app       = express();
-const port      = 3000;
+const app           = express();
+const dotenv        = require('dotenv');
+
+dotenv.config();
+
+const port      = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

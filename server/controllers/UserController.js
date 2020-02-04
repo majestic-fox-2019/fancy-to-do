@@ -1,7 +1,8 @@
 "use strict"
 
-const User = require('./../models').User;
-const {isAuthorized} = require('./../helpers/authentication');
+const User              = require('./../models').User;
+const {isAuthorized}    = require('./../helpers/authentication');
+const jwt               = require('jsonwebtoken');
 
 class UserController {
     static register(req, res, next) {
@@ -114,7 +115,12 @@ class UserController {
             })
             .then(user => {
                 if (user && isAuthorized(password, user.password)) {
-                    res.status(200).json({accessToken: "sadjklsajdoiau"});
+                    const accessToken = jwt.sign({ 
+                        email: user.email,
+                        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // expired in a day
+                    }, process.env.jwt_secret_key);
+
+                    res.status(200).json({accessToken});
                 }else{
                     throw {
                         statusCode: 400,
