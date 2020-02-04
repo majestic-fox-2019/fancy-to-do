@@ -1,5 +1,6 @@
 const {Todo} = require('../models')
 const createError = require('http-errors')
+const {getWeather} = require('../helpers/weatherDarkSky')
 
 class Controller {
     static findAll(req, res, next){
@@ -37,16 +38,21 @@ class Controller {
         })
     }
     static create(req, res, next){
-        console.log(req.user)        
         const {title, description, status, due_date} = req.body
-        Todo
-        .create({
-            title,
-            description,
-            status,
-            due_date,
-            UserId : req.user
-        })
+        getWeather(due_date)
+        .then(data => {
+                        if (data.data.currently.summary.includes('ujan')) {
+                          throw createError(401, 'WeatherRainy')
+                        }
+                            return Todo.create({
+                                title,
+                                description,
+                                status,
+                                due_date,
+                                UserId : req.user
+                            })
+                        
+                    })
         .then(data =>{
             res.status(201).json(data)
         })
