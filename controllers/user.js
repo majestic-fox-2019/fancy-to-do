@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const axios = require('axios')
 const instance = axios.create({
-  baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=V6JII1DEYA02ODXRXLCJ&'
+  baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=APIkey'
 });
 
 class ControllerUser {
@@ -15,7 +15,6 @@ class ControllerUser {
     instance.get(`&email=${req.body.email}`)
       .then(validateResult => {
         if (validateResult.data.is_verified == "True") {
-          // console.log('ga masoook')
           return User.create({
             username: body.username,
             email: body.email,
@@ -52,9 +51,9 @@ class ControllerUser {
           res.status(401).json({ message: "Unauthorized" })
         } else {
           if (bcrypt.compareSync(password, user.password)) {
-            // const user = { username: user.username, id: user.id }
+
             const token = jwt.sign({ username: user.username, id: user.id }, process.env.JWT_RAHAYU)
-            // res.status(200).json({ token: jwt.sign(token, "kurama main TAMIYA") })
+
             res.status(200).json(token)
           } else {
             res.status(401).json({ message: "Unauthorized" })
@@ -68,7 +67,7 @@ class ControllerUser {
 
 }
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwiaWQiOjQsImlhdCI6MTU4MDgwMTIzOH0.mD2mwkQOjbyNyMnYtNLq9vEUtUjGTNlT_3K9ZPzxj4Y
+
 
 module.exports = ControllerUser
 

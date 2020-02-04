@@ -5,7 +5,6 @@ const authentic = require('../middleware/authen')
 
 
 router.use('/user', user)
-
 router.use(authentic)
 router.use('/todos', todos)
 

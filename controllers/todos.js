@@ -7,27 +7,26 @@ const axios = require("axios")
 
 class ControllerTodo {
 
-
-  static holiday(req, res, next) {
-    axios({
-      method: 'get',
-      url: 'https://calendarific.com/api/v2/holidays?api_key=7bf75cec69a82f20047b714a76c74330fc57a0d0&country=US&year=2020'
-    })
-      .then(dataHoliday => {
-        res.status(201).json(dataHoliday.data)
-      })
-      .catch(err => {
-        next(err)
-      })
-  }
+  // static holiday(req, res, next) {
+  //   axios({
+  //     method: 'get',
+  //     url: 'https://calendarific.com/api/v2/holidays?api_key=7bf75cec69a82f20047b714a76c74330fc57a0d0&country=US&year=2020'
+  //   })
+  //     .then(dataHoliday => {
+  //       res.status(201).json(dataHoliday.data)
+  //     })
+  //     .catch(err => {
+  //       next(err)
+  //     })
+  // }
 
   static create(req, res, next) {
-
+    let body = req.body
     Todo
       .create({
         title: body.title,
         description: body.description,
-        status: body.status,
+        status: "Pending",
         due_date: body.due_date,
         UserId: req.user.id
       })

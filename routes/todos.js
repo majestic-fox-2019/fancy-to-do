@@ -11,7 +11,7 @@ const authoris = require('../middleware/authoriz')
 
 router.get('/', controllerTodos.findAll)
 router.post('/', controllerTodos.create)
-router.get('/holidays', controllerTodos.holiday)
+// router.get('/holidays', controllerTodos.holiday)
 router.get('/:id', authoris, controllerTodos.findOne)
 router.put('/:id', authoris, controllerTodos.updateAll)
 router.delete('/:id', authoris, controllerTodos.delete)
