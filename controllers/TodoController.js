@@ -1,14 +1,18 @@
 const { Todo } = require('../models')
-const validasiError = require('../helper/validasiErrorMessage')
 
 class TodoController {
   static getTodolist(req, res, next){
-    Todo.findAll()
+    Todo.findAll({
+      where: {
+        UserId: req.user.id
+      },
+      order: [['id', 'DESC']]
+    })
     .then(result => {
       res.status(200).json(result)
     })
     .catch(err => {
-      res.status(500).json(err.message)
+      next(err)
     })
   }
 
@@ -17,7 +21,8 @@ class TodoController {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.user.id
     }
 
     Todo.create(addTodo)
@@ -25,7 +30,7 @@ class TodoController {
         res.status(201).json(result)
       })
       .catch(err => {
-        res.status(400).json(validasiError(err.errors))
+        next(err)
       })
   }
 
@@ -37,11 +42,14 @@ class TodoController {
       if(result){
         res.status(200).json(result)
       }else{
-        throw { message: 'Error not found' }
+        next({
+          statusCode: 404,
+          message: "Todo not found"
+        })
       }
     })
     .catch(err => {
-      res.status(404).json(err)
+      next(err)
     })
   }
 
@@ -55,22 +63,22 @@ class TodoController {
 
     const id_todo = Number(req.params.id)
 
-    Todo.update(updateTodo, {
-      where : { id : id_todo }, returning : true
-    })
+    Todo.findByPk(id_todo)
       .then(result => {
-        let dataUpdate = null
-        if (result[0] !== 0) {
-          dataUpdate = result[1][0]
-          res.status(200).json(dataUpdate)
-        } else {
-          res.status(404).json({
-            message: 'Error Not Found'
-          })
+        if(result){
+          return result.update(updateTodo, { returning : true })
+        }else{
+          throw {
+            statusCode: 404,
+            message: "Todo not found"
+          }
         }
       })
+      .then(result => {
+        res.status(200).json(result)
+      })
       .catch(err => {
-        res.status(400).json(validasiError(err.errors))
+        next(err)
       })
   }
 
@@ -83,14 +91,17 @@ class TodoController {
           dataDelete = result
           return result.destroy()
         }else{
-          throw { message: 'Error not found' }
+          throw {
+            statusCode: 404,
+            message: "Todo not found"
+          }
         }
       })
       .then(() => {
         res.status(200).json(dataDelete)
       })
       .catch(err => {
-        res.status(404).json(err)
+        next(err)
       })
   }
 }

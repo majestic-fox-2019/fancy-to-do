@@ -1,4 +1,7 @@
 'use strict';
+
+const axios = require('axios')
+
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize
 
@@ -25,10 +28,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: DataTypes.INTEGER,
     due_date: DataTypes.DATE
-  }, { sequelize })
+  }, 
+  {
+    
+    sequelize 
+  })
 
   Todo.associate = function(models) {
-    // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };
