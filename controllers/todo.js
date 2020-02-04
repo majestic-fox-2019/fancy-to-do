@@ -31,13 +31,15 @@ class Controller {
         })
     }
     static create(req, res, next){
+        console.log(req.user)
         const {title, description, status, due_date} = req.body
         Todo
         .create({
             title,
             description,
             status,
-            due_date
+            due_date,
+            UserId : req.user.id
         })
         .then(data =>{
             res.status(201).json(data)

@@ -58,6 +58,20 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'due_date must be filled'
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      validate:{
+        notEmpty: {
+          args: true,
+          msg: 'UserId must be filled'
+        },
+        notNull:{
+          args:true,
+          msg: 'UserId must be filled'
+        }
+      }
     }
   }, {sequelize})
   Todo.associate = function(models) {
