@@ -7,7 +7,7 @@ const { forProject } = require("../middlewares/authorization")
 //add project
 routes.post("/", authentication, controlProject.createProject)
 
-routes.get("/name/:id", controlProject.getProjectById)
+routes.get("/api/name/:id", controlProject.getProjectName)
 
 routes.post("/addMember/:idProject", authentication, forProject, controlProject.addMember)
 

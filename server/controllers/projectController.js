@@ -160,9 +160,15 @@ class ControlProject {
             })
     }
 
-    static getProjectById(req, res, next) {
+    static getProjectName(req, res, next) {
+        // console.log("MASUK")
+        // modelTodo.findOne({where: {id: req.params.id}})
+        // .then(todoFound =>{
+
+        // })
         modelProject.findOne({ where: { id: req.params.id } })
             .then(ketemu => {
+
                 res.status(200).json(ketemu)
             })
             .catch(err => {

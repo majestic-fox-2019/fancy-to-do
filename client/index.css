@@ -26,3 +26,15 @@
 .card{
     height: 55vh
 }
+
+.diNavBar:hover{
+    cursor: pointer;
+}
+
+.cardIsian{
+    height: 60vh
+}
+
+.cardProject{
+    height: 100vh;
+}

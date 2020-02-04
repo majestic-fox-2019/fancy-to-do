@@ -7,6 +7,7 @@ $(window).on("load", function () {
         $("#loginRegPage").hide()
         $("#errorMessage").hide()
         $("#main").show()
+        $("#myProjectsku").hide()
         $("#UsernameButton").text(function () {
             return username
         })
@@ -58,9 +59,21 @@ $(document).ready(function () {
         }
         let due_date = $("#dueDateEdit").val()
         let description = $("#descriptionEdit").val()
-
-
         editTodo(id, title, status, due_date, description)
+    })
+    $("#backToTodo").click(function () {
+        $("#vanillaTodo").show()
+        $("#myProjectsku").hide()
+        getMyTodos()
+    })
+    $("#toProjects").click(function () {
+        $("#vanillaTodo").hide()
+        $("#myProjectsku").show()
+        getMyProjects()
+    })
+    $("#createProject").click(function () {
+        let name = $("#projectNameCreate").val()
+        addProject(name)
     })
 })
 
@@ -181,10 +194,8 @@ function generateTable(isi) {
         if (i.ProjectId == null) {
             project = "Individual"
         } else {
-            let nama = getNameProject(i.id)
+            let nama = getNameProject(i.ProjectId)
             project = nama
-            // console.log(nama, "<<ini nama")
-
         }
         forAppend += `
         <tr id=${i.id}>
@@ -235,11 +246,15 @@ function createTodo(due_date, title, description, status) {
 }
 
 function getNameProject(id) {
-    $.ajax(`${baseUrl}/projects/name/${id}`, {
+    // console.log(id, "<<")
+    $.ajax(`${baseUrl}/projects/api/name/${id}`, {
         type: "GET",
         success: function (found) {
+            // console.log(found.name, id, "<<")
             if (found) {
-                $("#project_" + id).text(found.name)
+                // console.log("hai")
+                $(`#project_${id}`).text(found.name)
+                // $("#project_" + id).text("meong")
             } else {
                 $("#project_" + id).text("deleted project")
             }
@@ -335,4 +350,127 @@ function predelete(id) {
             }
         })
     })
+}
+
+function getMyProjects() {
+    $.ajax(`${baseUrl}/projects/myProjects`, {
+        type: "GET",
+        headers: {
+            token: localStorage.getItem("token")
+        },
+        success: function (gotResponse) {
+
+            $("#cardProject").empty()
+            let isianCardProject = generateCardProject(gotResponse)
+            $("#cardProject").append(isianCardProject)
+        },
+        error: function (err) {
+            let errorMessage = ""
+            for (let j = 0; j < err.responseJSON.length; j++) {
+                if (j == err.responseJSON.length - 1) {
+                    errorMessage += err.responseJSON[j]
+                } else {
+                    errorMessage += err.responseJSON[j] + ", "
+                }
+            }
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+}
+
+function generateCardProject(responseGetProject) {
+    let appendProject = ""
+    for (let perProject of responseGetProject) {
+        appendProject += `
+        <div class="card-header projectHeader text-align-center">
+        ${perProject.Project.name}
+        </div>
+        <div class="card-body cardIsian overflow-auto" id="bodyProject${responseGetProject.ProjectId}">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>    
+                <tbody id="bodyProject${perProject.ProjectId}" ></tbody>
+            </table>
+        </div>
+        `
+        getTodoInProject(perProject.ProjectId)
+        // console.log(perProject.ProjectId, "<<<<")
+    }
+    return appendProject
+}
+
+function addProject(name) {
+    $.ajax(`${baseUrl}/projects/`, {
+        type: "POST",
+        headers: {
+            token: localStorage.getItem("token")
+        },
+        data: {
+            name
+        },
+        success: function () {
+            getMyProjects()
+        },
+        error: function (err) {
+            let errorMessage = ""
+            for (let j = 0; j < err.responseJSON.length; j++) {
+                if (j == err.responseJSON.length - 1) {
+                    errorMessage += err.responseJSON[j]
+                } else {
+                    errorMessage += err.responseJSON[j] + ", "
+                }
+            }
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+}
+
+function getTodoInProject(id) {
+    $.ajax(`${baseUrl}/projects/all/todo/${id}`, {
+        type: "GET",
+        success: function (hasilGet) {
+            // console.log(hasilGet)
+            $(`#bodyProject${id}`).empty()
+            let untukbodyproject = generateTableTodoProject(hasilGet)
+            $(`#bodyProject${id}`).append(untukbodyproject)
+        },
+        error: function (err) {
+            let errorMessage = ""
+            for (let j = 0; j < err.responseJSON.length; j++) {
+                if (j == err.responseJSON.length - 1) {
+                    errorMessage += err.responseJSON[j]
+                } else {
+                    errorMessage += err.responseJSON[j] + ", "
+                }
+            }
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+}
+
+function generateTableTodoProject(hasilGet) {
+    let untukDiAppend = ""
+    for (let satuan of hasilGet) {
+        let tanggal = new Date(satuan.due_date).toDateString()
+        untukDiAppend += `
+        <tr id=${satuan.id}>
+        <td>${satuan.title}</td>
+        <td>${satuan.description}</td>
+        <td>${tanggal}</td>
+        <td>
+        <div class="d-flex">
+        <div class="btn btn-primary" data-toggle="modal" data-target="#${satuan.id}" onclick="preeditTodoProject(${satuan.id})">Edit</div>
+        <div class="btn btn-danger" id="${satuan.id}" onclick="predeleteTodoProject(${satuan.id})">Del</div>
+        </div>
+        </td>
+        </tr>
+        `
+    }
+    return untukDiAppend
 }
