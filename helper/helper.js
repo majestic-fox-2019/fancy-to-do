@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken')
+
+
 class Helper {
 
     static errorFormatter(object){
@@ -8,6 +11,18 @@ class Helper {
         }
 
         return error
+    }
+
+    static authData(object){
+        let newObj = {}
+
+        for(let key in object){
+            if(key !== 'password'){
+                newObj[key] = object[key]
+            }
+        }
+
+        return newObj
     }
 
 }
