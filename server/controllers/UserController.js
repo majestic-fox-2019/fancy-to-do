@@ -1,9 +1,10 @@
 "use strict"
 
 const User = require('./../models').User;
+const {isAuthorized} = require('./../helpers/authentication');
 
 class UserController {
-    static create(req, res, next) {
+    static register(req, res, next) {
         const {email, password} = req.body;
         User.create({
             email, 
@@ -105,12 +106,25 @@ class UserController {
             });            
     }
 
-    static register(req, res){ 
-        res.send("register");
-    }
-
-    static login(req, res) {
-        res.send("login");
+    static login(req, res, next) {
+        const {username, password} = req.body;
+        User
+            .findOne({
+                username
+            })
+            .then(user => {
+                if (user && isAuthorized(password, user.password)) {
+                    res.status(200).json({accessToken: "sadjklsajdoiau"});
+                }else{
+                    throw {
+                        statusCode: 400,
+                        message: "Invalid username or password"
+                    }
+                }
+            })
+            .catch(err => {
+                next(err);
+            })
     }
 }
 

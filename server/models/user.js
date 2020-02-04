@@ -1,5 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
+  const {hashPassword} = require('./../helpers/authentication');
   const {Model} = sequelize.Sequelize;
 
   class User extends Model{
@@ -10,7 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     token: DataTypes.STRING
-  }, {sequelize});
+  }, {
+    hooks: {
+      beforeCreate(instance, options){
+        instance.password = hashPassword(instance.password);
+      }
+    },
+    sequelize
+  });
 
   User.associate = function(models) {
     // associations can be defined here
