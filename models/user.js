@@ -12,11 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, {
     hooks: {
-      beforeCreate: (instance, options) => {
-        return crypt.hash(instance.password)
-          .then(dataHash => {
-            instance.password = dataHash
-          })
+      beforeCreate: (user, options) => {
+        user.password = bcrypt.hashSync(user.password, 10)
       }
     },
     sequelize

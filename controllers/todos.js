@@ -1,17 +1,22 @@
 const Model = require('../models')
 const Todo = Model.Todo
+const jwt = require('jsonwebtoken')
 
 
 class ControllerTodo {
 
   static create(req, res, next) {
     let body = req.body
+    let token = req.headers.token
+    let decode = jwt.verify(token, process.env.JWT_RAHAYU)
+
     Todo
       .create({
         title: body.title,
         description: body.description,
         status: body.status,
-        due_date: body.due_date
+        due_date: body.due_date,
+        UserId: decode.id
       })
       .then(result => {
         res.status(201).json(result)
@@ -49,7 +54,7 @@ class ControllerTodo {
         } else {
           let err = {
             statusCode: '404',
-            message: 'server not found'
+            message: 'Not Found'
           }
           next(err)
         }
@@ -71,7 +76,7 @@ class ControllerTodo {
         } else {
           let err = {
             statusCode: '404',
-            message: 'server not found'
+            message: 'Not Found'
           }
           next(err)
         }
@@ -101,7 +106,7 @@ class ControllerTodo {
         } else {
           let err = {
             statusCode: '404',
-            message: 'server not found'
+            message: 'Not Found'
           }
           next(err)
         }

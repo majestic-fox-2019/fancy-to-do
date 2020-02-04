@@ -4,6 +4,6 @@ module.exports = (err, req, res, next) => {
       message: err.message
     })
   } else {
-    res.status(500).send('Internal Sever Error')
+    res.status(500).send('500 Internal Server Error')
   }
 }
