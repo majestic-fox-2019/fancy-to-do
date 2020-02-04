@@ -1,14 +1,18 @@
 'use strict';
 
-const todos         = require('./routes/todos');
-const users         = require('./routes/users');
+const todos             = require('./routes/todos');
+const users             = require('./routes/users');
 
-const express       = require('express');
-const basicError    = require('./middlewares/basic_error');
-const authenticated = require('./middlewares/authentication');
+const express           = require('express');
+const basicError        = require('./middlewares/error_handling');
+const authenticated     = require('./middlewares/authentication');
+const authorization     = require('./middlewares/authorization');
 
-const app           = express();
-const dotenv        = require('dotenv');
+const UserController    = require('./controllers/UserController');
+
+
+const app               = express();
+const dotenv            = require('dotenv');
 
 dotenv.config();
 
@@ -17,8 +21,13 @@ const port      = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+app.post('/users/register', UserController.register);
+app.post('/users/login', UserController.login);
+
+
 // Middleware authentication
 app.use(authenticated);
+// app.use(authorization);
 
 // Routes
 app.use('/todos', todos);

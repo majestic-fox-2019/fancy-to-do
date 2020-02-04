@@ -1,11 +1,15 @@
-const express   = require('express');
-const app       = express();
-
-function authenticated(err, req, res, next){
+const jwt       = require('jsonwebtoken');
+function authenticated(req, res, next){
     try {
-
-    } catch (error) { // 500
-
+        const token = req.headers.accesstoken;
+        const user = jwt.verify(token, process.env.jwt_secret_key);
+        req.user = user;
+        next();
+    } catch (error) {
+        next({
+            statusCode: 400,
+            message: error
+        });
     }
 }
 

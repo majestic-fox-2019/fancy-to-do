@@ -1,6 +1,3 @@
-const express   = require('express');
-const app       = express();
-
 function basicError(err, req, res, next){
     console.log(err.message);
     try {

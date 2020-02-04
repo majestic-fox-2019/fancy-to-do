@@ -116,8 +116,8 @@ class UserController {
             .then(user => {
                 if (user && isAuthorized(password, user.password)) {
                     const accessToken = jwt.sign({ 
-                        email: user.email,
-                        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // expired in a day
+                        id: user.id,
+                        email: user.email
                     }, process.env.jwt_secret_key);
 
                     res.status(200).json({accessToken});
