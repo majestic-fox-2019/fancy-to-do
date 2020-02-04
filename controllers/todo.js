@@ -11,7 +11,7 @@ class Controller {
 		Todo.findOne(where)
 			.then(data => {
 				if (!data) {
-					next({ name: "NotFound" });
+					next({ name: "DataNotFound" });
 				} else {
 					res.status(200).json(data)
 				}
@@ -21,7 +21,13 @@ class Controller {
 			});
 	}
 	static findAll(req, res, next) {
-		Todo.findAll()
+		const id = req.LoggedId;
+		const where = {
+			where: {
+				UserId: id
+			}
+		};
+		Todo.findAll(where)
 			.then(data => {
 				res.status(200).json(data);
 			})
@@ -34,7 +40,8 @@ class Controller {
 			title: req.body.title,
 			description: req.body.description,
 			status: req.body.status,
-			due_date: req.body.due_date
+			due_date: req.body.due_date,
+			UserId: req.LoggedId
 		};
 		Todo.create(obj)
 			.then(data => {
@@ -50,7 +57,8 @@ class Controller {
 			title: req.body.title,
 			description: req.body.description,
 			status: req.body.status,
-			due_date: req.body.due_date
+			due_date: req.body.due_date,
+			UserId: req.LoggedId
 		};
 		const where = {
 			where: {
@@ -61,7 +69,7 @@ class Controller {
 		Todo.update(obj, where)
 			.then(data => {
 				if (data[0] == 0) {
-					next({ name: "NotFound" });
+					next({ name: "DataNotFound" });
 				} else {
 					res.status(200).json(data[1]);
 				}
@@ -80,7 +88,7 @@ class Controller {
 		Promise.all([Todo.findByPk(id), Todo.destroy(where)])
 			.then(data => {
 				if (data[1] == 0) {
-					next({ name: "NotFound" })
+					next({ name: "DataNotFound" })
 				} else {
 					res.status(200).json(data[0]);
 				}

@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Controller = require("../controllers/todo");
+const authorization = require("../middlewares/authorization");
 
-router.get("/", Controller.findAll);
-router.get("/:id", Controller.findOne)
 router.post("/", Controller.create);
-router.put("/:id", Controller.update);
-router.delete("/:id", Controller.destroy);
+router.get("/", Controller.findAll);
+router.get("/:id", authorization, Controller.findOne)
+router.put("/:id", authorization, Controller.update);
+router.delete("/:id", authorization, Controller.destroy);
 
 module.exports = router;

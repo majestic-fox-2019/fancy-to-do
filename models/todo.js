@@ -45,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
 					msg: "Please fill `Due Date`"
 				}
 			}
-		}
+		}, 
+		UserId: DataTypes.INTEGER
 	}, {
 		hooks: {
 			beforeCreate: (data) => {
@@ -62,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
 		sequelize
 	});
   	Todo.associate = function(models) {
-    	// associations can be defined here
+    		Todo.belongsTo(models.User);
   	};
   	return Todo;
 };
