@@ -7,6 +7,9 @@ const route = require('./routes/index')
 const errorHandler = require('./middlewares/errorHandler')
 const port = process.env.PORT
 
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+
 app.use('/', route)
 app.use(errorHandler)
 
