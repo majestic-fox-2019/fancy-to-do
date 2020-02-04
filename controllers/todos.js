@@ -1,15 +1,14 @@
-const {Todo} = require("../models")
-const responseApi = require("../helper/format").responseApi
+const {Todo,User} = require("../models")
 class TodosController{
   static create(req,res,next){
     const {title, description, status, due_date} = req.body
-
+    const UserId = req.user.id
     Todo
-      .create({title, description, status, due_date})
+      .create({title, description, status, due_date,UserId})
       .then(todo => {
         res
           .status(201)
-          .json(responseApi(todo,"Success create todo"))
+          .json(todo)
       })
       .catch(err => {
         next(err)
@@ -18,11 +17,16 @@ class TodosController{
 
   static findAll(req,res,next){
     Todo
-      .findAll()
+      .findAll({
+        include : [{model:User}],
+        where : {
+          UserId: req.user.id
+        }
+      })
       .then(todos => {
         res
           .status(200)
-          .json(responseApi(todos))
+          .json(todos)
       })
       .catch(err => {
         next(err)
@@ -37,7 +41,7 @@ class TodosController{
         if (todo){
           res
             .status(200)
-            .json(responseApi(todo))
+            .json(todo)
         }else{
           next({
             statusCode : 404,
@@ -72,7 +76,7 @@ class TodosController{
       .then(todo => {
         res
           .status(200)
-          .json(responseApi(todo,"Success update todo"))
+          .json(todo)
       })
       .catch(err => {
         next(err)
@@ -90,10 +94,10 @@ class TodosController{
           return todo
                   .destroy()
         }else{
-          next({
+          throw {
             statusCode : 404,
             message : "todo not found"
-          })
+          }
         } 
       })
       .then(todo => {

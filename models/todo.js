@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
           msg : "Enter a status"
         },
         isIn : {
-          args : ["complete","incomplete"],
-          msg : "please input status with complete or incomplete"
+          args : [["completed","incomplete"]],
+          msg : "please input status with completed or incomplete"
         }
       }
     },
@@ -52,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
           msg : "Enter a due date"
         }
       }
+    },
+    UserId: {
+      type : DataTypes.INTEGER,
     }
   },{ 
     hooks : {
@@ -65,8 +68,8 @@ module.exports = (sequelize, DataTypes) => {
           
         }
       },  
-      beforeCreate(todo ,opt) {
-        if(!todo.status){
+      beforeValidate(todo ,opt) {
+        if(!todo.status || todo.status === ""){
           todo.status = 'incomplete'
         }
       },
@@ -76,6 +79,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Todo.associate = function(models) {
     // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };

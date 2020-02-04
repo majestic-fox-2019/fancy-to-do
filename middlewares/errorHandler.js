@@ -1,4 +1,3 @@
-const responseApi = require("../helper/format").responseApi
 function client(err, req, res, next) {
   try {
     if(err.name === 'SequelizeDatabaseError'){
@@ -15,7 +14,7 @@ function client(err, req, res, next) {
       }
       res
         .status(err.statusCode || 400)
-        .json(responseApi(null,result || err.message))
+        .json(result || err.message)
     }
   } catch (err) {
     next(err)
@@ -23,7 +22,7 @@ function client(err, req, res, next) {
 }
 
 function server(err, req, res, next) {
-  res.status(500).json(responseApi(null,err.message))
+  res.status(500).json(err.message)
 }
 
 module.exports = { client, server }
