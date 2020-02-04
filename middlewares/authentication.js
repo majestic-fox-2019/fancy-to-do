@@ -6,6 +6,7 @@ function authentication(req, res, next) {
 		const token = req.headers.token;
 		const data = jwt.verify(token, process.env.SECRET_TOKEN);
 		req.LoggedId = data.id;
+		req.LoggedEmail = data.email;
 		User.findByPk(data.id)
 		.then(data => {
 			if(!data) {

@@ -1,5 +1,5 @@
 const { Todo } = require("../models");
-
+const sendEmail = require("../helpers/sendEmail");
 class Controller {
 	static findOne(req, res, next) {
 		const id = req.params.id;
@@ -21,6 +21,7 @@ class Controller {
 			});
 	}
 	static findAll(req, res, next) {
+		console.log(req.LoggedEmail);
 		const id = req.LoggedId;
 		const where = {
 			where: {
@@ -43,8 +44,10 @@ class Controller {
 			due_date: req.body.due_date,
 			UserId: req.LoggedId
 		};
+		const email = req.LoggedEmail;
 		Todo.create(obj)
 			.then(data => {
+				sendEmail(email, data.title, data.description);
 				res.status(201).json(data);
 			})
 			.catch(err => {

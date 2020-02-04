@@ -1,6 +1,7 @@
 const {User} = require("../models");
 const dehashPassword = require("../helpers/dehashPassword");
 const signToken = require("../helpers/signToken");
+
 class Controller {
 	static register(req, res, next) {
 		const obj = {
@@ -23,11 +24,11 @@ class Controller {
 		}
 		User.findOne(where)
 		.then(data => {
-			console.log(data);
 			const isValid = dehashPassword(password, data.password);
 			if(isValid) {
 				const obj = {
-					id: data.id
+					id: data.id,
+					email: data.email
 				};
 				const token = signToken(obj);
 				res.status(200).json({token});
