@@ -25,13 +25,17 @@ module.exports = (sequelize, DataTypes) => {
     due_date: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    UserId: {
+      type: DataTypes.INTEGER
     }
   }, {
     sequelize
   })
-  
+
   Todo.associate = function (models) {
     // associations can be defined here
+    Todo.belongsTo(models.User);
   };
   return Todo;
 };
