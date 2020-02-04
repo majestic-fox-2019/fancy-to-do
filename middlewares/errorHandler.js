@@ -1,18 +1,11 @@
 function clientErrorHandler (err, req, res, next){
     try {
-        if(err.statusCode){
-            res
-                .status(err.statusCode)
-                .json({ errors: err.message})
+        if(err.name == 'SequelizeDatabaseError'){
+            next(err)
         } else {
-            message = []
-            err.errors.forEach(el => {
-                message.push(el.message)
-            });
-    
             res
-                .status(400)
-                .json({ errors: message})
+                .status(err.statusCode || 400)
+                .json({ errors: err.message.split('\n') })
         }
     }
     catch(err){

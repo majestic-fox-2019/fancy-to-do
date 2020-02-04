@@ -1,10 +1,9 @@
-const jwt = require('jsonwebtoken')
+const helper = require('../helpers/helper')
 
 module.exports = (req, res, next) => {
     try {
         if(req.headers.token){
-            let token = jwt.verify(req.headers.token, process.env.secret_key)
-            req.user = token
+            req.user = helper.verification(req.headers.token)
             next()
         } else {
             throw {

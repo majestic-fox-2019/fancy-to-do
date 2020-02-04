@@ -1,7 +1,12 @@
 const { User } = require('../models')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
+const helper = require('../helpers/helper')
 
+const axios = require('axios')
+const mailboxValidator = axios.create({
+    baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=ZLDJ9PTKF83YSRQUUJW9&',
+});
 
 class UserController {
     static login(req, res, next){
@@ -19,42 +24,38 @@ class UserController {
                             id: user.id,
                             email: user.email,
                         }
-
-                        let token = jwt.sign(result, process.env.secret_key)
-                        res.status(200).json({accessToken: token})
+                        let token = helper.generate(result)
+                        res.status(200).json({ accessToken: token })
                     } else {
-                        throw {
-                            statusCode: 404,
-                            message: 'Incorrect Username or Password'
-                        }
+                        next(createError(404, 'Incorrect Username or Password'))
                     }
-                    
                 } else {
-                    throw {
-                        statusCode: 404,
-                        message: 'Incorrect Username or Password'
-                    }
+                    next(createError(404, 'Incorrect Username or Password'))
                 }
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 
     static register(req, res, next){
         let { username, email, password } = req.body
-        User
-            .create({
-                username,
-                email,
-                password
+
+        mailboxValidator
+            .get(`&email=${email}`)
+            .then(user => {
+                if(user.data.is_verified == 'True'){
+                    return User.create({
+                        username,
+                        email,
+                        password
+                    })
+                } else {
+                    throw createError(400, 'Email does not exist or not verified')
+                }
             })
-            .then(user => { 
-                res.status(201).json(user)
+            .then(result => {
+                res.status(201).json(result)
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 }
 

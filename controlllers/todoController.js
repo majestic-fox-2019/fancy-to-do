@@ -1,6 +1,7 @@
 'use strict'
 
-const { Todo, User } = require('../models')
+const { Todo } = require('../models')
+const createError = require('http-errors')
 
 class TodoController {
     static showAll(req, res, next){
@@ -13,9 +14,7 @@ class TodoController {
             .then(list => {
                 res.status(200).json(list)
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 
     static findById(req, res, next){
@@ -29,15 +28,10 @@ class TodoController {
                 if (found){
                     res.status(200).json(found)
                 } else {
-                    throw {
-                            statusCode: 404,
-                            message: 'Error! Data not found'
-                        }
-                    }
+                    next(createError(404, 'Error! Data not found'))
+                }
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 
     static createTodo(req, res, next){
@@ -54,9 +48,7 @@ class TodoController {
             .then(created => {
                 res.status(201).json(created)
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 
     static updateTodo(req, res, next){
@@ -81,18 +73,13 @@ class TodoController {
                         returning:true
                     })
                 } else {
-                    throw {
-                        statusCode: 404,
-                        message: 'Error! Data not found'
-                    }
+                    next(createError(404, 'Error! Data not found'))
                 }
             })
             .then(updated => {
                 res.status(200).json(updated)
             })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
     
     static deleteTodo(req, res, next){
@@ -110,41 +97,13 @@ class TodoController {
                         }
                     })
                 } else {
-                    throw {
-                        statusCode: 404,
-                        message: 'Error! Data not found'
-                    }
+                    next(createError(404, 'Error! Data not found'))
                 }
             })
             .then(result => {
                 res.status(200).json(deletedData)
             })
-            .catch(err => {
-                next(err)
-            })
-    }
-
-    static authorization(req, res, next){
-        Todo
-            .findOne({
-                where: {
-                    id: req.params.id,
-                    UserId: req.user.id
-                }
-            })
-            .then(found => {
-                if(found){
-                    next()
-                } else {
-                    throw {
-                        statusCode: 401,
-                        message: 'Unauthorized Access'
-                    }
-                }
-            })
-            .catch(err => {
-                next(err)
-            })
+            .catch(next)
     }
 }
 
