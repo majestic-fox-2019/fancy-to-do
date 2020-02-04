@@ -11,7 +11,7 @@ class TodoController {
             } else {
                 throw createError(404, 'Data not found')
             }
-        }).catch(err => next(err))
+        }).catch(next)
     }
 
     static addTodo(req, res, next) {
@@ -19,9 +19,7 @@ class TodoController {
         Todo.create({ title, description, status, due_date, UserId: req.loggedUserId })
             .then(result => {
                 res.status(201).json(result)
-            }).catch(err => {
-                next(err)
-            })
+            }).catch(next)
     }
 
     static getTodoItem(req, res, next) {
@@ -33,31 +31,19 @@ class TodoController {
             } else {
                 throw createError(404, `Data Not found`)
             }
-        }).catch(err => next(err))
+        }).catch(next)
     }
 
     static editTodo(req, res, next) {
         const { title, description, status, due_date } = req.body
-
-        Todo.findOne({
-            where: {
-                id: req.params.id
-            }
-        }).then(todo => {
-            if (todo.UserId == req.loggedUserId) {
-                return Todo.update(
-                    { title, description, status, due_date },
-                    {
-                        where: { id: req.params.id },
-                        returning: true,
-                        individualHooks: true
-                    })
-            } else {
-                throw createError(403, 'You do not have access to this action')
-            }
-        }).then(result => {
-            res.status(200).json(result[1][0])
-        }).catch(err => next(err))
+        Todo.update({ title, description, status, due_date },
+            {
+                where: { id: req.params.id },
+                returning: true,
+                individualHooks: true
+            }).then(result => {
+                res.status(200).json(result[1][0])
+            }).catch(next)
     }
 
     static deleteTodo(req, res, next) {
@@ -75,7 +61,7 @@ class TodoController {
                 } else {
                     throw createError(404, `Data Not Found`)
                 }
-            }).catch(err => next(err))
+            }).catch(next)
     }
 }
 

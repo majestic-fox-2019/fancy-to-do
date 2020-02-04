@@ -27,6 +27,11 @@ module.exports = (err, req, res, next) => {
             res.status(403).json({ message: err.message })
             break
         }
+
+        case 'UnauthorizedError' : {
+            res.status(401).json({ message: err.message })
+            break
+        }
         default: {
             res.status(500).json({
                 message: 'Internal server error'
