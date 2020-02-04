@@ -52,7 +52,7 @@ class TodoController {
         }).request({
           Messages: [{
             From: {
-              Email: "rafiandria23@gmail.com",
+              Email: `${process.env.MJ_SENDER_EMAIL}`,
               Name: "Fancy Todo"
             },
             To: [{
