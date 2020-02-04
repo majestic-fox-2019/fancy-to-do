@@ -1,10 +1,10 @@
-const Route = require('express').Router()
+const TaskRoute = require('express').Router()
 const TaskController = require('../controllers/taskController')
 
-Route.get('/', TaskController.list)
-Route.post('/', TaskController.add)
-Route.get('/:id', TaskController.findOneData)
-Route.put('/:id', TaskController.update)
-Route.delete('/:id', TaskController.delete)
+TaskRoute.get('/', TaskController.list)
+TaskRoute.post('/', TaskController.add)
+TaskRoute.get('/:id', TaskController.findOneData)
+TaskRoute.put('/:id', TaskController.update)
+TaskRoute.delete('/:id', TaskController.delete)
 
-module.exports = Route
+module.exports = TaskRoute
