@@ -1,11 +1,16 @@
 const { Todo } = require('../models')
 const createError = require('http-errors')
-
+// const jwt = require('jsonwebtoken');
+// const decoded = require('../helpers/decoded')
 
 class TodoController {
   static findAll(req, res, next) {
     Todo
-      .findAll()
+      .findAll({
+        where: {
+          UserId: req.user.id
+        }
+      })
       .then(result => {
         res.status(200).json(result)
       })
@@ -15,12 +20,17 @@ class TodoController {
   }
 
   static create(req, res, next) {
+
     let todo = {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.user.id
     }
+
+    console.log(todo, '< ini details')
+
     Todo
       .create(todo)
       .then(result => {
@@ -40,7 +50,8 @@ class TodoController {
     Todo
       .findOne({
         where: {
-          id: id
+          id: id,
+          UserId: req.user.id
         }
       })
       .then(result => {
@@ -52,7 +63,7 @@ class TodoController {
           //   message: 'Error 404, command not found!'
           // }
           // next(err)
-          throw (createError(404, 'Error 404, command not found!'))
+          throw createError(404, 'Error 404, command not found!')
         }
         // res.send(result)
       })
@@ -66,7 +77,8 @@ class TodoController {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.user.id
     }
 
     let id = req.params.id
@@ -74,7 +86,8 @@ class TodoController {
     Todo
       .update(todo, {
         where: {
-          id: id
+          id: id,
+          UserId: todo.UserId
         },
         returning: true
       })
@@ -116,7 +129,8 @@ class TodoController {
         return Todo
           .destroy({
             where: {
-              id: id
+              id: id,
+              UserId: req.user.id
             }
           })
 

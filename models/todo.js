@@ -61,6 +61,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Due date must be filled!'
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER
     }
   }, { sequelize })
 

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const todoController = require('../controllers/todoController')
+const userController = require('../controllers/userController')
 
-router.post('/', todoController.create)
+router.post('/', userController.register)
 
 module.exports = router
