@@ -1,6 +1,6 @@
 # Fancy-To-Do
 
-**Base URL :** `http://localhost:8000`
+**Base URL :** `http://localhost:3000`
 
 **List of Routes:**
 

@@ -13,7 +13,7 @@ function authorization(req, res, next){
             if(found){
                 next()
             } else {
-                next(createError(404, 'Error! Data not found'))
+                next(createError(401, 'Unauthorized Access'))
             }
         })
         .catch(next)

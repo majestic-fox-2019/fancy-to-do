@@ -1,4 +1,5 @@
 const helper = require('../helpers/helper')
+const createError = require('http-errors')
 
 module.exports = (req, res, next) => {
     try {
@@ -6,10 +7,7 @@ module.exports = (req, res, next) => {
             req.user = helper.verification(req.headers.token)
             next()
         } else {
-            throw {
-                statusCode: 400,
-                message: 'Invalid Token'
-            }
+            throw (createError(400, 'Invalid Token'))
         }
     }
     catch (error) {
