@@ -3,9 +3,13 @@ const createError = require('http-errors')
 
 class TodoController {
   static getUserTodos(req, res, next) {
-    Todo.findAll({ where: { UserId: req.params.id } }, { include: [User] })
+    Todo.findAll({ where: { UserId: req.loggedIn.id, ProjectId: null } }, { include: [User] })
       .then(result => {
-        res.status(200).json(result)
+        if(result.length == 0) {
+          throw {errCode: 404, msg: 'You dont have any todo yet'}
+        } else {
+          res.status(200).json(result)
+        }
       })
       .catch(err => {
         next(err)
@@ -15,9 +19,15 @@ class TodoController {
   static getAllTodos(req, res, next) {
     Todo.findAll({ include: [User] })
       .then(result => {
-        res.status(200).json(result)
+        if(result.length == 0) {
+          throw {errCode: 404, msg: 'You dont have any todo yet'}
+        } else {
+          res.status(200).json(result)
+        }
       })
-      .catch(next)
+      .catch(err => {
+        next(err)
+      })
   }
 
   static createTodo(req, res, next) {
@@ -26,7 +36,7 @@ class TodoController {
       description: req.body.description,
       status: 'ongoing',
       due_date: req.body.due_date,
-      UserId: req.body.user_id,
+      UserId: req.loggedIn.id,
       ProjectId: req.body.project_id || null
     }
     Todo.create(data)

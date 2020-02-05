@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class Project extends Model {}
   Project.init(
     {
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      owner: DataTypes.INTEGER
     },
     { sequelize }
   )

@@ -5,8 +5,8 @@ const { comparePass } = require('../helpers/bcrypt')
 class UserController {
   static register(req, res, next) {
     const form = {
-      email: req.body.email,
-      password: req.body.password
+      email: req.body.email || null,
+      password: req.body.password || null
     }
     User.create(form)
       .then(result => {
@@ -23,13 +23,13 @@ class UserController {
 
   static login(req, res, next) {
     const form = {
-      email: req.body.email,
-      password: req.body.password
+      email: req.body.email || null,
+      password: req.body.password || null
     }
     User.findOne({ where: { email: form.email } })
       .then(result => {
         if (!result) {
-          throw createError(404, 'User not found')
+          throw {errCode: 404, msg: 'Email or Password is invalid'}
         } else {
           const valid = comparePass(form.password, result.password)
           if (valid) {
@@ -38,6 +38,8 @@ class UserController {
               result: result,
               token: token
             })
+          } else {
+            throw {errCode: 400, msg: 'Email or Password is invalid'}
           }
         }
       })

@@ -1,18 +1,33 @@
-const { Todo } = require('../models')
+const { Todo, Project } = require('../models')
 
-module.exports = (req, res, next) => {
+function todoAuthorization(req, res, next) {
   const userID = req.loggedIn.id
-  try {
-    Todo.findOne({ where: { UserId: userID } }).then(result => {
-      if (!result) {
-        throw err
+  Todo.findOne({ where: { id: req.params.id } })
+    .then(result => {
+      if (!result || result.UserId != userID) {
+        throw { errCode: 403, msg: 'Sorry, you are not authorized' }
       } else {
         next()
       }
     })
-  } catch (err) {
-    err.errCoode = 403
-    err.msg = 'Sorry you are not authorized'
-    next(err)
-  }
+    .catch(err => {
+      next(err)
+    })
 }
+
+function projectAuthorization(req, res, next) {
+  const userID = req.loggedIn.id
+  Project.findOne({ where: { id: req.params.projectId } })
+    .then(result => {
+      if (!result || result.owner != userID) {
+        throw { errCode: 403, msg: 'Sorry, you are not authorized' }
+      } else {
+        next()
+      }
+    })
+    .catch(err => {
+      next(err)
+    })
+}
+
+module.exports = { todoAuthorization, projectAuthorization }
