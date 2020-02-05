@@ -10,7 +10,6 @@ $(document).ready(() => {
         $(".modalLogin > .close").click();
     }
 
-
     $("#btnLogin").on('click', () => {
         $('.ui.modal.modalLogin').modal('show');
     });

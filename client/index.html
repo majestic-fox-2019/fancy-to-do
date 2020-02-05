@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="scripts/semantic-ui-css/semantic.min.css">
         <link rel="stylesheet" href="root_folder/css/main.css">
         <title>Todo Apps</title>
+        <meta name="google-signin-client_id" content="131639698609-9ng0adgrma9ptfv728m8orgugu42tfj9.apps.googleusercontent.com">
     </head>
     <body>
         <div class="ui container">
@@ -64,10 +65,11 @@
                   </form>
                   <div class="ui message">
                     Belum punya akun? 
-                    <button id="btnRegister" class="ui primary button">Register</button>
-                    <button class="ui primary button">With Google</button>
-  
-                  </div>
+                    <div>
+                      <button  style="float: left; margin-right: 1%;"  id="btnRegister" class="ui primary button">Register</button  style="float: left; margin-right: 1%;" >
+                      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    </div>
+                 </div>
             </div>
             <!-- End Login Modal -->
 
@@ -107,9 +109,10 @@
             <div class="ui modal modalTodo">
                 <i class="close icon"></i>    
                 <div class="header">
-                  Todo Form
+                  <i class="calendar plus icon"></i>
+                  Add Todo
                 </div>
-                <div id="alertRegister" class="ui negative message" style="display: none;">
+                <div id="alertTodo" class="ui negative message" style="display: none;">
                     <i class="close icon"></i>
                     <div class="header">
                       
@@ -119,17 +122,23 @@
                     <div class="ui stacked segment">
                       <div class="field">
                         <div class="ui left icon input">
-                          <i class="user icon"></i>
-                          <input type="text" id="emailRegister" placeholder="E-mail address">
+                          <i class="clipboard icon"></i>
+                          <input type="text" id="input_title" placeholder="Title">
                         </div>
                       </div>
                       <div class="field">
                         <div class="ui left icon input">
-                          <i class="lock icon"></i>
-                          <input type="password" id="passwordRegister" placeholder="Password">
+                          <i class="pencil icon"></i>
+                          <input type="text" id="input_description" placeholder="Description">
                         </div>
                       </div>
-                      <div class="ui fluid large teal submit button" id="btnSubmitRegister">Register</div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="calendar times icon"></i>
+                          <input type="text" id="input_due_date" placeholder="Due Date: (format: YYYY-MM-DD)">
+                        </div>
+                      </div>                      
+                      <div class="ui fluid large teal submit button" id="btnSubmitForm">Save</div>
                     </div>              
                   </form>
             </div>
@@ -153,6 +162,17 @@
             </div>
         </script>
 
+        <script>
+          function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+          }
+        </script>
+      
+
         <script id="error" type="text/x-handlebars-template">
             <div class="ui {{color}} inverted segment" style="height:250px;">
             <br>
@@ -173,16 +193,33 @@
                 <h2>This is world class todo apps!</h2><br><br>
                 Core of the Core<br>
                 Inti dari Inti<br>
-                Ahlinya Ahli
+                Ahlinya Ahli<br>
+                <a href="#" onclick="signOut();">Sign out</a>
             </p>
+        </script>
+
+        <script>
+          function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              console.log('User signed out.');
+            });
+          }
         </script>
 
         <script id="todos" type="text/x-handlebars-template">
             <h1 class="ui header">Todo List</h1>
             <hr>
             <button id="addTodo" class="ui primary button align-right">
+              <i class="calendar plus icon"></i>
                 Add Todo
             </button>
+            <div id="alertTodoTable" class="ui negative message" style="display: none;">
+                <i class="close icon"></i>
+                <div class="header">
+                  
+                </div>
+            </div>
             <table class="ui celled padded table">
                 <thead>
                     <tr>
@@ -237,5 +274,7 @@
         <script src="root_folder/js/login.js"></script>
         <script src="root_folder/js/register.js"></script>
         <script src="root_folder/js/logout.js"></script>
+
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </body>
 </html>

@@ -1,3 +1,3 @@
 const formatDate = (date) => {
-    return date;
+    return new Date(date).toDateString();
 }

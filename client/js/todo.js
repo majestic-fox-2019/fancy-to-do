@@ -1,10 +1,21 @@
-    $("#todo").on('click', function() {
-        getTodos();
-    });
+$(document).ready(function() {
+    const clearForm = () => {
+        $("#input_title").val("");
+        $("#input_description").val("");
+        $("#input_due_date").val("");
+    }
+
+    const openModal = () => {
+        $('.ui.modal.modalTodo').modal('show');        
+    };
+
+    const closeModal = () => {
+        $('.ui.modal.modalTodo').modal('hide');        
+    }
     
-    function getTodos() {
+    const getTodos = () => {
         $.ajax({
-            method: "GET",
+            type: "GET",
             url: `${BACKEND_URL}/todos`,
             headers: {
                 accesstoken: localStorage.getItem("accesstoken")
@@ -29,8 +40,14 @@
                         <td>${formatDate(todo.createdAt)}</td>
                         <td>${formatDate(todo.updatedAt)}</td>
                         <td>
-                            <button class="ui green button">Edit</button>
-                            <button class="ui orange button">Delete</button>
+                            <button class="ui green button goblok" id="edit${todo.id}">
+                                <i class="edit icon"></i>
+                                Edit
+                            </button>
+                            <button class="ui orange button" id="delete${todo.id}" idtodo="${todo.id}">
+                                <i class="trash icon"></i>
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 `
@@ -42,6 +59,83 @@
         });    
     }
 
-    $("#addTodo").click(function() {
-        
+    $("#todo").on('click', function() {
+        getTodos();
     });
+
+
+    $("#addTodo").on('click', function() {
+        openModal();        
+    });
+
+    $("#btnSubmitForm").unbind().on('click', function() {
+        let title           = $("#input_title").val();
+        let description     = $("#input_description").val();
+        let due_date        = $("#input_due_date").val();
+
+        $.ajax({
+            type: "POST",
+            url: `${BACKEND_URL}/todos`,
+            data: {title, description, due_date},
+            headers: {
+                accesstoken: localStorage.getItem("accesstoken")
+            }
+        })
+        .then(newTodo => {
+            setSuccessAlert();
+            showAlert();
+            clearForm();
+            setTimeout(() => {
+                hideAlert();
+                closeModal();
+                getTodos();
+            }, 1000);
+
+        })
+        .catch(err => {
+            setErrorAlert(err);
+            showAlert();
+            setTimeout(() => {
+                hideAlert();
+            }, 3000);
+        })        
+    });
+
+    $(document).unbind().on('click',  '[id^=edit]', function() {
+        let idTodo = $(this).attr("idtodo");
+        openModal();
+    });
+
+    $(document).unbind().on('click',  '[id^=delete]', function() {
+        let idTodo = $(this).attr("idtodo");
+        if (idTodo && confirm("Are you sure you want to delete task?") == true) {            
+            $.ajax({
+                type: "DELETE",
+                url: `${BACKEND_URL}/todos/${idTodo}`,
+                headers: {
+                    accesstoken: localStorage.getItem("accesstoken")
+                }
+            })
+            .then(deletedTodo => {
+                setSuccessAlert();
+                showAlert();
+                clearForm();
+                setTimeout(() => {
+                    hideAlert();
+                    closeModal();
+                    getTodos();
+                }, 1000);
+    
+            })
+            .catch(err => {
+                setErrorAlert(err);
+                showAlert();
+                setTimeout(() => {
+                    hideAlert();
+                }, 3000);
+            })
+        }
+    });
+
+
+});

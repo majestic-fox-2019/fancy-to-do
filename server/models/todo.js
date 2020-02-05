@@ -49,6 +49,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, 
   {
+    hooks: {
+      beforeCreate(instance, options){
+        if (!instance.status) {
+          instance.status = "To Do";
+        }
+      }
+    },
     sequelize
   }
   );
