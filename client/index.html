@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="scripts/semantic-ui-css/semantic.min.css">
+        <link rel="stylesheet" href="root_folder/css/main.css">
+        <title>Todo Apps</title>
+    </head>
+    <body>
+        <div class="ui container">
+            <div class="ui four item inverted orange menu">
+                <a class="item" href="/">
+                    <i class="home icon"></i>
+                    Home
+                </a>
+                <a class="item" href="/todos">
+                    <i class="calendar outline icon"></i>
+                    Todos
+                </a>
+                <a class="item" href="/users">
+                    <i class="user outline icon"></i>
+                    User
+                </a>        
+                <div id="btnLogin" class="btn header item">
+                    <i class="sign-in icon"></i>
+                    Login / Register
+                </div>         
+                <div id="btnLogout" class="btn header item" style="display: none;">
+                    <i class="sign-out icon"></i>
+                    Logout
+                </div>                                
+            </div>
+
+            <!-- Login Modal -->
+            <div class="ui modal modalLogin">
+                <i class="close icon"></i>    
+                <div class="header">
+                  Login / Register
+                </div>
+                <div id="alert" class="ui negative message" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="user icon"></i>
+                          <input type="text" id="email" placeholder="E-mail address">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="lock icon"></i>
+                          <input type="password" id="password" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="ui fluid large teal submit button" id="btnSubmitLogin">Login</div>
+                    </div>              
+                  </form>
+                  <div class="ui message">
+                    Belum punya akun? <a href="#">Sign Up | Google | Github | Twitter</a>
+                  </div>
+              </div>
+            <!-- End Login Modal -->
+
+            <!-- Application Root -->
+            <div id="app"></div>
+        </div>
+
+        <script src="scripts/jquery/dist/jquery.min.js"></script>
+        <script src="scripts/semantic-ui-css/semantic.min.js"></script>
+        <script src="scripts/axios/dist/axios.min.js"></script>
+        <script src="scripts/handlebars/dist/handlebars.min.js"></script>
+        <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
+        <script src="root_folder/config/configurations.js"></script>
+        <script src="root_folder/js/app.js"></script>
+        <script src="root_folder/js/login.js"></script>
+        
+        <!-- Templates -->
+        <script id="error-template" type="text/x-handlebars-template">
+            <div class="ui {{color}} inverted segment" style="height:250px;">
+            <br>
+            <h2 class="ui center aligned icon header">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                {{title}}
+                <div class="sub header">{{message}}</div>
+                </div>
+            </h2>
+            </div>
+        </script>
+
+        <script id="home" type="text/x-handlebars-template">
+            <h1 class="ui header">Welcome to Todo Apps</h1>
+            <hr>
+            <p>
+                <h2>This is world class todo apps!</h2><br><br>
+                Core of the Core<br>
+                Inti dari Inti<br>
+                Ahlinya Ahli
+            </p>
+        </script>
+
+        <script id="todos" type="text/x-handlebars-template">
+            <h1 class="ui header">Todos</h1>
+            <hr>
+            <button class="ui primary button align-right">
+                Add Todo
+            </button>
+            <table class="ui celled padded table">
+                <thead>
+                    <tr>
+                        <th class="single line">No</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Modified At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <h2 class="ui center aligned header">1</h2>
+                    </td>
+                    <td>waokwaowako</td>
+                    <td>
+                      Mandiin anak ayam 2 ekor.skda.slkdsalasdsadsadsadasdaskl;dsakd;lsakd;l;dk
+                    </td>
+                    <td>
+                        To Do
+                    </td>
+                    <td>2020-02-02</td>
+                    <td>2020-02-02</td>
+                    <td>
+                        
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr><th colspan="7">
+                    <div class="ui right floated pagination menu">
+                      <a class="icon item">
+                        <i class="left chevron icon"></i>
+                      </a>
+                      <a class="item">1</a>
+                      <a class="item">2</a>
+                      <a class="item">3</a>
+                      <a class="item">4</a>
+                      <a class="icon item">
+                        <i class="right chevron icon"></i>
+                      </a>
+                    </div>
+                  </th>
+                </tr></tfoot>
+              </table>
+        </script>
+        
+        <script id="users" type="text/x-handlebars-template">
+            <h1 class="ui header">Users</h1>
+            <hr>
+        </script>
+    </body>
+</html>
