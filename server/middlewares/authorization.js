@@ -41,25 +41,21 @@ function forProject(req, res, next) {
                 next(err)
             })
     } else if (req.params.idTodo) {
-        modelTodo.findAll({ where: { id: req.params.idTodo } })
+        modelTodo.findOne({ where: { id: req.params.idTodo } })
             .then(foundTodos => {
-
-                if (foundTodos.length == 0) {
-                    next({ code: 404, message: "Id todo not found" })
-                }
-
-                for (let j of foundTodos) {
-                    if (j.UserId == req.payload.id) {
-
-                        req.ProjectId = j.ProjectId
+                let projectIni = foundTodos.dataValues.ProjectId
+                return modelProjectUser.findAll({ where: { ProjectId: projectIni } })
+            })
+            .then(allProjects => {
+                for (let i of allProjects) {
+                    if (i.dataValues.UserId == req.payload.id) {
+                        req.ProjectId = i.dataValues.ProjectId
                     }
                 }
-
                 if (!req.ProjectId) {
                     next({ code: 401, message: "Unauthorized" })
                 } else {
                     next()
-                    // res.status(200).json(ok)
                 }
             })
             .catch(err => {

@@ -5,5 +5,6 @@ routes.post("/register", controlUser.register)
 routes.post("/login", controlUser.login)
 routes.get("/:id", controlUser.getUserById)
 routes.post("/google", controlUser.google)
+routes.post("/facebook", controlUser.facebook)
 
 module.exports = routes
