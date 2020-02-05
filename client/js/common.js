@@ -8,19 +8,24 @@ const hideAlert = () => {
 
 const setSuccessAlert = () => {
     $("#alert,#alertRegister,#alertTodo,#alertTodoTable").prop('class', 'ui success message');
-    $("#alert,#alertRegister,#alertTodo > .header").text("Success");
+    $("#alert,#alertRegister,#alertTodo,#alertTodoTable > .header").text("Success");
 }
 
 const setErrorAlert = (err) => {
     $("#alert,#alertRegister,#alertTodo,#alertTodoTable").prop('class', 'ui negative message');
     const {Error, msg, Validations} = err.responseJSON;
     let allAlerts = $("#alert,#alertRegister,#alertTodo, #alertTodoTable > .header");
-    if (typeof Error.message !== "undefined") {
-        alert("a");
-        allAlerts.text(Error.message);
-    }else{
-        allAlerts.text(Error || Validations[0] || msg);
+    if(Error) {
+        allAlerts.text(Error);
     }
+    else if (Validations[0]) {
+        allAlerts.text(Validations[0]);
+    }else if(msg){
+        allAlerts.text(msg);
+    }else{
+        allAlerts.text(Error.message    );
+    }
+    
 }
 
 const showBtnLogin = () => {

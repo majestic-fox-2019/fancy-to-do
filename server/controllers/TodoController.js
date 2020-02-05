@@ -4,12 +4,13 @@ const Todo = require('./../models').Todo;
 
 class TodoController {
     static create(req, res, next) {
-        const {title, description, status, due_date} = req.body;
+        const {title, description, status, due_date, UserId} = req.body;
         Todo.create({
             title, 
             description, 
             status, 
-            due_date
+            due_date,
+            UserId: req.user.id
         })
         .then(result => {
             res.status(201).json(result);
