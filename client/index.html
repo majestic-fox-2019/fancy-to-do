@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+  <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" type="text/css" href="css/util.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <meta name="google-signin-client_id" content="630446600919-t5mafdorko7j3993dlqi44futmnb1eg6.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <title>To Do List</title>
+</head>
+<body onload="myFunction()">
+  <div id="loginPage">
+    <div class="limiter">
+      <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+          <form class="login100-form validate-form" id="login">
+            <span class="login100-form-title p-b-49">
+              Login
+            </span>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "Username is reauired">
+              <span class="label-input100">Email</span>
+              <input class="input100" id="loginEmail" type="email" name="username" placeholder="Type your email">
+              <span class="focus-input100" data-symbol="&#xf206;"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Password is required">
+              <span class="label-input100">Password</span>
+              <input class="input100" id="loginPassword" type="password" name="pass" placeholder="Type your password">
+              <span class="focus-input100" data-symbol="&#xf190;"></span>
+            </div>
+            
+            <div class="text-right p-t-8 p-b-31">
+              <a href="" id="registerPageButton">register</a>
+            </div>
+            
+            <div class="container-login100-form-btn">
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn">
+                  Login
+                </button>
+              </div>
+            </div>
+  
+            <div class="txt1 text-center p-t-54 p-b-20">
+              <span>
+                Or Sign Up Using
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <a href="#" onclick="signOut();">Sign out</a>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>  
+  </div>
+  <!-- <div id="loginPage"> -->
+    <!-- <form id="login">
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" value="" class="form-control" id="loginEmail" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" value="" class="form-control" id="loginPassword">
+      </div>
+      <a href="" id="registerPageButton">register</a>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      <a href="#" onclick="signOut();">Sign out</a>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div> -->
+
+  <div style="display: none;" id="homePage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <a class="nav-link logout" href="#">Logout</a>
+    </nav>
+    <form id="addList">
+      <h3>Add List</h3>
+      <div class="form-group">
+        <label >title</label>
+        <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label>description</label>
+        <input type="text" class="form-control" id="description">
+      </div>
+      <div class="form-group">
+        <label>status</label>
+        <input type="text" class="form-control" id="status">
+      </div>
+      <div class="form-group">
+        <label>due_date(exp:2020-11-29)</label>
+        <input type="text" class="form-control" id="description">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form></br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Due_date</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableList">
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display: none;" id="updatePage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <a class="nav-link logout" href="#">Logout</a>
+    </nav>
+    <form id="update">
+      <h3>Update List</h3>
+      <div class="form-group">
+        <label >title</label>
+        <input type="text" class="form-control" id="titleUpdate" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label>description</label>
+        <input type="text" class="form-control" id="descriptionUpdate">
+      </div>
+      <div class="form-group">
+        <label>status</label>
+        <input type="text" class="form-control" id="statusUpdate">
+      </div>
+      <div class="form-group">
+        <label>due_date(exp:2020-11-29)</label>
+        <input type="text" class="form-control" id="due_dateUpdate">
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+
+  <div style="display: none;" id="registerPage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand home" href="#">login</a>
+    </nav>
+    <h2>Register</h2>
+    <form id="register">
+      <div class="form-group">
+        <label for="exampleInputEmail1">username</label>
+        <input type="text" class="form-control" id="usernameRegister" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">email</label>
+        <input type="email" class="form-control" id="emailRegister">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">password</label>
+        <input type="password" class="form-control" id="passwordRegister">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+</body>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="script.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+</html>
