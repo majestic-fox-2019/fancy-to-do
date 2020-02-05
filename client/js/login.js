@@ -1,40 +1,16 @@
 $(document).ready(() => {
+    checkLogin();
+
     const clearLoginForm = () => {
         $("#email").val("");
         $("#password").val("");
     }
-
-    const showAlert = () => {
-        $("#alert").show();
-    }
-
-    const hideAlert = () => {
-        $("#alert").hide();
-    }
-
-    const setSuccessAlert = () => {
-        $("#alert").prop('class', 'ui success message');
-        $("#alert > .header").text("Login success");
-    }
-
-    const setErrorAlert = (err) => {
-        $("#alert").prop('class', 'ui negative message');
-        $("#alert > .header").text(err.responseJSON.Error)
-    }
+   
 
     const hideLoginModal = () => {
         $(".modalLogin > .close").click();
     }
 
-    const showBtnLogin = () => {
-        $("#btnLogout").hide();
-        $("#btnLogin").show();        
-    }
-
-    const showBtnLogout = () => {
-        $("#btnLogout").show();
-        $("#btnLogin").hide();
-    }
 
     $("#btnLogin").on('click', () => {
         $('.ui.modal.modalLogin').modal('show');
@@ -51,6 +27,8 @@ $(document).ready(() => {
         })
         .then(token => {
             localStorage.setItem("accesstoken", token.accessToken);
+            localStorage.setItem("email", email);
+
             setSuccessAlert();
             showAlert();
             clearLoginForm();
@@ -58,7 +36,7 @@ $(document).ready(() => {
                 hideAlert();
                 hideLoginModal();
             }, 1000);
-            showBtnLogout();
+            checkLogin();
         })
         .catch(err => {
             setErrorAlert(err);
@@ -66,7 +44,6 @@ $(document).ready(() => {
             setTimeout(() => {
                 hideAlert();
             }, 3000);
-            showBtnLogin();
         })
     });
 
