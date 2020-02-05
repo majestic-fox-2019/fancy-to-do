@@ -2,6 +2,7 @@ const { User } = require('../models')
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
 const helper = require('../helpers/helper')
+const axios = require('axios')
 
 const { google } = require('googleapis')
 
@@ -15,7 +16,6 @@ const oAuth2Client = new google.auth.OAuth2(
     redirect_uri
 )
 
-const axios = require('axios')
 const mailboxValidator = axios.create({
     baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=ZLDJ9PTKF83YSRQUUJW9&',
 });
@@ -51,85 +51,71 @@ class UserController {
     static register(req, res, next){
         let { username, email, password } = req.body
 
-        // mailboxValidator
-        //     .get(`&email=${email}`)
-        //     .then(user => {
-            //         if(user.data.is_verified == 'True'){
-                // return 
-            User.create({
-                username,
-                email,
-                password
+        mailboxValidator
+            .get(`&email=${email}`)
+            .then(user => {
+                if(user.data.is_verified == 'True'){
+                    return User.create({
+                        username,
+                        email,
+                        password
+                    })
+                } else {
+                    throw createError(400, 'Email does not exist or not verified')
+                }
             })
-            // } else {
-            //     throw createError(400, 'Email does not exist or not verified')
-            // }
-            // })
             .then(result => {
                 res.status(201).json(result)
             })
             .catch(next)
     }
 
-    static googleSignIn(req, res, next){
-        const authorizeUrl = oAuth2Client.generateAuthUrl({
-                access_type: 'offline',
-                scope: 
-                [
-                    'https://www.googleapis.com/auth/gmail.readonly',
-                    'https://www.googleapis.com/auth/calendar',
-
-                ]
-        });
-
-        res.status(400).json(authorizeUrl)
-    }
-
-    static googleRedirect(req, res, next){
-        const code = req.query.code
-
-        let token = ''
-        let email = ''
-        oAuth2Client
-            .getToken(code)
-            .then(results => {
-                token = results.tokens
-                oAuth2Client.setCredentials(token)
-                return oAuth2Client
+    static googleLogin(req, res, next){
+        console.log(req.payload)
+        User
+            .findOne({
+                where: {
+                    email: req.payload.email
+                }
             })
-            .then(oAuth2Client => {
-                const gmail = google.gmail({
-                    auth: oAuth2Client,
-                    version: 'v1'
-                })
-                
-                return gmail.users.getProfile({
-                    auth: oAuth2Client,
-                    userId: 'me'
-                })
-            })
-            .then(({data}) => {
-                email = data.emailAddress
-
-                return User.findOne({
-                    where: {
-                        email: email
-                    }
-                })
+            .then(user => {
+                if(!user){
+                    return User.create({
+                        username: req.payload.name,
+                        email: req.payload.email,
+                        password: process.env.PASSWORD_DEFAULT
+                    })
+                } else {
+                    return user
+                }
             })
             .then(user => {
                 let payload = {
                     id: user.id,
-                    email: email,
-                    token
+                    email: user.email
                 }
-                token = helper.generate(payload)
+                // console.log(user.id)
+                let token = helper.generate(payload)
                 res.status(200).json(token)
             })
             .catch(err => {
-                next(err)
+                res.status(500).json(err)
             })
     }
+
+    // static googleSignIn(req, res, next){
+    //     const authorizeUrl = oAuth2Client.generateAuthUrl({
+    //             access_type: 'offline',
+    //             scope: 
+    //             [
+    //                 'https://www.googleapis.com/auth/gmail.readonly',
+    //                 'https://www.googleapis.com/auth/calendar',
+
+    //             ]
+    //     });
+
+    //     res.status(400).json(authorizeUrl)
+    // }
 }
 
 
