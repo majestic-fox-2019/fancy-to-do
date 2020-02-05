@@ -11,7 +11,7 @@
     <body>
         <div class="ui container">
             <div class="ui four item inverted orange menu">
-                <a class="item" href="/">
+                <a id="btnHome" class="item" href="/">
                     <i class="home icon"></i>
                     Home
                 </a>
@@ -103,26 +103,41 @@
             </div>
             <!-- End Register Modal -->
 
+            <!-- Todo Modal -->
+            <div class="ui modal modalTodo">
+                <i class="close icon"></i>    
+                <div class="header">
+                  Todo Form
+                </div>
+                <div id="alertRegister" class="ui negative message" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="user icon"></i>
+                          <input type="text" id="emailRegister" placeholder="E-mail address">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="lock icon"></i>
+                          <input type="password" id="passwordRegister" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="ui fluid large teal submit button" id="btnSubmitRegister">Register</div>
+                    </div>              
+                  </form>
+            </div>
+            <!-- End Todo Modal -->
             
             <!-- Application Root -->
             <div id="app"></div>
         </div>
-
-        <script src="scripts/jquery/dist/jquery.min.js"></script>
-        <script src="scripts/semantic-ui-css/semantic.min.js"></script>
-        <script src="scripts/axios/dist/axios.min.js"></script>
-        <script src="scripts/handlebars/dist/handlebars.min.js"></script>
-        <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
-        <script src="root_folder/config/configurations.js"></script>
-        <script src="root_folder/js/common.js"></script>
-        <script src="root_folder/helpers/formatDate.js"></script>
-
-        <script src="root_folder/js/app.js"></script>
-
-        <script src="root_folder/js/login.js"></script>
-        <script src="root_folder/js/register.js"></script>
-        <script src="root_folder/js/logout.js"></script>
-        <script src="root_folder/js/todo.js"></script>
         
         <!-- Templates -->
         <script id="unauthorized" type="text/x-handlebars-template">
@@ -165,7 +180,7 @@
         <script id="todos" type="text/x-handlebars-template">
             <h1 class="ui header">Todo List</h1>
             <hr>
-            <button class="ui primary button align-right">
+            <button id="addTodo" class="ui primary button align-right">
                 Add Todo
             </button>
             <table class="ui celled padded table">
@@ -199,12 +214,28 @@
                     </div> -->
                   </th>
                 </tr></tfoot>
-              </table>
+            </table>
+            <script src="root_folder/js/todo.js"></script>
         </script>
         
         <script id="users" type="text/x-handlebars-template">
             <h1 class="ui header">User List</h1>
             <hr>
         </script>
+
+        <script src="scripts/jquery/dist/jquery.min.js"></script>
+        <script src="scripts/semantic-ui-css/semantic.min.js"></script>
+        <script src="scripts/axios/dist/axios.min.js"></script>
+        <script src="scripts/handlebars/dist/handlebars.min.js"></script>
+        <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
+        <script src="root_folder/config/configurations.js"></script>
+        <script src="root_folder/js/common.js"></script>
+        <script src="root_folder/helpers/formatDate.js"></script>
+
+        <script src="root_folder/js/app.js"></script>
+
+        <script src="root_folder/js/login.js"></script>
+        <script src="root_folder/js/register.js"></script>
+        <script src="root_folder/js/logout.js"></script>
     </body>
 </html>

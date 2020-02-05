@@ -36,6 +36,7 @@ $(document).ready(() => {
                 hideLoginModal();
             }, 1000);
             checkLogin();
+            $("#btnHome").click();
         })
         .catch(err => {
             setErrorAlert(err);

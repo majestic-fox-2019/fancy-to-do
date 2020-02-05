@@ -4,5 +4,6 @@ $(document).ready(() => {
         localStorage.removeItem("email");
 
         checkLogin();
+        $("#btnHome").click();
     });
 });
