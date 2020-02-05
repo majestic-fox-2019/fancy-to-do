@@ -1,21 +1,23 @@
 let baseUrl = "http://localhost:3000"
 let idTodoForEdit
+let idTodoForEditProject
 $(window).on("load", function () {
+
     let token = localStorage.getItem("token")
     let username = localStorage.getItem("username")
     if (token) {
         $("#loginRegPage").hide()
         $("#errorMessage").hide()
-        $("#main").show()
         $("#myProjectsku").hide()
+        $("#main").show()
         $("#UsernameButton").text(function () {
             return username
         })
         getMyTodos()
     } else {
-        $("#loginRegPage").show()
         $("#errorMessage").hide()
         $("#main").hide()
+        $("#loginRegPage").show()
     }
 })
 
@@ -32,13 +34,21 @@ $(document).ready(function () {
         login(email, password)
     })
     $("#logout").click(function () {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut()
         logout()
     })
     $("#registerButton").click(function () {
         let email = $("#emailRegister").val()
         let password = $("#passwordRegister").val()
         let username = $("#usernameRegister").val()
-        register(email, password, username)
+        let confirmPassword = $("#confirmPassword").val()
+        if (password !== confirmPassword) {
+            $("#errorMessage").text("Password does not match")
+            $("#errorMessage").show()
+        } else {
+            register(email, password, username)
+        }
     })
     $("#createTodo").click(function () {
         let due_date = $("#dueDateModal").val()
@@ -75,6 +85,21 @@ $(document).ready(function () {
         let name = $("#projectNameCreate").val()
         addProject(name)
     })
+    $("#saveEditP").click(function () {
+        let title = $("#titleEditTP").val()
+        let id = idTodoForEditProject
+        let statusAwal = $("#statusEditP").val()
+        let status
+        if (statusAwal == "Done") {
+            status = true
+        } else {
+            status = false
+        }
+        let due_date = $("#dueDateEditP").val()
+        let description = $("#descriptionEditP").val()
+        editTodoProject(id, title, status, due_date, description)
+    })
+
 })
 
 function login(email, password) {
@@ -91,7 +116,6 @@ function login(email, password) {
             localStorage.setItem("UserId", succeed.userFound.id)
             $("#loginRegPage").hide()
             $("#main").show()
-
             $("#UsernameButton").text(function () {
                 return succeed.userFound.username
             })
@@ -179,7 +203,6 @@ function getMyTodos() {
             $(".bodyDone").append(isianDone)
         },
         error: function (err) {
-            // console.log(err)
             swal('Oops...', 'Something went wrong!', "error")
         }
     })
@@ -267,11 +290,11 @@ function getNameProject(id) {
 
 function preedit(id) {
     idTodoForEdit = id
-    getTodoById(id)
+    getTodoById(id, "editVanilla")
 
 }
 
-function getTodoById(id) {
+function getTodoById(id, statusedit) {
     $.ajax(`${baseUrl}/todos/${id}`, {
         type: "Get",
         success: function (resultGet) {
@@ -282,11 +305,17 @@ function getTodoById(id) {
             } else {
                 statusNya = "Not Done"
             }
-            $("#modalku").modal("show")
-            $("#titleEdit").val(resultGet.title)
-            $("#descriptionEdit").val(resultGet.description)
-            // $("#dueDateEdit").val(date)
-            $("#statusEdit").children(`[value="${statusNya}"]`).attr('selected', true);
+            if (statusedit == "editVanilla") {
+                $("#modalku").modal("show")
+                $("#titleEdit").val(resultGet.title)
+                $("#descriptionEdit").val(resultGet.description)
+                $("#statusEdit").children(`[value="${statusNya}"]`).attr('selected', true);
+            } else {
+                $("#modalEditTodoProject").modal("show")
+                $("#titleEditTP").val(resultGet.title)
+                $("#descriptionEditP").val(resultGet.description)
+                $("#statusEditP").children(`[value="${statusNya}"]`).attr('selected', true);
+            }
         },
         error: function (err) {
             swal("Oops...", err, "error")
@@ -308,6 +337,7 @@ function editTodo(id, title, status, due_date, description) {
             due_date
         },
         success: function () {
+
             $("#modalku").modal("hide")
             getMyTodos()
         },
@@ -380,27 +410,47 @@ function getMyProjects() {
 
 function generateCardProject(responseGetProject) {
     let appendProject = ""
-    for (let perProject of responseGetProject) {
+    if (responseGetProject.length > 0) {
+        for (let perProject of responseGetProject) {
+            appendProject += `
+            <div class="card-header projectHeader text-align-center">
+                <div class= "d-flex mx-auto justify-content-between align-self-center">
+                    <div class="d-flex">
+                        ${perProject.Project.name}
+                    </div>
+                    <div class="d-flex">
+                        <div class="btn btn-primary mr-2" onclick="newTodoProject(${perProject.ProjectId})" >New Todo</div>
+                        <div class="btn btn-primary" onclick="preInvite(${perProject.ProjectId})">Invite Member</div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+            <div class="card-body cardIsian overflow-auto">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                            <th>Assigned To</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>    
+                    <tbody id="bodyProject${perProject.ProjectId}" ></tbody>
+                </table>
+            </div>
+            `
+            getTodoInProject(perProject.ProjectId)
+            // console.log(perProject.ProjectId, "<<<<")
+        }
+    } else {
         appendProject += `
-        <div class="card-header projectHeader text-align-center">
-        ${perProject.Project.name}
-        </div>
-        <div class="card-body cardIsian overflow-auto" id="bodyProject${responseGetProject.ProjectId}">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Due Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>    
-                <tbody id="bodyProject${perProject.ProjectId}" ></tbody>
-            </table>
+        <div class="d-flex mx-auto justify-content-center text-align-center">
+            <h2>This project has no to do list. Create a new one.</h2>
         </div>
         `
-        getTodoInProject(perProject.ProjectId)
-        // console.log(perProject.ProjectId, "<<<<")
     }
     return appendProject
 }
@@ -457,12 +507,23 @@ function getTodoInProject(id) {
 function generateTableTodoProject(hasilGet) {
     let untukDiAppend = ""
     for (let satuan of hasilGet) {
+        let members = getMembers(satuan.ProjectId)
+        // console.log(members, "<<ini members")
+        let assigned = getUserById(satuan.UserId)
+        let statusnya
+        if (satuan.status) {
+            statusnya = "Done"
+        } else {
+            statusnya = "Not Done"
+        }
         let tanggal = new Date(satuan.due_date).toDateString()
         untukDiAppend += `
         <tr id=${satuan.id}>
         <td>${satuan.title}</td>
         <td>${satuan.description}</td>
+        <td>${statusnya}</td>
         <td>${tanggal}</td>
+        <td id='assigned${satuan.UserId}'>${assigned}</td>
         <td>
         <div class="d-flex">
         <div class="btn btn-primary" data-toggle="modal" data-target="#${satuan.id}" onclick="preeditTodoProject(${satuan.id})">Edit</div>
@@ -474,3 +535,202 @@ function generateTableTodoProject(hasilGet) {
     }
     return untukDiAppend
 }
+
+function getUserById(id) {
+    $.ajax(`${baseUrl}/user/${id}`, {
+        type: "GET",
+        success: function (hasilnya) {
+            // console.log(hasilnya.username, "<<ini username")
+            $("#assigned" + id).text(hasilnya.username)
+        },
+        error: function (err) {
+            let errorMessage = ""
+            for (let j = 0; j < err.responseJSON.length; j++) {
+                if (j == err.responseJSON.length - 1) {
+                    errorMessage += err.responseJSON[j]
+                } else {
+                    errorMessage += err.responseJSON[j] + ", "
+                }
+            }
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+    // .done(hasilnya => {
+    //     // console.log(hasilnya)
+    //     return hasilnya
+    // })
+}
+
+function preeditTodoProject(id) {
+    idTodoForEditProject = id
+    getTodoById(id, "editTodoProject")
+}
+
+
+function editTodoProject(id, title, status, due_date, description) {
+    $.ajax(`${baseUrl}/projects/todo/${id}`, {
+        type: "PUT",
+        data: {
+            title,
+            status,
+            due_date,
+            description
+        },
+        headers: {
+            token: localStorage.getItem("token")
+        },
+        success: function () {
+            $("#modalEditTodoProject").modal("hide")
+            getMyProjects()
+        },
+        error: function (err) {
+            console.log(err)
+            let errorMessage = err.responseJSON
+
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+}
+
+function predeleteTodoProject(id) {
+    $("#modalDeleteTodoProject").modal("show")
+    $("#deleteTodoProject").click(function () {
+        $.ajax(`${baseUrl}/projects/todo/${id}`, {
+            type: "DELETE",
+            headers: {
+                token: localStorage.getItem("token")
+            },
+            success: function () {
+                $("#modalDeleteTodoProject").modal("hide")
+                getMyProjects()
+            },
+            error: function (err) {
+                let errorMessage = ""
+                for (let j = 0; j < err.responseJSON.length; j++) {
+                    if (j == err.responseJSON.length - 1) {
+                        errorMessage += err.responseJSON[j]
+                    } else {
+                        errorMessage += err.responseJSON[j] + ", "
+                    }
+                }
+                swal('Oops...', errorMessage, "error")
+            }
+        })
+    })
+}
+
+function newTodoProject(idProject) {
+    $("#newTodoModalProject").modal("show")
+    $("#createTodoProject").click(function () {
+        let due_date = $("#dueDateTodoProject").val()
+        let title = $("#titleTodoProject").val()
+        let description = $("#descriptionTodoProject").val()
+        let status = false
+        createTodoProject(idProject, due_date, title, description, status)
+    })
+}
+
+function createTodoProject(id, due_date, title, description, status) {
+    $.ajax(`${baseUrl}/projects/todo/${id}`, {
+        type: "POST",
+        data: {
+            due_date,
+            title,
+            description,
+            status
+        },
+        headers: {
+            token: localStorage.getItem("token")
+        },
+        success: function () {
+            $("#newTodoModalProject").modal("hide")
+            getMyProjects()
+        },
+        error: function (err) {
+            let errorMessage = err.responseJSON
+
+            swal('Oops...', errorMessage, "error")
+        }
+    })
+}
+
+function getMembers(id) {
+    $.ajax(`${baseUrl}/projects/all/members/${id}`, {
+        type: "GET",
+        // success: function (allMembers) {
+        //     return allMembers
+        // },
+        error: function (err) {
+            swal('Oops...', err.responseJSON, "error")
+        }
+    })
+        .then(listMember => {
+            return listMember
+            console.log(listMember, "<< ini list member")
+        })
+}
+
+function preInvite(id) {
+    // $.ajax(`${baseUrl}/projects/addMember/`)
+    $("#inviteMember").modal("show")
+    $("#inviteThisMember").click(function () {
+        let email = $("#emailMember").val()
+        inviteMember(id, email)
+    })
+}
+
+function inviteMember(id, email) {
+    $.ajax(`${baseUrl}/projects/addMember/${id}`, {
+        type: "POST",
+        data: {
+            email
+        },
+        headers: {
+            token: localStorage.getItem("token")
+        },
+        success: function (hasinya) {
+            // console.log(hasinya)
+            getMyProjects()
+            swal("Yay!", "Member has been successfully added!", "success")
+        },
+        error: function (err) {
+            // console.log(err, "<<")
+            let errMessage
+            if (typeof err.responseJSON == "string") {
+                errMessage = err.responseJSON
+            } else {
+                errMessage = err.responseJSON.message
+            }
+            swal("Oops..", errMessage, "error")
+        }
+    })
+}
+
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    $.ajax(`${baseUrl}/user/google`, {
+        type: "POST",
+        data: {
+            id_token
+        },
+        success: function (succeed) {
+            $("#errorMessage").hide()
+            console.log(succeed, "<<<<<<")
+            localStorage.setItem("token", succeed.token)
+            localStorage.setItem("username", succeed.userFromGoogle.username)
+            localStorage.setItem("UserId", succeed.userFromGoogle.id)
+            $("#loginRegPage").hide()
+            $("#main").show()
+
+            $("#UsernameButton").text(function () {
+                return succeed.userFromGoogle.username
+            })
+            getMyTodos()
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+

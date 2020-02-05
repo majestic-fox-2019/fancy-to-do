@@ -88,8 +88,7 @@ class TodoController {
 
     static getMine(req, res, next) {
         modelTodo.findAll(
-            // { order: ['id', 'DESC'] },
-            { where: { UserId: req.payload.id } })
+            { where: { UserId: req.payload.id }, order: [["updatedAt", "DESC"]] })
             .then(myTodos => {
                 if (myTodos) {
                     // let detail = []

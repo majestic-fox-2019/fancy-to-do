@@ -2,6 +2,7 @@ const modelProject = require("../models").Project
 const modelProjectUser = require("../models").ProjectUser
 const modelTodo = require("../models").Todo
 const modelUser = require("../models").User
+const axios = require("axios")
 class ControlProject {
     static createProject(req, res, next) {
         let project
@@ -25,42 +26,88 @@ class ControlProject {
     }
     static addTodoProject(req, res, next) {
         let { title, description, status, due_date } = req.body
+        // console.log(due_date, "<<<<<<<<<<<<")
         let ProjectId = req.params.idProject
         let UserId = req.payload.id
-        modelTodo.create({
-            title,
-            description,
-            status,
-            due_date,
-            ProjectId,
-            UserId
+        axios({
+            method: "GET",
+            url: "https://calendarific.com/api/v2/holidays?api_key=f61563882dc999ad8463027c0d1b6db64c082e85&country=ID&year=2020"
         })
-            .then(createdTodo => {
-                res.status(200).json(createdTodo)
+            .then(hasilnya => {
+                let libur = []
+                // console.log("masuk sini")
+                // console.log(hasilnya.data, "<<<<<<")
+                let holidays = hasilnya.data.response.holidays
+                for (let i of holidays) {
+                    if (i.date.iso == due_date) {
+                        // console.log(i)
+                        libur.push(i.name)
+                    }
+                }
+                if (libur.length > 0) {
+                    next({ code: 400, message: `ada libur ${libur[0]} pada hari due date` })
+                } else {
+                    modelTodo.create({
+                        title,
+                        description,
+                        status,
+                        due_date,
+                        ProjectId,
+                        UserId
+                    })
+                        .then(createdTodo => {
+                            res.status(200).json(createdTodo)
+                        })
+                        .catch(err => {
+                            next(err)
+                        })
+                }
+                // res.status(200).json(hasilnya.data.response.holidays)
             })
             .catch(err => {
                 next(err)
             })
+
     }
 
     static editTodoProject(req, res, next) {
         let { title, description, status, due_date } = req.body
         let UserId = req.payload.id
         let ProjectId = req.ProjectId
-
-        modelTodo.update({
-            title, description, status, due_date, UserId, ProjectId
-        }, { where: { id: req.params.idTodo }, returning: true })
-            .then(todoUpdated => {
-                if (todoUpdated.length > 0) {
-                    res.status(200).json(todoUpdated)
+        axios({
+            method: "GET",
+            url: "https://calendarific.com/api/v2/holidays?api_key=f61563882dc999ad8463027c0d1b6db64c082e85&country=ID&year=2020"
+        })
+            .then(hasilnya => {
+                let holidays = hasilnya.data.response.holidays
+                let libur = []
+                for (let j of holidays) {
+                    if (j.date.iso == due_date) {
+                        libur.push(j.name)
+                    }
+                }
+                if (libur.length > 0) {
+                    next({ code: 400, message: `ada libur ${libur[0]} pada hari due date` })
                 } else {
-                    next({ code: 404, message: "id todo not found" })
+                    modelTodo.update({
+                        title, description, status, due_date, UserId, ProjectId
+                    }, { where: { id: req.params.idTodo }, returning: true })
+                        .then(todoUpdated => {
+                            if (todoUpdated.length > 0) {
+                                res.status(200).json(todoUpdated)
+                            } else {
+                                next({ code: 404, message: "id todo not found" })
+                            }
+                        })
+                        .catch(err => {
+                            next(err)
+                        })
                 }
             })
             .catch(err => {
                 next(err)
             })
+
 
     }
 
@@ -84,14 +131,17 @@ class ControlProject {
     }
 
     static addMember(req, res, next) {
-
+        let useridnya
+        // console.log(req.body.email, "<<ini email")
         modelUser.findOne({ where: { email: req.body.email } })
             .then(userFound => {
+                useridnya = userFound.dataValues.id
                 if (userFound) {
+                    // console.log("masuk user found", userFound.dataValues, "<<<<<<")
                     return modelProjectUser.findOne({
                         where: {
                             ProjectId: req.ProjectId,
-                            UserId: userFound.id
+                            UserId: userFound.dataValues.id
                         }
                     })
                 } else {
@@ -99,14 +149,17 @@ class ControlProject {
                 }
             })
             .then(userJoined => {
+                // console.log(userJoined, "<<<<<<<<<<<<<<<<<<<<<<")
                 if (userJoined) {
                     next({ code: 400, message: "User have already in this project" })
                 } else {
+                    // console.log("masuk else di karena belom join")
                     return modelProjectUser.create({
-                        UserId: userFound.id,
+                        UserId: useridnya,
                         ProjectId: req.ProjectId
                     })
                         .then(projectUserCreated => {
+                            // console.log("masuk user Joined akhirnya")
 
                             res.status(201).json(projectUserCreated)
                         })

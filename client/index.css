@@ -6,6 +6,10 @@
     transform: translate(-50%, -50%);
 }
 
+.tengahHorizontally{
+    vertical-align: middle
+}
+
 #logout:hover{
     cursor: pointer;
     color: red
@@ -36,5 +40,17 @@
 }
 
 .cardProject{
+    height: 200vh;
+}
+
+.left{
+    background-image: url("./assets/patternLoginPage2.png")
+}
+
+#loginRegPage{
     height: 100vh;
 }
+
+/* .navbar-light{
+    background-color: pink!important;
+} */
