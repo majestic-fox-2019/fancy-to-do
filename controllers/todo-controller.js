@@ -13,7 +13,7 @@ const mailjet = require("node-mailjet").connect(
 
 class TodoController {
   static findAll(req, res, next) {
-    Todo.findAll({ where: { id: req.user.id } })
+    Todo.findAll({ where: { UserId: req.user.id } })
       .then(todos => {
         if (!todos) {
           throw createError(404, "There are no tasks!");
@@ -52,7 +52,7 @@ class TodoController {
         }).request({
           Messages: [{
             From: {
-              Email: `${process.env.MJ_SENDER_EMAIL}`,
+              Email: `${process.env.SENDER_EMAIL}`,
               Name: "Fancy Todo"
             },
             To: [{
