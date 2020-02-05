@@ -1,0 +1,65 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+.content {
+  width: 90vw;
+  height: 80vh;
+}
+#left img {
+  margin-top: 13vh;
+  margin-left: 3vh;
+}
+#right form {
+  padding-top: 16vh;
+  margin: 0 25px;
+}
+
+#mainpage {
+  height: 90vh;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 1vh 8vh;
+}
+
+.collection-item {
+  color: #1565c0 !important;
+}
+
+.collection-header {
+  color: #1565c0 !important;
+}
+
+.collection .active {
+  background-color: #1565c0 !important;
+  color: white !important;
+}
+
+#modal-task {
+  width: 40%;
+}
+
+#loginModal {
+  width: 25%;
+}
+
+#notes-img {
+  margin-top: 15vh;
+}
+
+#projectModal {
+  width: 35%;
+}
+
+.card {
+  border-radius: 10px;
+}
