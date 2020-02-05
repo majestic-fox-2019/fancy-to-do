@@ -51,19 +51,20 @@ class UserController {
     static register(req, res, next){
         let { username, email, password } = req.body
 
-        mailboxValidator
-            .get(`&email=${email}`)
-            .then(user => {
-                if(user.data.is_verified == 'True'){
-                    return User.create({
-                        username,
-                        email,
-                        password
-                    })
-                } else {
-                    throw createError(400, 'Email does not exist or not verified')
-                }
+        // mailboxValidator
+        //     .get(`&email=${email}`)
+        //     .then(user => {
+            //         if(user.data.is_verified == 'True'){
+                // return 
+            User.create({
+                username,
+                email,
+                password
             })
+            // } else {
+            //     throw createError(400, 'Email does not exist or not verified')
+            // }
+            // })
             .then(result => {
                 res.status(201).json(result)
             })
