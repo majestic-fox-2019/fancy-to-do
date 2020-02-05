@@ -5,7 +5,6 @@ $(document).ready(() => {
         $("#email").val("");
         $("#password").val("");
     }
-   
 
     const hideLoginModal = () => {
         $(".modalLogin > .close").click();
@@ -50,6 +49,4 @@ $(document).ready(() => {
     $("#alert > .close").on('click', () => {
         $("#alert").hide();
     });
-
-
 });

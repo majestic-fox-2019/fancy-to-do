@@ -1,19 +1,20 @@
 const showAlert = () => {
-    $("#alert").show();
+    $("#alert,#alertRegister").show();
 }
 
 const hideAlert = () => {
-    $("#alert").hide();
+    $("#alert,#alertRegister").hide();
 }
 
 const setSuccessAlert = () => {
-    $("#alert").prop('class', 'ui success message');
-    $("#alert > .header").text("Login success");
+    $("#alert,#alertRegister").prop('class', 'ui success message');
+    $("#alert,#alertRegister > .header").text("Success");
 }
 
 const setErrorAlert = (err) => {
-    $("#alert").prop('class', 'ui negative message');
-    $("#alert > .header").text(err.responseJSON.Error)
+    $("#alert,#alertRegister").prop('class', 'ui negative message');
+    const {Error, msg, Validations} = err.responseJSON;
+    $("#alert,#alertRegister > .header").text(Error || msg || Validations[0])
 }
 
 const showBtnLogin = () => {
@@ -25,6 +26,11 @@ const showBtnLogout = () => {
     $("#btnLogout").show();
     $("#btnLogin").hide();
 }
+
+const showLoginModal = () => {
+    $("#btnLogin").click();
+}
+
 
 const checkLogin = () => {
     let emailLoggedIn = localStorage.getItem("email");

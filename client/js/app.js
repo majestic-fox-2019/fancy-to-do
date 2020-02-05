@@ -1,10 +1,11 @@
 $(document).ready(function() {
     const $app = $("#app");
 
-    const errorTemplate = Handlebars.compile($("#error-template").html());
-    const homeTemplate  = Handlebars.compile($("#home").html());
-    const todoTemplate  = Handlebars.compile($("#todos").html());
-    const userTemplate  = Handlebars.compile($("#users").html());
+    const errorTemplate         = Handlebars.compile($("#error").html());
+    const homeTemplate          = Handlebars.compile($("#home").html());
+    const todoTemplate          = Handlebars.compile($("#todos").html());
+    const userTemplate          = Handlebars.compile($("#users").html());
+    const unauthorizedTemplate  = Handlebars.compile($("#unauthorized").html());
 
     const router = new Router({
         mode: 'history',
@@ -31,6 +32,11 @@ $(document).ready(function() {
     router.add('/users', () => {
         let html = userTemplate();
         $app.html(html);
+    });
+
+    router.add('/unauthorized', () => {
+        let html = unauthorizedTemplate();
+        $app.html(html)
     });
 
     router.navigateTo(window.location.pathname);

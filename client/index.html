@@ -15,13 +15,13 @@
                     <i class="home icon"></i>
                     Home
                 </a>
-                <a class="item" href="/todos">
+                <a id="todo" class="item" href="/todos">
                     <i class="calendar outline icon"></i>
                     Todos
                 </a>
                 <a class="item" href="/users">
                     <i class="user outline icon"></i>
-                    User
+                    Users
                 </a>        
                 <div id="btnLogin" class="btn header item">
                     <i class="sign-in icon"></i>
@@ -37,7 +37,7 @@
             <div class="ui modal modalLogin">
                 <i class="close icon"></i>    
                 <div class="header">
-                  Login / Register
+                  Login
                 </div>
                 <div id="alert" class="ui negative message" style="display: none;">
                     <i class="close icon"></i>
@@ -50,7 +50,7 @@
                       <div class="field">
                         <div class="ui left icon input">
                           <i class="user icon"></i>
-                          <input type="text" id="email" placeholder="E-mail address">
+                          <input type="email" id="email" placeholder="E-mail address">
                         </div>
                       </div>
                       <div class="field">
@@ -63,11 +63,47 @@
                     </div>              
                   </form>
                   <div class="ui message">
-                    Belum punya akun? <a href="#">Sign Up | Google | Github | Twitter</a>
+                    Belum punya akun? 
+                    <button id="btnRegister" class="ui primary button">Register</button>
+                    <button class="ui primary button">With Google</button>
+  
                   </div>
-              </div>
+            </div>
             <!-- End Login Modal -->
 
+            <!-- Register Modal -->
+            <div class="ui modal modalRegister">
+                <i class="close icon"></i>    
+                <div class="header">
+                  Register
+                </div>
+                <div id="alertRegister" class="ui negative message" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="user icon"></i>
+                          <input type="text" id="emailRegister" placeholder="E-mail address">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="lock icon"></i>
+                          <input type="password" id="passwordRegister" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="ui fluid large teal submit button" id="btnSubmitRegister">Register</div>
+                    </div>              
+                  </form>
+            </div>
+            <!-- End Register Modal -->
+
+            
             <!-- Application Root -->
             <div id="app"></div>
         </div>
@@ -79,12 +115,30 @@
         <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
         <script src="root_folder/config/configurations.js"></script>
         <script src="root_folder/js/common.js"></script>
+        <script src="root_folder/helpers/formatDate.js"></script>
+
         <script src="root_folder/js/app.js"></script>
+
         <script src="root_folder/js/login.js"></script>
+        <script src="root_folder/js/register.js"></script>
         <script src="root_folder/js/logout.js"></script>
+        <script src="root_folder/js/todo.js"></script>
         
         <!-- Templates -->
-        <script id="error-template" type="text/x-handlebars-template">
+        <script id="unauthorized" type="text/x-handlebars-template">
+            <div class="ui {{color}} inverted segment" style="height:250px;">
+            <br>
+            <h2 class="ui center aligned icon header">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                Unauthorized
+                <div class="sub header">You are not authorized to access the page!</div>
+                </div>
+            </h2>
+            </div>
+        </script>
+
+        <script id="error" type="text/x-handlebars-template">
             <div class="ui {{color}} inverted segment" style="height:250px;">
             <br>
             <h2 class="ui center aligned icon header">
@@ -109,7 +163,7 @@
         </script>
 
         <script id="todos" type="text/x-handlebars-template">
-            <h1 class="ui header">Todos</h1>
+            <h1 class="ui header">Todo List</h1>
             <hr>
             <button class="ui primary button align-right">
                 Add Todo
@@ -126,28 +180,12 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <h2 class="ui center aligned header">1</h2>
-                    </td>
-                    <td>waokwaowako</td>
-                    <td>
-                      Mandiin anak ayam 2 ekor.skda.slkdsalasdsadsadsadasdaskl;dsakd;lsakd;l;dk
-                    </td>
-                    <td>
-                        To Do
-                    </td>
-                    <td>2020-02-02</td>
-                    <td>2020-02-02</td>
-                    <td>
-                        
-                    </td>
-                  </tr>
+                <tbody id="dataTodos">
+                  
                 </tbody>
                 <tfoot>
                   <tr><th colspan="7">
-                    <div class="ui right floated pagination menu">
+                    <!-- <div class="ui right floated pagination menu">
                       <a class="icon item">
                         <i class="left chevron icon"></i>
                       </a>
@@ -158,14 +196,14 @@
                       <a class="icon item">
                         <i class="right chevron icon"></i>
                       </a>
-                    </div>
+                    </div> -->
                   </th>
                 </tr></tfoot>
               </table>
         </script>
         
         <script id="users" type="text/x-handlebars-template">
-            <h1 class="ui header">Users</h1>
+            <h1 class="ui header">User List</h1>
             <hr>
         </script>
     </body>
