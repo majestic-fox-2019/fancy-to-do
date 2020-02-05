@@ -10,6 +10,7 @@ class Controller {
 		};
 		Todo.findOne(where)
 			.then(data => {
+				console.log(data);
 				if (!data) {
 					next({ name: "DataNotFound" });
 				} else {
@@ -26,7 +27,8 @@ class Controller {
 		const where = {
 			where: {
 				UserId: id
-			}
+			},
+			order: [["id", "ASC"]]
 		};
 		Todo.findAll(where)
 			.then(data => {
