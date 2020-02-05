@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
           method: 'post',
           url: 'https://ws.detectlanguage.com/0.2/detect',
           data: {
-            'q': todo.title
+            'q': `${todo.title} ${todo.description}`
           }
         })
           .then(response => {

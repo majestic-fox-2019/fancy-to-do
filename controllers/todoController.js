@@ -1,7 +1,5 @@
 const { Todo } = require('../models')
 const createError = require('http-errors')
-// const jwt = require('jsonwebtoken');
-// const decoded = require('../helpers/decoded')
 
 class TodoController {
   static findAll(req, res, next) {
@@ -29,8 +27,6 @@ class TodoController {
       UserId: req.user.id
     }
 
-    // console.log(todo, '< ini details')
-
     Todo
       .create(todo)
       .then(result => {
@@ -50,25 +46,26 @@ class TodoController {
     Todo
       .findOne({
         where: {
-          id: id,
-          UserId: req.user.id
+          id: id
+          // UserId: req.user.id
         }
       })
       .then(result => {
         if (result) {
           res.status(200).json(result)
         } else {
-          // let err = {
-          //   StatusCode: '404',
-          //   message: 'Error 404, command not found!'
-          // }
-          // next(err)
+          //   // let err = {
+          //   //   StatusCode: '404',
+          //   //   message: 'Error 404, command not found!'
+          //   // }
+          //   // next(err)
           throw createError(404, 'Error 404, command not found!')
         }
         // res.send(result)
       })
       .catch(err => {
         next(err)
+        // res.send(err)
       })
   }
 

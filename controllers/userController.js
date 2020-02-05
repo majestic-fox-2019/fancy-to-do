@@ -18,6 +18,8 @@ class UserController {
 
   static register(req, res, next) {
     let user = {
+      name: req.body.name,
+      email: req.body.email,
       username: req.body.username,
       password: req.body.password
     }
@@ -28,10 +30,11 @@ class UserController {
         res.status(201).json(result)
       })
       .catch(err => {
-        if (err.message) {
-          err.status = 400
-        }
+        // if (err.message) {
+        //   err.status = 400
+        // }
         next(err)
+        // res.send(err)
       })
   }
 
