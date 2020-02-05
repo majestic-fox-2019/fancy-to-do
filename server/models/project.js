@@ -5,16 +5,14 @@ module.exports = (sequelize, DataTypes) => {
 
   Project.init({
     nameProject: DataTypes.STRING,
-    admin: DataTypes.INTEGER,
-    member: DataTypes.INTEGER,
-    todo: DataTypes.INTEGER
+    Admin: DataTypes.INTEGER
   }, {
     sequelize
   });
   Project.associate = function (models) {
     // associations can be defined here
     Project.hasMany(models.ProjectTodo)
-
+    Project.belongsToMany(models.User, { through: models.MemberProject })
   };
   return Project;
 };

@@ -1,7 +1,5 @@
 "use strict"
 
-"use strict"
-
 const router = require("express").Router()
 const TodoController = require("../controllers/todo")
 const authenticate = require("../middleware/authentication")

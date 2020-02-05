@@ -9,7 +9,7 @@ module.exports = (err, req, res, next) => {
         res.status(401).json("Unauthorized Invalid Token")
     } else if (err.name === "CastError") {
         res.status(404).json("Data Not Found")
-    } else if (err.errors[0].validatorKey) {
+    } else if (err.name === "ValidationError") {
         const arr = []
         err.errors.forEach(err => {
             arr.push({
@@ -18,5 +18,7 @@ module.exports = (err, req, res, next) => {
             })
         });
         res.status(400).json(arr)
+    } else {
+        res.status(500).json("Internal Server Error")
     }
 }
