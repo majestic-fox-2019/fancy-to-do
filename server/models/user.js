@@ -18,10 +18,26 @@ module.exports = (sequelize, DataTypes) => {
                 throw new Error('Email is already exist.');
               }
           });
+        },
+        notEmpty: {
+          args: true,
+          msg: "Email cannot be empty!"
+        },
+        isEmail: {
+          args: true,
+          msg: "Email format is invalid, e.g: onesinus231@gmail.com"
         }
       }
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Password cannot be empty!"
+        }        
+      }
+    },
     token: DataTypes.STRING
   }, {
     hooks: {
