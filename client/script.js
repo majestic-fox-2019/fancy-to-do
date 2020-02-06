@@ -32,6 +32,28 @@ const template = `
 var deleteUrl = `<button onClick="deleteOnClick(`
 var updateUrl = `<button onClick="getUpdateForm(`
 
+function getUpdateForm(id){
+    // console.log(id)
+    
+    $.ajax({
+        method: 'PATCH',
+        url: `${url}/todos/${id}`,
+        headers: {
+            token: localStorage.token
+        },
+        data: {
+            id
+        }
+    })
+    .done(response => {
+        console.log(response)
+        getData()
+    })
+    .fail(err => {
+        console.log(err)
+    })
+}
+
 
 $loginPage.on('click', function(e){
     e.preventDefault()
@@ -49,36 +71,39 @@ $logout.on('click', function(e){
     checkLogin()
 })
 
-$proceedUpdate.on('submit', function(e){
-    e.preventDefault()
-    var title = $("#updateTitle").val()
-    var description = $("#updateDescription").val()
-    var due_date = $("#updateDue_date").val()
-    var status = $("#updateStatus").val().toLowerCase()
+// $proceedUpdate.on('submit', function(e){
+//     e.preventDefault()
+//     var title = $("#updateTitle").val()
+//     var description = $("#updateDescription").val()
+//     var due_date = $("#updateDue_date").val()
+//     var status = $("#updateStatus").val().toLowerCase()
 
-    console.log(title,description,due_date,status)
-    $.ajax({
-        method: 'PUT',
-        url: `${url}/todos/${localStorage.id}`,
-        data: {
-            title: title,
-            description: description,
-            due_date: due_date,
-            status: status
-        },
-        headers: {
-            token: localStorage.token
-        }
-    })
-    .done(response => {
-        localStorage.removeItem("id")
-        getData()
-        display('main_content')
-    })
-    .fail(err => {
-        console.log(err)
-    })
-})
+//     console.log(title,description,due_date,status)
+//     $.ajax({
+//         method: 'PUT',
+//         url: `${url}/todos/${localStorage.id}`,
+//         data: {
+//             title: title,
+//             description: description,
+//             due_date: due_date,
+//             status: status
+//         },
+//         headers: {
+//             token: localStorage.token
+//         }
+//     })
+//     .done(response => {
+//         localStorage.removeItem("id")
+//         getData()
+//         display('main_content')
+//     })
+//     .fail(err => {
+//         console.log(err)
+//     })
+// })
+
+
+
 
 $registerPage.on('click', function(e){
     e.preventDefault()
@@ -340,7 +365,7 @@ function deleteOnClick(id){
         confirmButtonText: 'Yes, delete it!'
     })
     .then((result) => {
-        console.log(result.value)
+        console.log(result)
         if (result.value) {
             Swal.fire(
                 'Deleted!',
@@ -365,37 +390,37 @@ function deleteOnClick(id){
     })
 }
 
-function getUpdateForm(id){
-    console.log(localStorage)
-    $.ajax({
-        method: 'GET',
-        url: `${url}/todos/${id}`,
-        headers: {
-            token: localStorage.token
-        }
-    })
-    .done(response => {
-        $("#updateTitle").val(response.title)
-        $("#updateDescription").val(response.description)
-        $("#updateDue_date").val(new Date(response.due_date))
+// function getUpdateForm(id){
+//     console.log(localStorage)
+//     $.ajax({
+//         method: 'GET',
+//         url: `${url}/todos/${id}`,
+//         headers: {
+//             token: localStorage.token
+//         }
+//     })
+//     .done(response => {
+//         $("#updateTitle").val(response.title)
+//         $("#updateDescription").val(response.description)
+//         $("#updateDue_date").val(new Date(response.due_date))
 
-        // console.log(new Date(response.due_date))
+//         // console.log(new Date(response.due_date))
 
-        if(response.status == 'incomplete'){
-            $(".updateIncomplete").attr('selected', 'selected');
-            $(".updateComplete").attr('selected', '');
-        } else {
-            $(".updateComplete").attr('selected', 'selected');
-            $(".updateIncomplete").attr('selected', '');
-        }
-        localStorage.setItem('id', id)
-        display('updateTask')
-        // generateData(response)
-    })
-    .fail(err => {
-        console.log(err)
-    })
-}
+//         if(response.status == 'incomplete'){
+//             $(".updateIncomplete").attr('selected', 'selected');
+//             $(".updateComplete").attr('selected', '');
+//         } else {
+//             $(".updateComplete").attr('selected', 'selected');
+//             $(".updateIncomplete").attr('selected', '');
+//         }
+//         localStorage.setItem('id', id)
+//         display('updateTask')
+//         // generateData(response)
+//     })
+//     .fail(err => {
+//         console.log(err)
+//     })
+// }
 
 function showAddForm(){
     console.log($addTask.attr('style'))

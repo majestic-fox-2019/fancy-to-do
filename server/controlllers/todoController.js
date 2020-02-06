@@ -29,7 +29,7 @@ class TodoController {
                 if (found){
                     res.status(200).json(found)
                 } else {
-                    next(createError(404, 'Error! Data not found'))
+                    next(createError(404, 'Data not found'))
                 }
             })
             .catch(next)
@@ -74,7 +74,7 @@ class TodoController {
                         returning:true
                     })
                 } else {
-                    next(createError(404, 'Error! Data not found'))
+                    next(createError(404, 'Data not found'))
                 }
             })
             .then(updated => {
@@ -98,11 +98,40 @@ class TodoController {
                         }
                     })
                 } else {
-                    next(createError(404, 'Error! Data not found'))
+                    next(createError(404, 'Data not found'))
                 }
             })
             .then(result => {
                 res.status(200).json(deletedData)
+            })
+            .catch(next)
+    }
+
+    static changeStatus(req, res, next){
+        let currentStatus = ''
+
+        Todo
+            .findOne({
+                where: {
+                    id: req.body.id,
+                    UserId: req.user.id
+                },
+            })
+            .then(data => {
+                if(!data){
+                    throw createError(404, 'Data not found')
+                }
+
+                if (data.status == 'completed'){
+                    currentStatus = 'incomplete'
+                } else {
+                    currentStatus = 'completed'
+                }
+
+                return data.update({status: currentStatus})
+            })
+            .then(data => {
+                res.status(200).json(data)
             })
             .catch(next)
     }

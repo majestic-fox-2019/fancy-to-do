@@ -5,7 +5,8 @@ const todoController = require('../controlllers/todoController')
 todoRoute.get('/', todoController.showAll)
 todoRoute.post('/', todoController.createTodo)
 todoRoute.get('/:id', authorization, todoController.findById)
-todoRoute.put('/:id', authorization ,todoController.updateTodo)
+todoRoute.patch('/:id', authorization ,todoController.changeStatus)
+// todoRoute.put('/:id', authorization ,todoController.updateTodo)
 todoRoute.delete('/:id', authorization , todoController.deleteTodo)
 
 
