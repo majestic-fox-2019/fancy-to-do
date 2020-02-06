@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Fancy Todo</title>
+  </head>
+  <body>
+    <!-- login/register -->
+    <div class="container w-25" id="containerLoginRegister">
+        <form id="loginForm">
+            <h3>login</h3>
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmailLogin" aria-describedby="emailHelp" >
+                <small id="emailHelp" class="form-text text-light" color="white">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPasswordLogin" >
+            </div>
+            <button type="submit" class="btn btn-warning mr-2 mb-3" id="login">Login</button>
+            <button type="submit" class="btn btn-secondary mb-3" id="gotoRegister" >Register</button>
+        </form>
+
+        <form id="registerForm">
+            <h3>register</h3>
+            <div class="form-group">
+                <label for="inputName">Name</label>
+                <input type="text" class="form-control" id="inputNameRegister" >
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmailRegister" aria-describedby="emailHelp" >
+                <small id="emailHelp" class="form-text text-light">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPasswordRegister" >
+            </div>
+            <button type="submit" class="btn btn-secondary mr-2 mb-3" id="gotoLogin" >Login</button>
+            <button type="submit" class="btn btn-success mb-3" id="register">Register</button>
+        </form>
+
+        <div class="alert alert-info" role="alert" id="messageForm">
+        </div>
+    </div>
+    <!-- end of login/register -->
+
+    <!-- landing page -->
+    <!-- nav bar -->
+    <div class="container-fluid" id="landingPage">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white row fixed-top">
+            <div class="col-2">
+                <a class="navbar-brand">Fancy-Todo</a>
+            </div>
+            <div class="col-6">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav row">
+                        <li class="nav-item col-4">
+                        <a class="nav-link text-white" href="" id="navProject">Project</a>
+                        </li>
+                        <li class="nav-item col-3">
+                        <a class="nav-link text-white" href="" id="navTodo">Todo</a>
+                        </li>
+                        <li class="nav-item col-5">
+                        <a class="nav-link text-white" href="" id="navLogout">{ logout }</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-2 mt-2" id="navUser">
+                
+            </div>
+        </nav>
+        <!-- end of nav bar -->
+        
+        <!-- project page -->
+        <div id="projectPage">
+
+        </div>
+        <!-- end of project page -->
+
+        <!-- todo page -->
+        <div id="todoPage" class="">
+            <a href="">
+                <img src="add.png" alt="" width="100" id="iconAddTodo" class="mt-2 mb-2 float-left">
+            </a>
+
+            <div id="addTodoPage">
+                <form class="container" id="addTodoForm">
+                    <h3>Add Todo</h3>
+                    <br>
+                    <div class="row">
+                      <div class="col-4">
+                        <input type="text" class="form-control mb-2" placeholder="Title" id="addTitle">
+                        <textarea class="form-control mb-2" name="addDescription" id="addDescription" rows="3" placeholder="Description"></textarea>
+                        <input type="date" class="form-control mb-2" placeholder="Due Date" id="addDueDate">
+                      </div>
+                    </div>
+                    <button type="button" name="addTodo" id="addTodo" class="btn btn-warning btn-md">Save</button>
+                    <button type="button" name="cancelTodo" id="cancelTodo" class="btn btn-info btn-md">Cancel</button>
+                </form>
+            </div>
+
+            <div id="contentTodoPage" class="container">
+
+            </div>
+
+        </div>
+        <!-- end of todo page -->
+
+    </div>
+    <!-- end of landing page -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

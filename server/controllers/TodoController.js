@@ -1,30 +1,69 @@
 'use strict';
 
-const { Todo } = require('../models');
+const { Todo, User } = require('../models');
 
 class TodoController {
     static create(req, res, next) {
-        const { title, description } = req.body;
+        const { title, description, dueDate } = req.body;
+        const UserId = req.userLoggedIn.id;
         Todo.create({
             title,
             description,
+            status: 'process',
+            dueDate,
+            UserId,
         })
         .then(result => {
             res.status(201).json(result);
         })
-        .catch(err => {
-            console.log(err);
-        })
+        .catch(next)
     }
 
     static readAll(req, res, next) {
-        Todo.findAll({})
+        const UserId = req.userLoggedIn.id;
+        Todo.findAll(
+            {
+                where: {
+                    UserId
+                },
+                include:  User,
+            }
+        )
         .then(todos => {
             res.status(200).json(todos);
         })
-        .catch(err => {
-            console.log(err);
+        .catch(next)
+    }
+
+    static update(req, res, next) {
+        const { title, description, status, dueDate } = req.body;
+        const id = req.params.id;
+        Todo.update(
+            {
+                title,
+                description,
+                dueDate,
+                status
+            },
+            {
+                where: {
+                    id
+                }
+            }
+            )
+        .then(result => {
+            res.status(200).json(result);
         })
+        .catch(next)
+    }
+
+    static delete(req, res, next) {
+        const id = req.params.id;
+        Todo.destroy({ where: { id }})
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(next)
     }
  }
 

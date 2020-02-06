@@ -1,0 +1,18 @@
+#containerLoginRegister {
+    margin-top: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border: 1px solid rgba(200,200,200,1);
+    border-radius: 10px;
+    box-shadow: 5px 8px 18px rgba(200,200,200,1);
+    background-color: rgb(88, 78, 78);
+    color: white;
+}
+
+#messageForm {
+    margin-top: 50px;
+}
+
+#landingPage {
+    margin-top: 75px;
+}

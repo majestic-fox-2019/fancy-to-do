@@ -2,17 +2,17 @@
 
 module.exports = {
     errorHandler(err, req, res, next) {
-        console.log(err);
+        // console.log(err.name);
         let status = null;
         let message = null;
 
         if(err.name === 'JsonWebToken') {
             status = 400;
             message = 'Please login first';
-        } else if(err.name === 'ValidationError') {
+        } else if(err.name === 'SequelizeValidationError') {
             status = 400;
             let arrMessage = [];
-            for(const key in err) {
+            for(const key in err.errors) {
                 arrMessage.push(err.errors[key].message);
             }
             message = arrMessage;

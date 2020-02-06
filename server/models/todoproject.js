@@ -2,9 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize;
 
-  class Todo extends Model {}
+  class TodoProject extends Model {}
 
-  Todo.init({
+  TodoProject.init({
     id: {
       allowNull: false,
       primaryKey: true,
@@ -57,26 +57,26 @@ module.exports = (sequelize, DataTypes) => {
     dueDate: {
       type: DataTypes.DATE,
     },
-    UserId: {
+    ProjectId: {
       type: DataTypes.UUID,
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'UserId is required'
+          msg: 'ProjectId is required'
         },
         isRequired(value) {
           if(!value) {
-            throw new Error('UserId is required');
+            throw new Error('ProjectId is required');
           }
         },
       },
-    }
+    },
   }, {
     sequelize
   });
-  Todo.associate = function(models) {
+  TodoProject.associate = function(models) {
     // associations can be defined here
-    Todo.belongsTo(models.User);
+    TodoProject.belongsTo(models.Project)
   };
-  return Todo;
+  return TodoProject;
 };
