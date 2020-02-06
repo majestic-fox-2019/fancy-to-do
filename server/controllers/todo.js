@@ -10,7 +10,6 @@ class Controller {
 		};
 		Todo.findOne(where)
 			.then(data => {
-				console.log(data);
 				if (!data) {
 					next({ name: "DataNotFound" });
 				} else {
@@ -41,7 +40,6 @@ class Controller {
 		const obj = {
 			title: req.body.title,
 			description: req.body.description,
-			status: req.body.status,
 			due_date: req.body.due_date,
 			UserId: req.LoggedId
 		};
@@ -60,9 +58,31 @@ class Controller {
 		const obj = {
 			title: req.body.title,
 			description: req.body.description,
-			status: req.body.status,
 			due_date: req.body.due_date,
 			UserId: req.LoggedId
+		};
+		const where = {
+			where: {
+				id: id
+			},
+			returning: true
+		};
+		Todo.update(obj, where)
+			.then(data => {
+				if (data[0] == 0) {
+					next({ name: "DataNotFound" });
+				} else {
+					res.status(200).json(data[1]);
+				}
+			})
+			.catch(err => {
+				next(err);
+			});
+	}
+	static patch(req, res, next) {
+		const id = req.params.id;
+		const obj = {
+			status: req.body.status
 		};
 		const where = {
 			where: {

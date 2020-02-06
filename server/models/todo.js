@@ -31,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
 				}
 			}
 		},
-		status: DataTypes.BOOLEAN,
+		status: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false,
+			defaultValue: false
+		},
 		due_date: {
 			type: DataTypes.DATE,
 			allowNull: false,

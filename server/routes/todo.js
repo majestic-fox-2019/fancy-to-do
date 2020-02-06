@@ -8,6 +8,7 @@ router.get("/", Controller.findAll);
 router.use("/:id", authorization)
 router.get("/:id", Controller.findOne)
 router.put("/:id", Controller.update);
+router.patch("/:id", Controller.patch);
 router.delete("/:id", Controller.destroy);
 
 module.exports = router;
