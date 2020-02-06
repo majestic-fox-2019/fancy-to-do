@@ -1,4 +1,5 @@
 var $login = $('#login')
+var $loginPage = $('#loginPage')
 var $tableList = $('#tableList')
 var $addTask = $('#addTask')
 var $register = $('#register')
@@ -9,11 +10,12 @@ var $proceedUpdate = $('#proceedUpdate')
 var $checkLogin = $('#checkLogin')
 var $logout = $('#logout')
 
+{/* <th scope="row" class="no"></th> */}
 
 const url = 'http://localhost:3000'
 const template = `
 <tr>
-    <th scope="row" class="no"></th>
+    <td class="no"></td>
     <td class="title"></td>
     <td class='description'></td>
     <td class='due_date'></td>
@@ -23,6 +25,13 @@ const template = `
 `
 var deleteUrl = `<button onClick="deleteOnClick(`
 var updateUrl = `<button onClick="getUpdateForm(`
+
+
+$loginPage.on('click', function(e){
+    e.preventDefault()
+    $login.show()
+    $register.hide()
+})
 
 $logout.on('click', function(e){
     // console.log("bisa")
@@ -141,9 +150,7 @@ $addTask.on('submit', function(e){
     var description = $addTask.find('#description').val()
     var due_date = $addTask.find('#due_date').val()
     var status = $addTask.find('#status').val().toLowerCase()
-
-    console.log(localStorage.token)
-
+    
     $.ajax({
         method: 'POST',
         url: `${url}/todos`,
@@ -160,9 +167,17 @@ $addTask.on('submit', function(e){
     .done(response => {
         let token = localStorage.token
         getData(token)
+        Swal.fire({
+            icon: "success",
+            text: `${response.title} has been saved`,
+        })
     })
-    .fail(err => {
-        console.log(err.responseJSON)
+    .fail(({responseJSON}) => {
+        Swal.fire({
+            icon: "error",
+            title: "Validation Error",
+            text: `Please fill in all fields`
+        })
     })
 })
 
@@ -218,20 +233,38 @@ function generateData(list){
 
 
 function deleteOnClick(id){
-    console.log(id)
-    $.ajax({
-        method: 'DELETE',
-        url: `${url}/todos/${id}`,
-        headers: {
-            token: localStorage.token
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    })
+    .then((result) => {
+        console.log(result.value)
+        if (result.value) {
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+            $.ajax({
+                method: 'DELETE',
+                url: `${url}/todos/${id}`,
+                headers: {
+                    token: localStorage.token
+                }
+            })
+            .done(response => {
+                var token = localStorage.token
+                getData(token)
+            })
+            .fail(err => {
+                console.log(err)
+            })
         }
-    })
-    .done(response => {
-        var token = localStorage.token
-        getData(token)
-    })
-    .fail(err => {
-        console.log(err)
     })
 }
 
@@ -245,11 +278,19 @@ function getUpdateForm(id){
         }
     })
     .done(response => {
-        console.log(response)
         $("#updateTitle").val(response.title)
         $("#updateDescription").val(response.description)
-        $("#updateDue_date").val(response.due_date)
-        $("#updateStatus").val(response.status)
+        $("#updateDue_date").val(new Date(response.due_date))
+
+        // console.log(new Date(response.due_date))
+
+        if(response.status == 'incomplete'){
+            $(".updateIncomplete").attr('selected', 'selected');
+            $(".updateComplete").attr('selected', '');
+        } else {
+            $(".updateComplete").attr('selected', 'selected');
+            $(".updateIncomplete").attr('selected', '');
+        }
         localStorage.setItem('id', id)
         display('updateTask')
         // generateData(response)
@@ -259,8 +300,8 @@ function getUpdateForm(id){
     })
 }
 
+
 function sortingDate(list){
-    console.log(list, "BEFORE")
     for (var i = 0; i < list.length; i++){
         for (var j = 0; j < list.length; j++){
             if(new Date(list[i].due_date) < new Date(list[j].due_date)){
@@ -270,5 +311,17 @@ function sortingDate(list){
             }
         }
     }
-    console.log(list, "AFTER")
+} 
+
+function showAddForm(){
+    console.log($addTask.attr('style'))
+    if($addTask.attr('style') == 'display: none;'){
+        $addTask.show()
+    } else {
+        $addTask.hide()
+    }
 }
+
+// CALENDAR
+// 105182697848-11aul2k1uk3vs78c8gj73icpgok0v7nk.apps.googleusercontent.com
+// 3TFb4g7PN0Ys_Iz8tN0tgAyS 

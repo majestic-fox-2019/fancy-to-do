@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Todo List</title>
     <meta name="google-signin-client_id" content="520441619930-s5npgm3aq94525uo5q8i71kcbnflmef7.apps.googleusercontent.com">
@@ -63,8 +65,7 @@
               <div class="form-label-group">
                 <input type="password" id="passwordRegister" class="form-control" placeholder="Password">
               </div>
-              <br>
-              <a href="" id="loginPage">Login</a>
+              <small class="form-text text-muted text-center"><a href="" id="loginPage">Sign in here</a></small>
               <hr class="my-4">
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
             </form>
@@ -92,34 +93,59 @@
     </nav>
 
 
-      <!-- Add Data -->
-      <div class="container mt-4" id="addTask">
-        <center><h3>Add New Task</h3></center>
-        <form id="taskForm">
-            <div class="form-group">
-              <label>Title</label>
-              <input type="text" class="form-control" id="title">
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <input type="text" class="form-control" id="description">
-            </div>
-            <div class="form-group">
-              <label>Due date</label>
-              <input type="date" class="form-control" id="due_date">
-            </div>
-            <label>Status</label>
-            <select class="form-control" id="status">
-              <option>Incomplete</option>
-              <option>Completed</option>
-            </select>
-            <br>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-      </div>
-    <!-- Table list data -->
+    <!-- Add Button -->
     <div class="container mt-4" id="home">
-      <table class="table text-center">
+      <button onclick="showAddForm()" type="submit" class="btn btn-primary">Add</button>
+
+    <!-- Add Task -->
+    <div id="addTask" style="display: none;">
+      <table class="table table-striped mt-2">
+        <tbody>
+            <tr>
+              <td colspan="1">
+                  <form id="taskForm" class="well form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                          <label class="col-md-8 control-label">Title</label>
+                          <div class="col-md-8 inputGroupContainer">
+                              <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input placeholder="Title" class="form-control" value="" type="text" id="title"></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-md-4 control-label">Description</label>
+                          <div class="col-md-8 inputGroupContainer">
+                              <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span><input placeholder="Description" class="form-control" value="" type="text" id="description"></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-8 inputGroupContainer">
+                            <label>Due date</label>
+                            <input type="date" class="form-control" id="due_date">
+                          </div>
+                        </div>
+                        <div class="col-md-8 inputGroupContainer">
+                          <label>Status</label>
+                          <select class="form-control" id="status">
+                            <option>Incomplete</option>
+                            <option>Completed</option>
+                          </select>
+                        </div>
+                    </fieldset>
+                    <div class="form-group mt-4">
+                      <div class="col-md-8 inputGroupContainer">
+                        <center><button type="submit" class="btn btn-primary">Submit</button></center>
+                      </div>
+                  </form>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+      
+      
+      <!-- Table list data -->
+      <table class="table text-center mt-4">
         <thead>
           <tr>
             <th scope="col">No.</th>
@@ -136,6 +162,7 @@
       </table>
     </div>
   </div>
+
     <!-- Update Form -->
     <div class="container mt-4" id="updateTask" style="display: none;">
       <h3> Update </h3>
@@ -154,8 +181,8 @@
           </div>
           <label>Status</label>
           <select class="form-control" id="updateStatus">
-            <option>Incomplete</option>
-            <option>Completed</option>
+            <option class="updateIncomplete">Incomplete</option>
+            <option class="updateComplete">Completed</option>
           </select>
           <br>
           <button type="submit" class="btn btn-primary">Submit</button>
