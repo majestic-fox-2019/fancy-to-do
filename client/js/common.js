@@ -52,3 +52,17 @@ const checkLogin = () => {
         showBtnLogin();
     }
 }
+
+function onSignIn(googleUser) {
+    let profile = googleUser.getBasicProfile();
+    let email   = profile.getEmail();
+    $("#email").val(email);
+    registerUser(email, "123") // asumsi default password user yang sign in by google adalah 123
+}
+  
+function signOut() {
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }

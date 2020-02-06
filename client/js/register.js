@@ -1,22 +1,5 @@
-$(document).ready(() => {
-    const clearRegisterForm = () => {
-        $("#emailRegister").val("");
-        $("#passwordRegister").val("");
-    }
-   
-
-    const hideRegisterModal = () => {
-        $(".modalRegister > .close").click();
-    }
-
-
-    $("#btnRegister").on('click', () => {
-        $('.ui.modal.modalRegister').modal('show');
-    });
-
-    $("#btnSubmitRegister").on('click', () => {
-        let emailRegister       = $("#emailRegister").val();
-        let passwordRegister    = $("#passwordRegister").val();
+if (typeof registerUser != 'function') {
+    function registerUser(emailRegister, passwordRegister){
         $.ajax({
             method: "POST",
             url: `${BACKEND_URL}/users/register`,
@@ -40,6 +23,29 @@ $(document).ready(() => {
                 hideAlert();
             }, 3000);
         })
+    }
+}
+
+$(document).ready(() => {
+    const clearRegisterForm = () => {
+        $("#emailRegister").val("");
+        $("#passwordRegister").val("");
+    }
+   
+
+    const hideRegisterModal = () => {
+        $(".modalRegister > .close").click();
+    }
+
+
+    $("#btnRegister").on('click', () => {
+        $('.ui.modal.modalRegister').modal('show');
+    });
+
+    $("#btnSubmitRegister").on('click', () => {
+        let emailRegister       = $("#emailRegister").val();
+        let passwordRegister    = $("#passwordRegister").val();
+        registerUser(emailRegister, passwordRegister);
     });
 
     $("#alert > .close").on('click', () => {

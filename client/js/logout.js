@@ -5,5 +5,6 @@ $(document).ready(() => {
 
         checkLogin();
         $("#btnHome").click();
+        signOut();
     });
 });
