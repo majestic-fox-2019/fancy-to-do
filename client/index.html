@@ -19,9 +19,9 @@
     <div id="loginRegPage">
         <div id="status"></div>
         <div class="d-flex mx-auto" style="min-height: 100%">
-            <div class="col-6 left">
+            <div class="col-6 left animated slideInUp">
             </div>
-            <div class="col-6 my-auto">
+            <div class="col-6 my-auto right animated slideInDown">
                 <div class="tengahHorizontally">
                     <div class="alert alert-danger" role="alert" id="errorMessage">
                     </div>
@@ -51,14 +51,19 @@
                                     <label for="exampleInputPassword1">Password</label>
                                     <input type="password" class="form-control" id="passwordLogin">
                                 </div>
-                                <div class="d-flex mx-auto justify-content-between">
+                                <div class="d-flex mx-auto">
+                                    <div class="btn btn-primary w-100" id="login">Log In!</div>
+                                </div>
+                                <div class="d-flex mx-auto mt-2 justify-content-between">
                                     <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
                                     </fb:login-button> or
-                                    <div class="g-signin2" data-onsuccess="onSignIn"></div> or
-                                    <div class="btn btn-primary ml-2" id="login">Log In!</div>
+                                    <div class="flex-column">
+                                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                        <a href="#" class="text-align-right" onclick="signOut();">Sign out</a>
+                                    </div>
+
                                 </div>
                                 <div class="d-flex">
-                                    <a href="#" onclick="signOut();">Sign out</a>
                                 </div>
                             </form>
                         </div>
@@ -285,31 +290,30 @@
                     <div class="btn btn-primary" data-toggle="modal" data-toggle="tooltip" data-placement="top"
                         data-target="#newProjectModal" title="Create New Project">New Project</div>
                 </div>
-                <div class="modal fade" id="newProjectModal" tabindex="-1" role="dialog" aria-labelledby="modalProoject"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalProoject">New Project</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="projectNameCreate">Name</label>
-                                        <input type="text" class="form-control" id="projectNameCreate"
-                                            aria-describedby="projectNameCreate">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                    id="createProject">Save
-                                    Project</button>
-                            </div>
+            </div>
+            <div class="modal fade" id="newProjectModal" tabindex="-1" role="dialog" aria-labelledby="modalProoject"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalProoject">New Project</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="projectNameCreate">Name</label>
+                                    <input type="text" class="form-control" id="projectNameCreate"
+                                        aria-describedby="projectNameCreate">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="createProject">Save
+                                Project</button>
                         </div>
                     </div>
                 </div>
@@ -465,6 +469,30 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Members</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>We hope you know that this action is dangerous, all to do list associated with this
+                                project will be deleted too</p>
+                            <div id="confirmationDeleteProject"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Oh no. Cancel.</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                id="deleteThisProject">Yes. Delete Project.</button>
 
                         </div>
                     </div>

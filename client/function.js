@@ -318,6 +318,7 @@ function generateCardProject(responseGetProject) {
                         <div class="btn btn-primary" onclick="newTodoProject(${perProject.ProjectId})" >New Todo</div>
                         <div class="btn btn-primary mx-2" onclick="preInvite(${perProject.ProjectId})">Invite Member</div>
                         <div class="btn btn-primary" onclick="previewMembers(${perProject.ProjectId})">See Member</div>
+                        <div class="btn btn-danger ml-2" onclick="preDeleteProject(${perProject.ProjectId})">Delete</div>
                     </div>
                 </div>
 
@@ -528,6 +529,7 @@ function newTodoProject(idProject) {
 }
 
 function createTodoProject(id, due_date, title, description, status) {
+    // Swal.loading()
     $.ajax(`${baseUrl}/projects/todo/${id}`, {
         type: "POST",
         data: {
@@ -540,11 +542,23 @@ function createTodoProject(id, due_date, title, description, status) {
             token: localStorage.getItem("token")
         },
         success: function () {
+            // Swal.close()
             $("#newTodoModalProject").modal("hide")
             getMyProjects()
         },
         error: function (err) {
-            let errorMessage = err.responseJSON
+            // Swal.close()
+            let errorMessage
+            if (typeof err.responseJSON == "string") {
+                errorMessage = err.responseJSON
+            } else {
+                // console.log(err)
+                let jadinya = ""
+                for (let i of err.responseJSON) {
+                    jadinya += i + " "
+                }
+                errorMessage = jadinya
+            }
 
             swal('Oops...', errorMessage, "error")
         }
@@ -632,7 +646,7 @@ function onSignIn(googleUser) {
         },
         success: function (succeed) {
             $("#errorMessage").hide()
-            console.log(succeed, "<<<<<<")
+            // console.log(succeed, "<<<<<<")
             localStorage.setItem("token", succeed.token)
             localStorage.setItem("username", succeed.userFromGoogle.username)
             localStorage.setItem("UserId", succeed.userFromGoogle.id)
@@ -648,4 +662,54 @@ function onSignIn(googleUser) {
             console.log(err)
         }
     })
+}
+
+function preDeleteProject(id) {
+    $("#deleteProjectModal").modal("show")
+    $.ajax(`${baseUrl}/projects/${id}`, {
+        type: "GET",
+        success: function (hasilnyaAdalah) {
+            let isiiinyaa = appendConfirmationDelete(hasilnyaAdalah)
+            $("#confirmationDeleteProject").empty()
+            $("#confirmationDeleteProject").append(isiiinyaa)
+            $("#deleteThisProject").click(function () {
+                beneranDeleteProject(id, hasilnyaAdalah)
+            })
+        },
+        error: function (err) {
+            swal("Oops", "Something is wrong", "error")
+        }
+    })
+}
+
+function appendConfirmationDelete(isinyaHasil) {
+    untukAppend = `
+   <p>Please type in <strong>${isinyaHasil.name}</strong> to continue</p>
+   <form>
+   <input type="text" id="beneranYakinDelete">
+   </form>
+   `
+    return untukAppend
+}
+
+function beneranDeleteProject(id, dataProject) {
+    let sesuatu = $("#beneranYakinDelete").val()
+    if (sesuatu == dataProject.name) {
+        $.ajax(`${baseUrl}/projects/${id}`, {
+            type: "DELETE",
+            headers: {
+                token: localStorage.getItem("token")
+            },
+            success: function (messagenya) {
+                swal("Ok", messagenya.message, "success")
+                getMyProjects()
+            },
+            error: function (err) {
+                swal("Oops", "something is wrong!", "error")
+            }
+        })
+    } else {
+        swal("Oops", "input does not match", "error")
+    }
+
 }

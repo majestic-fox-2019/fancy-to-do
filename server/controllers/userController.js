@@ -70,7 +70,7 @@ class ControlUser {
         let email
         let username
         const tokenGoogle = req.body.id_token
-        console.log(tokenGoogle, "<<<<<< ini token google!!!!!!!!!!!!!!!!!!!!!!!!")
+        // console.log(tokenGoogle, "<<<<<< ini token google!!!!!!!!!!!!!!!!!!!!!!!!")
         const payload = verifyTokenGoogle(tokenGoogle)
         payload.then(data => {
             email = data.email

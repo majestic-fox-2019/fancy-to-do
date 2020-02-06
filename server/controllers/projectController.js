@@ -214,15 +214,50 @@ class ControlProject {
     }
 
     static getProjectName(req, res, next) {
-        // console.log("MASUK")
-        // modelTodo.findOne({where: {id: req.params.id}})
-        // .then(todoFound =>{
-
-        // })
         modelProject.findOne({ where: { id: req.params.id } })
             .then(ketemu => {
 
                 res.status(200).json(ketemu)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static deleteProject(req, res, next) {
+        let projectIdnya
+        modelProject.findOne({ where: { id: req.params.idProject } })
+            .then(projectFound => {
+                if (projectFound) {
+                    projectIdnya = projectFound
+                    return modelProjectUser.destroy({ where: { ProjectId: projectIdnya.id } })
+                } else {
+                    next({ code: 404, message: "Project Not Found" })
+                }
+            })
+            .then(() => {
+                return modelTodo.destroy({ where: { ProjectId: projectIdnya.id } })
+            })
+            .then(() => {
+                return modelProject.destroy({ where: { id: req.params.idProject } })
+            })
+            .then(() => {
+                res.status(200).json({ message: `Yay! Project ${projectIdnya.name} has been successfully deleted!` })
+            })
+            .catch(err => {
+                next(err)
+            })
+
+    }
+
+    static getProjectById(req, res, next) {
+        modelProject.findOne({ where: { id: req.params.idProject } })
+            .then(ketemu => {
+                if (ketemu) {
+                    res.status(200).json(ketemu)
+                } else {
+                    next({ code: 404, message: "project not found" })
+                }
             })
             .catch(err => {
                 next(err)

@@ -31,4 +31,9 @@ routes.get("/all/todo/:idProject", controlProject.allTodoInProject)
 
 routes.get("/all/members/:idProject", controlProject.getAllMemberinProject)
 
+//delete project and todo and membership
+routes.delete("/:idProject", authentication, forProject, controlProject.deleteProject)
+
+routes.get("/:idProject", controlProject.getProjectById)
+
 module.exports = routes
