@@ -69,28 +69,28 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER
     }
   },{sequelize,hooks:{
-    afterFind:function(user,instance){
-      console.log(user)
-      // user.title ='masuk'
-      user.forEach(el=>{
-        let date = Math.floor(new Date(el.due_date).getTime()/1000.0)
-        // el.title='masuk'
-        return axios({
-          method: 'get',
-          url: `https://api.darksky.net/forecast/${process.env.API_key}/-6.267116,106.760727,${date}?exclude=[currently,minutely,hourly]`,
-        })
-          .then((data)=> {
-            // console.log("masuk")
-            // console.log(data.data)
-            el.title = "hujan"
-            // console.log(el)
+    // afterFind:function(user,instance){
+    //   console.log(user)
+    //   // user.title ='masuk'
+    //   user.forEach(el=>{
+    //     let date = Math.floor(new Date(el.due_date).getTime()/1000.0)
+    //     // el.title='masuk'
+    //     return axios({
+    //       method: 'get',
+    //       url: `https://api.darksky.net/forecast/${process.env.API_key}/-6.267116,106.760727,${date}?exclude=[currently,minutely,hourly]`,
+    //     })
+    //       .then((data)=> {
+    //         // console.log("masuk")
+    //         // console.log(data.data)
+    //         el.title = "hujan"
+    //         // console.log(el)
             
-          })
-          .catch(err=>{
-            console.log('error')
-          })
-      })  
-    },
+    //       })
+    //       .catch(err=>{
+    //         console.log('error')
+    //       })
+    //   })  
+    // },
     beforeCreate:function(user,option){
       let date = Math.floor(new Date(user.due_date).getTime()/1000.0)
         // el.title='masuk'

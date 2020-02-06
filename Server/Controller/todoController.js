@@ -51,11 +51,12 @@ class ToDoController {
             UserId:req.user.id
         }})
         .then(data=>{
+            console.log("masuk")
             if(data){
                 res.status(200).json(data)
             }
             else{
-            
+                // res.send(data)
                 let msg= {
                     StatusCode :'404',
                     message:'command not found'

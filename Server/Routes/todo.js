@@ -5,7 +5,7 @@ const authorization = require('../middleware/authorization')
 
 router.get('/',todoController.findAll)
 router.post('/',todoController.create)
-router.get('/:id',authorization,todoController.findOne)
+router.get('/:id',todoController.findOne)
 router.put('/:id',authorization,todoController.update)
 router.delete('/:id',authorization,todoController.delete)
 module.exports = router
