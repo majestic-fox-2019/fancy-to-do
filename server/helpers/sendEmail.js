@@ -1,16 +1,14 @@
+const sgMail = require('@sendgrid/mail');
+
 function sendEmail(email, title, description) {
-	const mailgun = require("mailgun-js");
-	const DOMAIN = "sandbox4b075d0fafc44a6596f512870426fb11.mailgun.org";
-	const mg = mailgun({apiKey: "06e4fde6244794f67392ccdf4f47666f-f8faf5ef-f593ffe4", domain: DOMAIN});
-	const data = {
-		from: "Mailgun Sandbox <postmaster@sandbox4b075d0fafc44a6596f512870426fb11.mailgun.org>",
+	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+	const msg = {
 		to: `${email}`,
-		subject: `You have created Todo List ${title}`,
-		text: `${description}`
+		from: `Admin@SpeechGrammarList.com`,
+		subject: `You have created TODO "${title}"`,
+		text: `${description}`,
 	};
-	mg.messages().send(data, function (error, body) {
-		console.log(body);
-	});
+	sgMail.send(msg);
 }
 
 

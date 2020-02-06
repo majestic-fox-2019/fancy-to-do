@@ -22,7 +22,6 @@ class Controller {
 			});
 	}
 	static findAll(req, res, next) {
-		console.log(req.LoggedEmail);
 		const id = req.LoggedId;
 		const where = {
 			where: {

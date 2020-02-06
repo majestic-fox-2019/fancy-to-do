@@ -1,5 +1,17 @@
 var todo = function () {
-    var $submit = {};
+    var $registerButton = {};
+    var $loginButton = {};
+    var $loginDiv = {}
+    var $registerDiv = {}
+
+    var $submitLogin = {};
+    var $emailLogin = {};
+    var $passwordLogin = {};
+
+    var $submitRegister = {};
+    var $emailRegister = {};
+    var $passwordRegister = {};
+
     var $add = {};
     var $userEmail = {};
     var $dropdown = {};
@@ -20,9 +32,6 @@ var todo = function () {
 
     var $data = {};
 
-    var $email = {};
-    var $password = {};
-
     var $login = {};
     var $todo = {};
     var $error = {};
@@ -30,11 +39,19 @@ var todo = function () {
     const baseUrl = "http://localhost:3000";
 
     function cacheDom() {
-        $submit = $("#submit");
-        $modalAdd = $("#modalAdd");
+        $submitLogin = $("#submitLogin");
+        $submitRegister = $("#submitRegister");
+
+        $loginDiv = $("#loginDiv");
+        $registerDiv = $("#registerDiv");
+
+        $registerButton = $("#registerButton");
+        $loginButton = $("#loginButton");
+
         $dropdown = $("#dropdown");
         $logout = $("#logout");
 
+        $modalAdd = $("#modalAdd");
         $modalEdit = $("#modalEdit");
         $titleEdit = $("#titleEdit");
         $descriptionEdit = $("#descriptionEdit");
@@ -48,29 +65,63 @@ var todo = function () {
         $data = $("#data");
         $login = $("#login");
         $todo = $("#todo");
-        $error = $("#error");
+        $error = $("#errorStatus");
     }
 
     function bindEvents() {
-        $submit.on("click", function (e) {
+        $submitLogin.mouseover(function () {
+            $(this).css("background-color", "white");
+            $(this).css("color", "black");
+        });
+        $submitLogin.mouseout(function () {
+            $(this).css("background-color", "transparent");
+            $(this).css("color", "white");
+        });
+        $submitLogin.on("click", function (e) {
             e.preventDefault();
-            $email = $("#email").val();
-            $password = $("#password").val();
-            login($email, $password);
+            $emailLogin = $("#emailLogin").val();
+            $passwordLogin = $("#passwordLogin").val();
+            login($emailLogin, $passwordLogin);
+        });
+        $submitRegister.mouseover(function () {
+            $(this).css("background-color", "white");
+            $(this).css("color", "black");
+        });
+        $submitRegister.mouseout(function () {
+            $(this).css("background-color", "transparent");
+            $(this).css("color", "white");
+        });
+        $submitRegister.on("click", function (e) {
+            e.preventDefault();
+            $emailRegister = $("#emailRegister").val();
+            $passwordRegister = $("#passwordRegister").val();
+            register($emailRegister, $passwordRegister);
+        });
+        $registerButton.on("click", function (e) {
+            e.preventDefault();
+            $loginDiv.css("display", "none");
+            $registerDiv.css("display", "block");
+        });
+        $loginButton.on("click", function (e) {
+            e.preventDefault();
+            $loginDiv.css("display", "block");
+            $registerDiv.css("display", "none");
         });
         $dropdown.on("click", function () {
             $logout.slideToggle();
         });
         $logout.on("click", function (e) {
             e.preventDefault();
-            const provider = localStorage.provider;
-            if (provider == "google") {
-                signOut();
-                localStorage.clear();
-                checkLocalStorage();
-            } else if (provider == "mine") {
-
-            }
+            signOut();
+            localStorage.clear();
+            checkLocalStorage();
+            $logout.slideToggle();
+            $emailLogin = $("#emailLogin").val("");
+            $passwordLogin = $("#passwordLogin").val("");
+            $titleAdd = $("#titleAdd").val("");
+            $descriptionAdd = $("#descriptionAdd").val("");
+            $("input[id='statusAdd']").prop("checked", false);
+            $due_dateAdd = $("#due_dateAdd").val("");
         });
         $add.on("click", function (e) {
             e.preventDefault();
@@ -126,14 +177,12 @@ var todo = function () {
             .done(data => {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('email', email);
-                localStorage.setItem('provider', "google");
                 $login.css("display", "none");
                 $todo.css("display", "block");
                 getData(data.token);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -158,14 +207,33 @@ var todo = function () {
             .done(data => {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('email', email);
-                localStorage.setItem('provider', "mine");
                 $login.css("display", "none");
                 $todo.css("display", "block");
                 getData(data.token);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
+                getError(err.responseText);
+            });
+    }
+
+    function register(email, password) {
+        $.ajax({
+            method: "POST",
+            url: `${baseUrl}/register`,
+            data: {
+                email: email,
+                password: password
+            }
+        })
+            .done(data => {
+                $loginDiv.css("display", "block");
+                $registerDiv.css("display", "none");
+                $emailRegister = $("#emailRegister").val("");
+                $passwordRegister = $("#passwordRegister").val("");
+            })
+            .fail(err => {
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -186,8 +254,7 @@ var todo = function () {
                 setData(data);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -197,19 +264,23 @@ var todo = function () {
         const email = localStorage.email;
         $userEmail.text(email);
         arr.forEach((el, i) => {
+            const due_date = new Date(el.due_date);
+            const year = due_date.getFullYear();
+            const month = due_date.getMonth();
+            const date = due_date.getDate();
             $data.append(`
                 <tr>
                     <td>${i + 1}</td>
                     <td>${el.title}</td>
                     <td>${el.description}</td>
                     <td><input type="checkbox" class="form-check-input" id="defaultChecked" ${(el.status) ? "checked" : ""} disabled></td>
-                    <td>${el.due_date}</td>
+                    <td>${(date < 10) ? "0" + date : date} - ${(month < 10) ? "0" + (month + 1) : (month + 1)} - ${year}</td >
                     <td>
                         <button onclick="findOne(${el.id})" data-toggle="modal" data-target="#modalEdit" class="btn btn-outline-warning">Edit</button>
                         <button onclick="deleteOne(${el.id})" class="btn btn-outline-danger">Delete</button>
                     </td>
-                </tr>
-            `);
+                </tr >
+    `);
         });
     }
 
@@ -217,7 +288,7 @@ var todo = function () {
         const token = localStorage.token;
         $.ajax({
             method: "GET",
-            url: `${baseUrl}/todos/${id}`,
+            url: `${baseUrl}/todos/${id} `,
             headers: {
                 token: token
             }
@@ -239,8 +310,7 @@ var todo = function () {
                 $idEdit.val(data.id);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -261,11 +331,14 @@ var todo = function () {
             }
         })
             .done(data => {
+                $titleAdd = $("#titleAdd").val("");
+                $descriptionAdd = $("#descriptionAdd").val("");
+                $("input[id='statusAdd']").prop("checked", false);
+                $due_dateAdd = $("#due_dateAdd").val("");
                 getData(token);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -289,8 +362,7 @@ var todo = function () {
                 getData(token);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -308,8 +380,7 @@ var todo = function () {
                 getData(token);
             })
             .fail(err => {
-                $login.css("display", "none");
-                $error.css("display", "block");
+                $error.fadeIn("fast");
                 getError(err.responseText);
             });
     }
@@ -317,15 +388,22 @@ var todo = function () {
     function getError(str) {
         const obj = JSON.parse(str);
         const status = obj.status;
-        const message = obj.message;
+        const message = obj.custom_message;
         setError(status, message);
     }
 
     function setError(status, message) {
         $error.html(`
-            <h1 class="center">${status}</h1>
-            <p class="center">${message}</p>
-        `);
+            <div class="alert alert-danger" role="alert">
+                ${status}: ${message}
+            </div >
+    `);
+        hideError()
+    }
+    function hideError() {
+        setTimeout(() => {
+            $error.fadeOut()
+        }, 3000);
     }
 
     cacheDom();

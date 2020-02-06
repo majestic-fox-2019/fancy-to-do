@@ -10,10 +10,13 @@
 </head>
 
 <body>
+	<div id="errorStatus"></div>
 	<div id="login">
-		<div class="login-bg"></div>
-		<div class="loginDiv">
-			<h3>Login</h3>
+		<div class="login-bg">
+			<div class="cover"></div>
+		</div>
+		<div class="loginDiv" id="loginDiv">
+			<h3>Welcome to Fancy TODO!</h3>
 			<div class="line"></div>
 			<div class="providerLogin">
 				<div class="g-signin2 center2" data-onsuccess="onSignIn"></div>
@@ -21,13 +24,31 @@
 			<p>--------- Or --------</p>
 			<form class="form">
 				<div class="input">
-					<input type="text" id="email" placeholder="Enter Your Email">
+					<input type="email" id="emailLogin" placeholder="Enter Your Email">
 				</div>
 				<div class="input">
-					<input type="password" id="password" placeholder="Enter Your Password">
+					<input type="password" id="passwordLogin" placeholder="Enter Your Password">
 				</div>
-				<button class="submit" id="submit" type="submit">Login</button>
+				<button class="submit" id="submitLogin" type="submit">Login</button>
 			</form>
+			<p style="text-align: left;padding: 0px 5%;margin-top: 20px;">Don't have any account yet? Let's take it
+				easy, just <a id="registerButton" href="#">Register New
+					Account.</a></p>
+		</div>
+		<div class="registerDiv" id="registerDiv">
+			<h3>Get New Account!</h3>
+			<div class="line"></div>
+			<form class="form">
+				<div class="input">
+					<input type="email" id="emailRegister" placeholder="Enter Your New Email">
+				</div>
+				<div class="input">
+					<input type="password" id="passwordRegister" placeholder="Enter Your Password">
+				</div>
+				<button class="submit" id="submitRegister" type="submit">Register</button>
+			</form>
+			<p style="text-align: left;padding: 0px 5%;margin-top: 30px;">Have an account, let's go back and <a
+					id="loginButton" href="#">Login With Your Account.</a></p>
 		</div>
 	</div>
 	<div id="todo">
@@ -51,11 +72,11 @@
 							</div>
 							<div class="form-group">
 								<label for="descriptionAdd">TODO Description</label>
-								<input type="text" class="form-control" id="descriptionAdd" placeholder="Enter Title">
+								<textarea class="form-control" id="descriptionAdd" rows="5"></textarea>
 							</div>
 							<div class="form-check">
 								<input type="checkbox" class="form-check-input" id="statusAdd" value="true">
-								<label class="form-check-label" for="statusAdd">Check me out</label>
+								<label class="form-check-label" for="statusAdd">Status TODO</label>
 							</div>
 							<br>
 							<div class="form-group">
@@ -90,11 +111,11 @@
 							</div>
 							<div class="form-group">
 								<label for="descriptionEdit">TODO Description</label>
-								<input type="text" class="form-control" id="descriptionEdit" placeholder="Enter Title">
+								<textarea class="form-control" id="descriptionEdit" rows="5"></textarea>
 							</div>
 							<div class="form-check">
 								<input type="checkbox" class="form-check-input" id="statusEdit">
-								<label class="form-check-label" for="statusEdit">Check me out</label>
+								<label class="form-check-label" for="statusEdit">Status TODO</label>
 							</div>
 							<br>
 							<div class="form-group">
@@ -147,7 +168,7 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Title</th>
-						<th scope="col">Description</th>
+						<th scope="col" width="40%">Description</th>
 						<th scope="col">Status</th>
 						<th scope="col">Due Date</th>
 						<th scope="col">Action</th>
@@ -158,9 +179,6 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-	<div id="error">
-		<div class="center" id="errorStatus"></div>
 	</div>
 </body>
 <script src="https://apis.google.com/js/platform.js" async defer></script>

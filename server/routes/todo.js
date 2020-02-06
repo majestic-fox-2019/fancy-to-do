@@ -5,8 +5,9 @@ const authorization = require("../middlewares/authorization");
 
 router.post("/", Controller.create);
 router.get("/", Controller.findAll);
-router.get("/:id", authorization, Controller.findOne)
-router.put("/:id", authorization, Controller.update);
-router.delete("/:id", authorization, Controller.destroy);
+router.use("/:id", authorization)
+router.get("/:id", Controller.findOne)
+router.put("/:id", Controller.update);
+router.delete("/:id", Controller.destroy);
 
 module.exports = router;

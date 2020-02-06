@@ -52,6 +52,16 @@ class Controller {
 	static login(req, res, next) {
 		const email = req.body.email;
 		const password = req.body.password;
+		const error = [];
+		if (!email || email == "") {
+			error.push({ message: "Please fill `Email`" });
+		}
+		if (!password || password == "") {
+			error.push({ message: "Please fill `Password`" });
+		}
+		if (error.length > 0) {
+			next({ name: "SequelizeValidationError", errors: error });
+		}
 		const where = {
 			where: {
 				email: email
@@ -75,7 +85,9 @@ class Controller {
 					}
 				}
 			})
-			.catch(next);
+			.catch(err => {
+				next(err);
+			});
 	}
 }
 

@@ -1,6 +1,7 @@
 body {
 	padding: 0;
-	margin: 0
+	margin: 0;
+	overflow: hidden;
 }
 #login {
 	position: absolute;
@@ -16,9 +17,16 @@ body {
 	background-size: cover;
 	background-position: center;
 	filter: blur(3px);
-  	-webkit-filter: blur(3px);
+	-webkit-filter: blur(3px);
+	transform: scale(1.1);
 }
-.loginDiv {
+.cover {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .4);
+}
+.loginDiv, .registerDiv {
 	position: absolute;
 	width: 500px;
 	height: 500px;
@@ -26,13 +34,17 @@ body {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	border-radius: 5px;
 	border: 12px solid white;
 	padding: 10px 15px;
 	padding-top: 30px;
+	display: block;
 }
-.loginDiv h3 {
+.registerDiv {
+	display: none;
+}
+.loginDiv h3, .registerDiv h3 {
 	color: white;
+	text-align: center;
 }
 .line {
 	position: relative;
@@ -56,15 +68,18 @@ body {
 .login2 {
 	background-color: green;
 }
-.loginDiv p {
+.loginDiv p, .registerDiv p {
 	color: white;
 	text-align: center;
 }
-.form {
+.loginDiv .form, .registerDiv .form {
 	position: relative;
 	width: 100%;
 	height: auto;
 	margin-top: -10px;
+}
+.registerDiv .form {
+	margin-top: 50px;
 }
 .form input {
 	position: relative;
@@ -86,8 +101,10 @@ body {
 	margin-top: 25px;
 	color: white;
 	background-color: transparent;
-	border: 5px solid white;
+	border: 4px solid white;
 	border-radius: 5px;
+	cursor: pointer;
+	transition: 200ms ease-in-out;
 }
 
 #todo {
@@ -135,10 +152,11 @@ body {
 
 }
 
-#error {
+#errorStatus {
 	position: absolute;
-	width: 100vw;
-	height: 100vh;
+	top: 0;
+	width: 100%;
+	z-index: 99;
 	display: none;
 }
 
@@ -185,4 +203,7 @@ nav {
 #logout a {
 	color: rgba(0, 0, 0, .7);
 	text-decoration: none;
+}
+textarea {
+	resize: none;
 }
