@@ -50,11 +50,7 @@ class TaskController {
     Task.findByPk(id)
       .then(result => {
         if (result != null) {
-          if (result.UserId !== req.user.id || !req.user) {
-            throw createError(401, { message: { error: 'Not Authorized' } })
-          } else {
-            res.status(200).json(result)
-          }
+          res.status(200).json(result)
         } else {
           throw createError(404, { message: { error: 'error not found' } })
         }
@@ -78,14 +74,7 @@ class TaskController {
       due_date: req.body.due_date
     }
 
-    Task.findByPk(req.params.id)
-      .then(result => {
-        if (result.UserId !== req.user.id || !req.user) {
-          throw createError(401, { message: { error: 'Not Authorized' } })
-        } else {
-          return Task.update(taskUpdate, taskId)
-        }
-      })
+    Task.update(taskUpdate, taskId)
       .then(result => {
         if (result[0] === 0) {
           throw createError(404, { message: { error: 'error not found' } })
@@ -110,17 +99,14 @@ class TaskController {
         id: req.params.id
       }
     }
-    let data = {}
-    Task.findByPk(taskId)
+    let findTaskDelete = Task.findByPk(taskId)
+    let destroyTask = Task.destroy(destroyTaskId)
+    Promise.all([findTaskDelete, destroyTask])
       .then(result => {
-        data = result
-        return Task.destroy(destroyTaskId)
-      })
-      .then(result => {
-        if (data === null) {
+        if (result === null) {
           throw createError(404, { message: { error: 'error not found' } })
         } else {
-          res.status(200).json(data)
+          res.status(200).json(result[0])
         }
       })
       .catch(err => {

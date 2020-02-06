@@ -48,18 +48,19 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER
   }, { 
     hooks: {
-      // afterCreate(instance, options){
-      //   // console.log(instance)
-      //   // console.log({options})
-      //   Task.findByPk(instance.id)
-      //   .then(result => {
-      //     console.log(result, '<<< THEN')
-      //   })
-      //   .catch(err => {
-      //     throw new Error('gagal')
-      //   })
-      //   // sentEmail('fajrin.noorrachman11@gmail.com', instance.title, instance.description, instance.due_date)
-      // }
+      afterCreate(instance, options){
+        // console.log(instance)
+        // console.log({options})
+        console.log(User)
+        // User.findByPk(instance.id)
+        // .then(result => {
+        //   console.log(result, '<<< THEN')
+        // })
+        // .catch(err => {
+        //   throw new Error('gagal')
+        // })
+        // sentEmail('fajrin.noorrachman11@gmail.com', instance.title, instance.description, instance.due_date)
+      }
     }
     ,sequelize});
 

@@ -13,7 +13,7 @@ function sentEmail(email, title, description, due_date){
         subject: 'Fancy Todos -- Success add Todos',
         text: `Successfuly added ${title} with description ${description} and the due date is ${due_date} to your todo list. Thankyou:)`,
         html: `<strong>Successfuly added todos ${titleUC} with description ${descriptionUC} and the due date is ${due_date} to your todo list. Thankyou:)</strong>`,
-      };
+    };
     sgMail.send(msg);
 }
 
