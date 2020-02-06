@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 
+
   const Model = sequelize.Sequelize.Model
 
   class Todo extends Model {}
@@ -24,7 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     status: DataTypes.STRING,
     due_date: DataTypes.DATE
-  },{sequelize})
+  },{sequelize,
+    hooks:{
+      beforeCreate :(instance,option)=>{
+        instance.status = "Not Complete"
+      }
+    }
+  })
 
 
 

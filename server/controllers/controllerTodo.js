@@ -1,5 +1,9 @@
 const { Todo } = require('../models')
 const createError = require('http-errors')
+
+const Nexmo = require('nexmo')
+
+
 class ControllerTodo{
 
   static findall(req,res,next){
@@ -8,8 +12,7 @@ class ControllerTodo{
       order: [['id','ASC']]
     })
     .then(result=>{
-      console.log(result,"++++++++++++++++++")
-      console.log(result.length)
+    
       if(result.length>0){
         res.status(200).json(result)
       }else {
@@ -37,28 +40,37 @@ class ControllerTodo{
     Todo.create(data)
     .then(result=>{
       res.status(201).json(result)
+
+      const nexmo = new Nexmo({
+        apiKey: process.env.API_KEY,
+        apiSecret: process.env.API_SECRET
+        })
+      
+      const to = '6285360510467'
+      const text = `title : ${result.title} , description : ${result.description}`
+
+      nexmo.message.sendSms('TodoList', to, text, (err,responseData)=>{
+        if(err){
+          throw err
+        }else{
+          if(responseData.messages[0]['status'] === "0") {
+            console.log("Message sent successfully.");
+        } else {
+            console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+        }
+        }
+      })
     })
     .catch(err=>{
+      next(err)
 
-      let objErr={}
-       objErr.statusCode = 400
-       objErr.data = err.errors
-      next(objErr)
     })
   }
 
   static findone(req,res,next){
     Todo.findByPk(req.params.id)
     .then(result=>{
-      if(result == null){
-        const message = {
-          statusCode : 404,
-          data : 'Error Not Found'
-        }
-        throw message
-      }else{
-        res.status(200).json(result)
-      }
+      res.status(200).json(result)
     })
     .catch(err=>{
       next(err)
@@ -79,27 +91,10 @@ class ControllerTodo{
       returning : true
     })
     .then(result=>{
-
-      if(result[0] == 0){
-        
-        let objErr={}
-        objErr.statusCode = 404
-        objErr.data = 'Not Found'
-        throw objErr
-      }else{
-        res.status(200).json(result[1])
-      }
+      res.status(200).json(result[1])
     })
     .catch(err=>{
-      if(err.name == "SequelizeValidationError"){
-        let objErr={}
-        objErr.statusCode = 400
-        objErr.data = err.errors
-        next(objErr)
-      }else{
-        next(err)
-      }
-      
+      next(err)
     })
   }
 
@@ -116,15 +111,8 @@ class ControllerTodo{
       })
     })
     .then(()=>{
-     
-      if(data == null){
-        let objErr={}
-        objErr.statusCode = 404
-        objErr.data = 'Not Found'
-        throw objErr
-      }else{
         res.status(200).json(data)
-      }
+
     })
     .catch(err=>{
       next(err)

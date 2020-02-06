@@ -9,11 +9,6 @@ module.exports = function authenticated (req,res,next){
     req.user = user
     next()
   } catch (error) {
-    
-    let objErr={}
-        objErr.statusCode = 401
-        objErr.data = 'Unathentication'
-        next(objErr)
-    //throw createError(403,'ForbiddenError')
+    throw createError(403,'Unathentication')
   }
 }

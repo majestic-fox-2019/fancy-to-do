@@ -8,6 +8,7 @@ class ControllerUser {
 
   static register(req,res,next){
       let data = {
+        name: req.body.name,
         email: req.body.email,
         password : req.body.password
       }
@@ -34,11 +35,7 @@ class ControllerUser {
     })
     .then(result=>{
       if(result == null){
-        let objErr={}
-        objErr.statusCode = 404
-        objErr.data = 'Email Not Found'
-        throw objErr
-        
+        res.status(404).json({message : 'email not found'})
       }else{
         
         if(bcrypt.compareSync(data.password, result.dataValues.password)){
@@ -48,10 +45,7 @@ class ControllerUser {
           }
           res.status(200).json({token: jwt.sign(newObj, process.env.SECRET_CODE)})
         }else{
-          let objErr={}
-        objErr.statusCode = 404
-        objErr.data = 'Invalid Username or Password'
-        throw objErr
+          res.status(404).json({message : 'username or password wrong'})
       
         }
       }
