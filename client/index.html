@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id"
+    content="860696417205-u7fpcq12ltr5kak3e0e5b5bvjthrjf5i.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <title>Fancy Todo</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="registerForm">
+      <form method="POST" id="register">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" class="form-control" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="link" href="#">Have account?</a>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      </form>
+    </div>
+
+    <div class="loginForm">
+      <form method="POST" id="login">
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="emailLogin">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" class="form-control" id="passwordLogin">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+
+    <div class="add">
+      <button id="addButton" type="button" class="btn btn-info" style="margin: 20px;" data-toggle="modal"
+        data-target="#addModal">Add New Task</button>
+      <table class="table" style="text-align: center;">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Todo</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Language</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+      </table>
+
+      <!-- Modal Add -->
+      <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Update</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <form method="POST" id="addTodo">
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" class="form-control" id="title">
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description">
+                </div>
+
+                <div class="form-group">
+                  <label for="status">Status</label>
+                  <select class="form-control" id="status">
+                    <option value="false">False</option>
+                    <option value="true">True</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Due Date</label>
+                  <input type="date" class="form-control" id="duedate">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Modal Update -->
+    <div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Update</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <form method="POST" id="updateTodo">
+              <input type="hidden" id="edit_id">
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="titleUpdate">
+              </div>
+
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="descriptionUpdate">
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="statusUpdate">
+                  <option value="false">False</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Due Date</label>
+                <input type="date" class="form-control" id="duedateUpdate">
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="app.js"></script>
+
+</html>

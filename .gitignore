@@ -1,4 +1,4 @@
-node_modules
-config/config.json
+server/node_modules
+server/config/config.json
 .DS_Store
-.env
+server/.env
