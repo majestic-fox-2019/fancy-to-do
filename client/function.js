@@ -10,10 +10,20 @@ function login(email, password) {
             localStorage.setItem("token", succeed.token)
             localStorage.setItem("username", succeed.userFound.username)
             localStorage.setItem("UserId", succeed.userFound.id)
-            $("#loginRegPage").hide()
-            $("#main").show()
-            $("#UsernameButton").text(function () {
-                return succeed.userFound.username
+            Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'Loading your page....',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            }).then(() => {
+                $("#loginRegPage").hide()
+                $("#main").show()
+                $("#UsernameButton").text(function () {
+                    return succeed.userFound.username
+                })
+
             })
             getMyTodos()
         },
@@ -592,13 +602,17 @@ function listingMembers(membersnya) {
         // console.log(i, "<<")
         appendan += `
         <div class="d-flex justify-content-between">
-        <p>${i.User.username}</p>
+        <p onmouseover="this.style.color='lightgray'; this.style.cursor='pointer'" onmouseout="this.style.color='black'" onclick="action(${i.User.id})">${i.User.username}</p>
         <p> ${i.User.email}</p>
 
         </div>
         `
     }
     return appendan
+
+}
+
+function action(id) {
 
 }
 function preInvite(id) {
