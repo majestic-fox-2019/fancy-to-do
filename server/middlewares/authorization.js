@@ -8,7 +8,7 @@ function authorization(req, res, next){
             }else{
                 throw {
                     statusCode: 403,
-                    message: "You are not authorized to access that feature!"
+                    message: "You are not authorized to do the action!"
                 }
             }
         })

@@ -1,18 +1,36 @@
-$(document).ready(function() {
-    const clearForm = () => {
+if (typeof clearForm != 'function') {
+    window.clearForm = () => {
+        $("#input_id").val("");
         $("#input_title").val("");
         $("#input_description").val("");
         $("#input_due_date").val("");
     }
+}
 
-    const openModal = () => {
+if(typeof openModal != 'function'){
+    window.openModal = () => {
         $('.ui.modal.modalTodo').modal('show');        
     };
+}
 
-    const closeModal = () => {
+if (typeof closeModal != 'function') {
+    window.closeModal = () => {
         $('.ui.modal.modalTodo').modal('hide');        
-    }
-    
+    }        
+}
+
+
+function updateTodo(id, title, description, due_date) {    
+    openModal();
+    $(".modalTodo .title-modal").text("Edit Todo");
+
+    $(".modalTodo #input_id").val(id);
+    $(".modalTodo #input_title").val(title);
+    $(".modalTodo #input_description").val(description);
+    $(".modalTodo #input_due_date").val(due_date);
+}
+
+$(document).ready(function() {    
     const getTodos = () => {
         $.ajax({
             type: "GET",
@@ -40,7 +58,7 @@ $(document).ready(function() {
                         <td>${formatDate(todo.createdAt)}</td>
                         <td>${formatDate(todo.updatedAt)}</td>
                         <td>
-                            <button class="ui green button goblok" id="edit${todo.id}">
+                            <button class="ui green button" id="edit${todo.id}" onclick="updateTodo(${todo.id},'${todo.title}', '${todo.description}', '${todo.due_date}')" idtodo="${todo.id}">
                                 <i class="edit icon"></i>
                                 Edit
                             </button>
@@ -59,52 +77,90 @@ $(document).ready(function() {
         });    
     }
 
+
     $("#todo").on('click', function() {
         getTodos();
     });
 
 
     $("#addTodo").on('click', function() {
+        $(".modalTodo .title-modal").text("Add Todo");
+        clearForm();
         openModal();        
     });
 
     $("#btnSubmitForm").unbind().on('click', function() {
+        let id              = $("#input_id").val();
         let title           = $("#input_title").val();
         let description     = $("#input_description").val();
         let due_date        = $("#input_due_date").val();
 
-        $.ajax({
-            type: "POST",
-            url: `${BACKEND_URL}/todos`,
-            data: {title, description, due_date},
-            headers: {
-                accesstoken: localStorage.getItem("accesstoken")
-            }
-        })
-        .then(newTodo => {
-            setSuccessAlert();
-            showAlert();
-            clearForm();
-            setTimeout(() => {
-                hideAlert();
-                closeModal();
-                getTodos();
-            }, 1000);
+        if (!id) { // add     
+            $.ajax({
+                type: "POST",
+                url: `${BACKEND_URL}/todos`,
+                data: {title, description, due_date},
+                headers: {
+                    accesstoken: localStorage.getItem("accesstoken")
+                }
+            })
+            .then(newTodo => {
+                setSuccessAlert();
+                showAlert();
+                clearForm();
+                setTimeout(() => {
+                    hideAlert();
+                    closeModal();
+                    getTodos();
+                }, 1000);
+    
+            })
+            .catch(err => {
+                setErrorAlert(err);
+                showAlert();
+                setTimeout(() => {
+                    hideAlert();
+                }, 3000);
+            })        
+        }else{ //Edit
+            $.ajax({
+                type: "PUT",
+                url: `${BACKEND_URL}/todos/${id}`,
+                data: {title, description, due_date},
+                headers: {
+                    accesstoken: localStorage.getItem("accesstoken")
+                }
+            })
+            .then(updatedTodo => {
+                setSuccessAlert();
+                showAlert();
+                clearForm();
+                setTimeout(() => {
+                    hideAlert();
+                    closeModal();
+                    getTodos();
+                }, 1000);
+    
+            })
+            .catch(err => {
+                setErrorAlert(err);
+                showAlert();
+                setTimeout(() => {
+                    hideAlert();
+                }, 3000);
+            })            
+        }
 
-        })
-        .catch(err => {
-            setErrorAlert(err);
-            showAlert();
-            setTimeout(() => {
-                hideAlert();
-            }, 3000);
-        })        
     });
+
+
+    $("[id^=edit]").on('click', function() {
+        alert($(this).attr('id'));
+    })
 
     $(document).unbind().on('click',  '[id^=edit]', function() {
-        let idTodo = $(this).attr("idtodo");
-        openModal();
-    });
+        alert("terimakasih tongfang");
+    });  
 
     $(document).unbind().on('click',  '[id^=delete]', function() {
         let idTodo = $(this).attr("idtodo");

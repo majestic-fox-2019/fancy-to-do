@@ -23,7 +23,7 @@ const setErrorAlert = (err) => {
     }else if(msg){
         allAlerts.text(msg);
     }else{
-        allAlerts.text(Error.message    );
+        allAlerts.text(Error.message);
     }
     
 }
