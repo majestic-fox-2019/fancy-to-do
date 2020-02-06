@@ -43,17 +43,17 @@ class ControllerUser {
   }
 
   static login(req, res, next) {
-    let username = req.body.username
+    let email = req.body.email
     let password = req.body.password
     User
-      .findOne({ where: { username: username } })
+      .findOne({ where: { email: email } })
       .then(user => {
         if (!user) {
           res.status(401).json({ message: "Unauthorized" })
         } else {
           if (bcrypt.compareSync(password, user.password)) {
 
-            const token = jwt.sign({ username: user.username, id: user.id }, process.env.JWT_RAHAYU)
+            const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_RAHAYU)
 
             res.status(200).json(token)
           } else {

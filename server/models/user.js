@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const errorss = require('http-errors')
 
 module.exports = (sequelize, DataTypes) => {
   const Sequelize = sequelize.Sequelize
@@ -8,7 +9,20 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model { }
   User.init({
     username: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmailUniq(value) {
+          return User.findOne({ where: { email: value } })
+            .then(resultEmail => {
+              if (resultEmail) {
+                throw errorss('406', 'Not Acceptable')
+              }
+            })
+        }
+      }
+    },
     password: DataTypes.STRING
   }, {
     hooks: {
