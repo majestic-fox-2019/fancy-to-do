@@ -63,3 +63,7 @@
 .card {
   border-radius: 10px;
 }
+
+#inviteModal {
+  width: 25%;
+}
