@@ -180,6 +180,10 @@ iframe {
   background-size: cover;
 }
 
+table, th, td{
+  border: 1px solid black !important;
+  text-align: center;
+}
 .wrap-login100 {
   width: 500px;
   background: #fff;

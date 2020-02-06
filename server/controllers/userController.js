@@ -9,7 +9,9 @@ const instance = axios.create({
 class Usercontroller{
   static googleLogin(req,res,next){
     const client = new OAuth2Client(process.env.CLIENT_ID)
-    console.log(client)
+    console.log(client,'<<<')
+    let name
+    let email
     async function verify() {
       const ticket = await client.verifyIdToken({
           idToken: req.body.token,
@@ -17,22 +19,50 @@ class Usercontroller{
       });
       const payload = ticket.getPayload();
       return payload
-      const userid = payload['sub'];
+      // const userid = payload['sub'];
     }    
     verify()
       .then(data=>{
         console.log(data)
+        name = data.name
+        email = data.email
+        return User.findOne({
+          where: {
+            email: data.email
+          }
+        })
       })
-      .catch(console.error)
+      .then(exists=>{
+        if(exists == null){
+          req.body.username = name
+          req.body.email = email
+          req.body.password = Math.random()*10000
+          Usercontroller.register(req,res,next)
+        }else{
+          console.log('ada')
+          let obj = {
+            id: exists.id,
+            username : exists.username,
+            email : exists.email
+          }
+          let token = generateToken(obj, process.env.secret_code);
+          console.log(token,'<<')
+          res.status(200).json({accessToken: token})
+        }
+      })
+      .catch(err=>{
+        console.error
+      })
   }
   static register(req,res,next){
+    console.log(req.body,'yo')
     // instance.get(`&email=${req.body.email}`)
     //   .then(result=>{
     //     if(result.data.is_verified == 'True'){
           let data = {
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            password: String(req.body.password)
           }
     User.create(data)
 
@@ -45,9 +75,17 @@ class Usercontroller{
         // }
       // })
       .then(data=>{
-        res.status(201).json(data)
+        let obj = {
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password
+        }
+        console.log(obj)
+        let token = generateToken(obj, process.env.secret_code);
+        res.status(201).json({accessToken: token})
       })
       .catch(err=>{
+        console.log(err)
         next(err)
       })
   }

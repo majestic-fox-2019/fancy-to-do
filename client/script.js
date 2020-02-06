@@ -9,7 +9,9 @@ var deleteUrl = `<button onClick="deleteTask(`
 var updateUrl = `<button onClick="updateTask(`
 var $update = $('#update')
 var $logout = $(".logout")
-var $home = $(".home")
+var $home = $(".homePage")
+var $loginPage = $('#loginPage')
+var $toLoginPage = $(".toLoginPage")
 
 
 
@@ -25,63 +27,54 @@ const template = `
 </tr>`
 
 //method
-$home.on("click",function(){
-  console.log('oi')
-  display('login')
+
+// $loginPage.on("click",function(){
+//   display('loginPage')
+// })
+
+$toLoginPage.on("click",function(){
+  display('loginPage')
 })
 
-function updateTask(id){
-  localStorage.setItem("page", "updatePage")
-  localStorage.removeItem("taskId")
-  $.ajax({
-    method: 'GET',
-    headers: {token: localStorage.token},
-    url: `http://localhost:3000/todo/${id}`,
-  })
-    .done((data)=>{
-      localStorage.setItem("taskId", data.id)
-      $update.find("#titleUpdate").val(data.title)
-      $update.find("#descriptionUpdate").val(data.description)
-      $update.find("#statusUpdate").val(data.status)
-      $update.find("#due_dateUpdate").val(data.due_date)
-      display('updatePage')
-      console.log(data)
-    })
-    .fail(err=>{
-      console.log(err)
-    })
-}
+$home.on("click",function(){
+  display('homePage')
+})
 
-function onSignIn(googleUser) {
-  console.log('oo')
-  var profile = googleUser.getBasicProfile();
-  var id_token = googleUser.getAuthResponse().id_token;
-  console.log(profile)
-  console.log(id_token)
+
+$login.on("submit",function(e){
+  e.preventDefault()
+  let email = $login.find('#loginEmail').val()
+  let password = $login.find('#loginPassword').val()
   $.ajax({
-    url: "http://localhost:3000/user/google",
+    url: "http://localhost:3000/user/login",
     method: "POST",
-    data: {token: id_token}
+    data: { 
+      email: email,
+      password: password
+    }
+  }) 
+  .done((token)=> {
+    console.log(token)
+    localStorage.setItem("token", token.accessToken)
+    console.log(localStorage)
+    console.log('success to login')
+    display('homePage')
   })
-  .done(result=>{
-    console.log('berhasil send google token')
+  .fail((err)=> {
+    console.log(err.responseText)
+    if(err.responseText){
+      setTimeout(() => {
+        let $error = $("#errorLogin")
+        $error.text(JSON.parse(err.responseText).error)
+        $error.show()
+      }, 1000);
+    }
+    console.log('failed to login')
   })
-  .fail(err=>{
-    console.log('gagal send google token')
-  })
-}
-
-function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  auth2.disconnect();
-}
+})
 
 $logout.on("click",function(e){
-  localStorage.clear()
-  display('login')
+  signOut()
 })
 
 $update.on("submit",function(e){
@@ -109,28 +102,19 @@ $update.on("submit",function(e){
     // console.log(result)
   })
   .fail(err=>{
+    if(err.responseText){
+      setTimeout(() => {
+        let $error = $("#errorUpdate")
+        $error.text(JSON.parse(err.responseText).errors)
+        $error.show()
+      }, 1000);
+    }
     console.log(err)
     console.log('gagal update')
   })
 })
 
-function deleteTask(id){
-  $.ajax({
-    url: `http://localhost:3000/todo/${id}`,
-    method: "DELETE",
-    headers: {token: localStorage.token},
-  })
-  .done(result=>{
-    console.log('berhasil delete')
-    getList()
-    // console.log(result)
-  })
-  .fail(err=>{
-    console.log(err)
-    console.log('gagal delete')
-  })
-}
-  
+
 $register.on("submit",function(e){
   e.preventDefault()
   let username = $register.find('#usernameRegister').val()
@@ -149,37 +133,28 @@ $register.on("submit",function(e){
   })
   .done(result=>{
     console.log('berhasil register')
-    display('homePage')
-    // console.log(result)
+    myFunction()
   })
   .fail(err=>{
-    console.log('gagal add')
+    if(err.responseText){
+      setTimeout(() => {
+        let $error = $("#errorRegister")
+        $error.text(JSON.parse(err.responseText).errors)
+        $error.show()
+      }, 1000);
+    }
+    console.log('gagal register')
   })
 })
 
 $registerPageButton.on("click",function(e){
-  localStorage.setItem("page", "registerPage")
   e.preventDefault()
   display('registerPage')
 })
-        
-function generateList(data){
-  $tableList.empty()
-  for (var i = 0; i < data.length; i++){
-      var $item = $(template)
-      $item.find('.no').text(i+1)
-      $item.find('.title').text(data[i].title)
-      $item.find('.description').text(data[i].description)
-      $item.find('.status').text(data[i].status)
-      $item.find('.due_date').text(data[i].due_date)
-      $item.find('.action').append(`${updateUrl}${data[i].id})" class="btn btn-danger">Update` + "</button> | ")
-      $item.find('.action').append(`${deleteUrl}${data[i].id})" class="btn btn-danger">Delete` + "</button>")
-      $tableList.append($item)
-  }
-}
 
 $addList.on("submit",function(e){
   e.preventDefault()
+  console.log('aa')
   let title = $addList.find('#title').val()
   let description = $addList.find('#description').val()
   let status = $addList.find('#status').val()
@@ -198,39 +173,122 @@ $addList.on("submit",function(e){
   .done(result=>{
     console.log('berhasil add')
     getList()
-    // console.log(result)
   })
   .fail(err=>{
+    if(err.responseText){
+      setTimeout(() => {
+        let $error = $("#errorAdd")
+        $error.text(JSON.parse(err.responseText).errors)
+        $error.show()
+      }, 1000);
+    }
     console.log('gagal add')
   })
 })
 
-$login.on("submit",function(e){
-  e.preventDefault()
-  let email = $login.find('#loginEmail').val()
-  let password = $login.find('#loginPassword').val()
-  // console.log(email,password)
+
+function updateTask(id){
+  localStorage.removeItem("taskId")
+  console.log(id)
   $.ajax({
-    url: "http://localhost:3000/user/login",
+    method: 'GET',
+    headers: {token: localStorage.token},
+    url: `http://localhost:3000/todo/${id}`,
+  })
+    .done((data)=>{
+      localStorage.setItem("taskId", data.id)
+      $update.find("#titleUpdate").val(data.title)
+      $update.find("#descriptionUpdate").val(data.description)
+      $update.find("#statusUpdate").val(data.status)
+      console.log(moment(data.due_date).format('LL'))
+      $update.find("#due_dateUpdate").val(moment(data.due_date).format('LL'))
+      display('updatePage')
+      console.log(data)
+    })
+    .fail(err=>{
+      if(err.responseText){
+        setTimeout(() => {
+          let $error = $("#errorEdit")
+          $error.text(JSON.parse(err.responseText).errors)
+          $error.show()
+        }, 1000);
+      }
+      console.log(err)
+    })
+}
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  var id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    url: "http://localhost:3000/user/google",
     method: "POST",
-    data: { 
-      email: email,
-      password: password
+    data: {token: id_token}
+  })
+  .done(result=>{
+    // console.log(result,"initoken")
+    localStorage.setItem("token", result.accessToken)
+    // console.log('berhasil send google token')
+    display("homePage")
+  })
+  .fail(err=>{
+    console.log('gagal send google token')
+  })
+}
+
+
+function signOut() {
+  console.log('yo')
+  localStorage.clear()
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+  auth2.disconnect();
+  myFunction()
+}
+
+
+function deleteTask(id){
+  $.ajax({
+    url: `http://localhost:3000/todo/${id}`,
+    method: "DELETE",
+    headers: {token: localStorage.token},
+  })
+  .done(result=>{
+    console.log('berhasil delete')
+    getList()
+    // console.log(result)
+  })
+  .fail(err=>{
+    if(err.responseText){
+      setTimeout(() => {
+        let $error = $("#errorEdit")
+        $error.text(JSON.parse(err.responseText).errors)
+        $error.show()
+      }, 1000);
     }
-  }) 
-  .done(function(token) {
-    console.log(token)
-    localStorage.setItem("token", token.accessToken)
-    localStorage.setItem("page", "homePage")
-    console.log(localStorage)
-    console.log('success to send request')
-    display('homePage')
+    console.log(err)
+    console.log('gagal delete')
   })
-  .fail(function( jqXHR, textStatus ) {
-    console.log(jqXHR.responseText)
-    console.log('failed to send request')
-  })
-})
+}
+  
+        
+function generateList(data){
+  $tableList.empty()
+  for (var i = 0; i < data.length; i++){
+      var $item = $(template)
+      $item.find('.no').text(i+1)
+      $item.find('.title').text(data[i].title)
+      $item.find('.description').text(data[i].description)
+      $item.find('.status').text(data[i].status)
+      $item.find('.due_date').text(moment(data[i].due_date).format('LL'))
+      $item.find('.action').append(`${updateUrl}${data[i].id})" class="btn btn-danger">Update` + "</button> | ")
+      $item.find('.action').append(`${deleteUrl}${data[i].id})" class="btn btn-danger">Delete` + "</button>")
+      $tableList.append($item)
+  }
+}
+
 
 function getList(){
   $.ajax({
@@ -256,6 +314,7 @@ function display(page){
       $(`#${pages[i]}`).show()
     }
   }
+  localStorage.setItem("page", page)
   if(page == 'homePage'){
     getList()
   }

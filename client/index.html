@@ -28,14 +28,14 @@
             <span class="login100-form-title p-b-49">
               Login
             </span>
-            <div class="wrap-input100 validate-input m-b-23" data-validate = "Username is reauired">
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "Username is required">
               <span class="label-input100">Email</span>
-              <input class="input100" id="loginEmail" type="email" name="username" placeholder="Type your email">
+              <input class="input100" id="loginEmail" type="email" placeholder="Type your email">
               <span class="focus-input100" data-symbol="&#xf206;"></span>
             </div>
             <div class="wrap-input100 validate-input" data-validate="Password is required">
               <span class="label-input100">Password</span>
-              <input class="input100" id="loginPassword" type="password" name="pass" placeholder="Type your password">
+              <input class="input100" id="loginPassword" type="password" placeholder="Type your password">
               <span class="focus-input100" data-symbol="&#xf190;"></span>
             </div>
             
@@ -43,7 +43,8 @@
               <a href="" id="registerPageButton">register</a>
             </div>
             
-            <div class="container-login100-form-btn">
+            <div class="container-login100-form-btn"  style="text-align: center;">
+              <div id="errorLogin" style="display: none; color: red;"></div>
               <div class="wrap-login100-form-btn">
                 <div class="login100-form-bgbtn"></div>
                 <button class="login100-form-btn">
@@ -55,7 +56,7 @@
             <div class="txt1 text-center p-t-54 p-b-20">
               <span>
                 Or Sign Up Using
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <div style="margin-left: 133px;" class="g-signin2" data-onsuccess="onSignIn"></div style="margin-left: 20px;">
                 <a href="#" onclick="signOut();">Sign out</a>
               </span>
             </div>
@@ -64,7 +65,7 @@
       </div>
     </div>  
   </div>
-  <!-- <div id="loginPage"> -->
+  <!-- <div id="toLoginPage"> -->
     <!-- <form id="login">
       <div class="form-group">
         <label>Email address</label>
@@ -81,51 +82,107 @@
     </form>
   </div> -->
 
-  <div style="display: none;" id="homePage">
+  <div style="display: none; background-color: bisque;" id="homePage">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-        <a class="nav-link logout" href="#">Logout</a>
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <a class="nav-link logout" href="#">Logout</a>
     </nav>
-    <form id="addList">
-      <h3>Add List</h3>
-      <div class="form-group">
-        <label >title</label>
-        <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+    <div style="width: 80%; margin:auto">
+      <div style="width: 30%; margin:auto; text-align: center;">
+        <form id="addList">
+          <h3>Add List</h3>
+          <div class="form-group">
+            <label >title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+          </div>
+          <div class="form-group">
+            <label>description</label>
+            <input type="text" class="form-control" id="description">
+          </div>
+          <div class="form-group">
+            <label>status</label>
+            <input type="text" class="form-control" id="status">
+          </div>
+          <div class="form-group">
+            <label>due_date(exp:2020-11-29)</label>
+            <input type="text" class="form-control" id="due_date">
+          </div></br>
+          <div id="errorAdd" style="display: none; color: red;"></div>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </form></br>
       </div>
-      <div class="form-group">
-        <label>description</label>
-        <input type="text" class="form-control" id="description">
-      </div>
-      <div class="form-group">
-        <label>status</label>
-        <input type="text" class="form-control" id="status">
-      </div>
-      <div class="form-group">
-        <label>due_date(exp:2020-11-29)</label>
-        <input type="text" class="form-control" id="description">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form></br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">No</th>
-          <th scope="col">Title</th>
-          <th scope="col">Description</th>
-          <th scope="col">Status</th>
-          <th scope="col">Due_date</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="tableList">
-      </tbody>
-    </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due_date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableList">
+          <div id="errorEdit" style="display: none; color: red;"></div>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div style="display: none;" id="updatePage">
+    <div class="limiter">
+      <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+          <div>
+            <a class="nav-link homePage" style="float: left;" href="#">home</a>
+            <a class="nav-link logout" style="float: right;" href="#">Logout</a>
+          </div>
+
+          <form class="login100-form validate-form" id="update">
+            <span class="login100-form-title p-b-49">
+              Update
+            </span>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "title is required">
+              <span class="label-input100">Title</span>
+              <input class="input100" id="titleUpdate" type="text" placeholder="Type task title">
+              <span class="focus-input100" ></span>
+            </div>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "description is required">
+              <span class="label-input100">Description</span>
+              <input class="input100" id="descriptionUpdate" type="text" placeholder="Type task description">
+              <span class="focus-input100" ></span>
+            </div>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "Status is required">
+              <span class="label-input100">Status</span>
+              <input class="input100" id="statusUpdate" type="text" placeholder="Type task status">
+              <span class="focus-input100" ></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Date is required">
+              <span class="label-input100">Date</span>
+              <input class="input100" id="due_dateUpdate type="text" placeholder="Type task date">
+              <span class="focus-input100" ></span>
+            </div></br>
+            
+            <div class="container-login100-form-btn">
+              <div id="errorUpdate" style="display: none; color: red;"></div>
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn">
+                  Update
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>  
+  </div>
+
+  <!-- <div style="display: none;" id="updatePage">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <ul class="navbar-nav mr-auto">
+          <a class="nav-link homePage" href="#">home</a>
         </ul>
         <a class="nav-link logout" href="#">Logout</a>
     </nav>
@@ -149,9 +206,52 @@
       </div>
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
-  </div>
+  </div> -->
 
   <div style="display: none;" id="registerPage">
+    <div class="limiter">
+      <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+          <form class="login100-form validate-form" id="register">
+            <span class="login100-form-title p-b-49">
+              Register
+            </span>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "Username is required">
+              <span class="label-input100">Username</span>
+              <input class="input100" id="usernameRegister" type="text" placeholder="Type your username">
+              <span class="focus-input100" data-symbol="&#xf206;"></span>
+            </div>
+            <div class="wrap-input100 validate-input m-b-23" data-validate = "Username is required">
+              <span class="label-input100">Email</span>
+              <input class="input100" id="emailRegister" type="email" placeholder="Type your email">
+              <span class="focus-input100" data-symbol="&#xf206;"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Password is required">
+              <span class="label-input100">Password</span>
+              <input class="input100" id="passwordRegister" type="password" placeholder="Type your password">
+              <span class="focus-input100" data-symbol="&#xf190;"></span>
+            </div>
+            
+            <div class="text-right p-t-8 p-b-31">
+              <a class="navbar-brand toLoginPage" href="#">login</a>
+            </div>
+            
+            <div class="container-login100-form-btn">
+              <div id="errorRegister" style="display: none; color: red;"></div>
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn">
+                  Register
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>  
+  </div>
+
+  <!-- <div style="display: none;" id="registerPage">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand home" href="#">login</a>
     </nav>
@@ -159,7 +259,7 @@
     <form id="register">
       <div class="form-group">
         <label for="exampleInputEmail1">username</label>
-        <input type="text" class="form-control" id="usernameRegister" aria-describedby="emailHelp">
+        <input type="text" class="form-control" id="usernameRegister">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">email</label>
@@ -171,26 +271,20 @@
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-  </div>
+  </div> -->
 
 </body>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://momentjs.com/downloads/moment.min.js"></script>
 <script src="script.js"></script>
-<!--===============================================================================================-->
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
 	<script src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
 	<script src="vendor/daterangepicker/moment.min.js"></script>
 	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
 	<script src="vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
 	<script src="js/main.js"></script>
 </html>
