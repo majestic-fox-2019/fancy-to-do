@@ -2,7 +2,47 @@
     --input-padding-x: 1.5rem;
     --input-padding-y: .75rem;
   }
+
+
+.grid {
+  background: #EEE;
+  max-width: 1200px;
+}
+
+
+/* clearfix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- grid-item ---- */
+
+.grid-item {
+  width: 160px;
+  height: 120px;
+  float: left;
+  background: darkgray;
+  border: 2px solid #333;
+  border-color: hsla(0, 0%, 0%, 0.5);
+  border-radius: 5px;
+}
+
+.grid-item--width2 { width: 320px; }
+.grid-item--width3 { width: 480px; }
+.grid-item--width4 { width: 640px; }
+
+.grid-item--height2 { height: 200px; }
+.grid-item--height3 { height: 260px; }
+.grid-item--height4 { height: 360px; }
+
   
+  body {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+}
   
   .card-signin {
     border: 0;
@@ -121,10 +161,12 @@
   -------------------------------------------------- */
   
   @media all and (-ms-high-contrast: none),
-  (-ms-high-contrast: active) {
-    .form-label-group>label {
-      display: none;
-    }
-    .form-label-group input:-ms-input-placeholder {
-      color: #777;
-    }
+    (-ms-high-contrast: active) {
+      .form-label-group>label {
+        display: none;
+      }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777;
+}
+}
+

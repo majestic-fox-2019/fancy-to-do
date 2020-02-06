@@ -9,7 +9,8 @@ class TodoController {
             .findAll({
                 where: {
                     UserId: req.user.id
-                }
+                },
+                order: [['due_date', 'ASC']]
             })
             .then(list => {
                 res.status(200).json(list)

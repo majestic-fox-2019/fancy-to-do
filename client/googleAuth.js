@@ -3,7 +3,7 @@ function onSignIn(googleUser) {
 
     $.ajax({
         method: 'POST',
-        url: `${url}/user/google/signin`,
+        url: `${url}/users/google/signin`,
         data: {
             token: id_token
         }

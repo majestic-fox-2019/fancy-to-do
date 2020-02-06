@@ -4,18 +4,6 @@ const createError = require('http-errors')
 const helper = require('../helpers/helper')
 const axios = require('axios')
 
-const { google } = require('googleapis')
-
-const client_id = "105182697848-ecaopde8hjl2909vqrladq076ieu7h7r.apps.googleusercontent.com"
-const client_secret = "-uHFPDvKP3sN1JWFNV9ibw2j"
-const redirect_uri = "http://localhost:3000/google/redirect"
-
-const oAuth2Client = new google.auth.OAuth2(
-    client_id,
-    client_secret,
-    redirect_uri
-)
-
 const mailboxValidator = axios.create({
     baseURL: 'https://api.mailboxvalidator.com/v1/validation/single?key=ZLDJ9PTKF83YSRQUUJW9&',
 });
@@ -51,8 +39,18 @@ class UserController {
     static register(req, res, next){
         let { username, email, password } = req.body
 
-        mailboxValidator
-            .get(`&email=${email}`)
+        User
+            .findOne({
+                where: {
+                    email: email
+                }
+            })
+            .then(user => {
+                if(!user){
+                    return mailboxValidator.get(`&email=${email}`)
+                }
+                throw createError(400, 'Email does not exist or not verified')
+            })
             .then(user => {
                 if(user.data.is_verified == 'True'){
                     return User.create({
@@ -60,12 +58,11 @@ class UserController {
                         email,
                         password
                     })
-                } else {
-                    throw createError(400, 'Email does not exist or not verified')
                 }
+                throw createError(400, 'Email does not exist or not verified')
             })
-            .then(result => {
-                res.status(201).json(result)
+            .then(({ username, email }) => {
+                res.status(201).json({ username, email })
             })
             .catch(next)
     }
@@ -96,26 +93,12 @@ class UserController {
                 }
                 // console.log(user.id)
                 let token = helper.generate(payload)
-                res.status(200).json(token)
+                res.status(200).json({ accessToken: token})
             })
             .catch(err => {
                 res.status(500).json(err)
             })
     }
-
-    // static googleSignIn(req, res, next){
-    //     const authorizeUrl = oAuth2Client.generateAuthUrl({
-    //             access_type: 'offline',
-    //             scope: 
-    //             [
-    //                 'https://www.googleapis.com/auth/gmail.readonly',
-    //                 'https://www.googleapis.com/auth/calendar',
-
-    //             ]
-    //     });
-
-    //     res.status(400).json(authorizeUrl)
-    // }
 }
 
 

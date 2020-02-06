@@ -1,6 +1,7 @@
 var $login = $('#login')
 var $loginPage = $('#loginPage')
 var $tableList = $('#tableList')
+var $todoCard = $('#todoCard')
 var $addTask = $('#addTask')
 var $register = $('#register')
 var $registerPage = $('#registerPage')
@@ -10,7 +11,12 @@ var $proceedUpdate = $('#proceedUpdate')
 var $checkLogin = $('#checkLogin')
 var $logout = $('#logout')
 
-{/* <th scope="row" class="no"></th> */}
+var CLIENT_ID = '105182697848-11aul2k1uk3vs78c8gj73icpgok0v7nk.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyCfLb30dhm_sY-WHHHFv4NopdboehepFKQ'
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+var SCOPES = "https://www.googleapis.com/auth/calendar";
+var authorizeButton = document.getElementById('authorize_button');
+
 
 const url = 'http://localhost:3000'
 const template = `
@@ -89,7 +95,7 @@ $register.on('submit', function(e){
     console.log(username, email, password)
     $.ajax({
         method: 'POST',
-        url: `${url}/user/register`,
+        url: `${url}/users/register`,
         data: {
             username: username,
             email: email,
@@ -105,7 +111,7 @@ $register.on('submit', function(e){
         })
     })
     .fail(err => {
-        // console.log(err.responseJSON.errors.join('\n'))
+        console.log(err)
         Swal.fire({
             title: 'Error!',
             text: err.responseJSON.errors.join('\n'),
@@ -122,13 +128,14 @@ $login.on('submit', function(e){
     console.log(email, password)
     $.ajax({
         method: 'POST',
-        url: `${url}/user/login`,
+        url: `${url}/users/login`,
         data: {
             email: email,
             password: password
         }
     })
     .done(response => {
+        ($('#body')).css('background-image', 'none')
         var token = response.accessToken
         localStorage.setItem('token', token)
         getData(token)
@@ -165,11 +172,51 @@ $addTask.on('submit', function(e){
         }
     })
     .done(response => {
-        let token = localStorage.token
+        var token = localStorage.token
+
+        var text = ''
+        //CALENDAR HERE
+        if(gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)){
+                var event = {
+                        'summary': title,
+                        'description': description,
+                        'start': {
+                            'dateTime': new Date(),
+                            'timeZone': 'America/Los_Angeles',
+                        },
+                        'end': {
+                            'dateTime': new Date(due_date),
+                            'timeZone': 'America/Los_Angeles',
+                        },
+                        'reminders': {
+                            'useDefault': false,
+                            'overrides': [
+                                {'method': 'email', 'minutes': 24 * 60},
+                            ],
+                        },
+                };
+
+                gapi.client.calendar.events.insert({
+                    calendarId: 'primary',
+                    resource: event,
+                })
+                .then(results =>{
+                    Swal.fire({
+                        icon: "success",
+                        text: `${title} added to your Google Calendar`,
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        text += `${title} added to Todo list`
+        console.log(text)
+
         getData(token)
         Swal.fire({
             icon: "success",
-            text: `${response.title} has been saved`,
+            text: text,
         })
     })
     .fail(({responseJSON}) => {
@@ -183,9 +230,11 @@ $addTask.on('submit', function(e){
 
 function checkLogin(){
     if(localStorage.token){
+        ($('#body')).css('background-image', 'none')
         getData()
         display('main_content')
     } else {
+        ($('#body')).css('background-image', 'linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33))')
         display('login')
     }
 }
@@ -199,7 +248,11 @@ function getData(token){
         }
     })
     .done(response => {
-        generateData(response)
+        //DISINI EDIT
+
+
+        // generateData(response)
+        generateCard(response)
     })
 }
 
@@ -214,21 +267,65 @@ function display(page){
     }
 }
 
-function generateData(list){
-    sortingDate(list)
-    $tableList.empty()
+
+// TEMPLATE CARD
+var templateCard = `
+        <div class="card bg-light mb-3" style="min-width: 300px; max-width: 18rem;">
+            <div class="text-center">
+                <div class="card-header title">Header</div>
+                <div class="card-body">
+                <p class="card-text description"></p>
+                <p class="card-text due_date"></p>
+                <p class="card-text status"></p>
+                <p class="card-text action"></p>
+                </div>
+            </div>
+        </div>
+`
+
+function generateCard(list){
+    $todoCard.empty()
     for (var i = 0; i < list.length; i++){
-        var $item = $(template)
+        var $item = $(templateCard)
         $item.find('.no').text(i+1)
         $item.find('.title').text(list[i].title)
         $item.find('.description').text(list[i].description)
-        $item.find('.due_date').text(list[i].due_date)
+        $item.find('.due_date').text(list[i].due_date + ` (${getExpired(list[i].due_date)})`)
         $item.find('.status').text(list[i].status)
         $item.find('.action').append(`${deleteUrl}${list[i].id})" class="btn btn-danger">Delete` + "</button> ")
         $item.find('.action').append(`${updateUrl}${list[i].id})" class="btn btn-primary">Update` + "</button>")
-        $tableList.append($item)
+        $todoCard.append($item)
     }
-    console.log(list)
+}
+
+// function generateData(list){
+//     $tableList.empty()
+//     for (var i = 0; i < list.length; i++){
+//         var $item = $(template)
+//         $item.find('.no').text(i+1)
+//         $item.find('.title').text(list[i].title)
+//         $item.find('.description').text(list[i].description)
+//         $item.find('.due_date').text(list[i].due_date + ` (${getExpired(list[i].due_date)})`)
+//         $item.find('.status').text(list[i].status)
+//         $item.find('.action').append(`${deleteUrl}${list[i].id})" class="btn btn-danger">Delete` + "</button> ")
+//         $item.find('.action').append(`${updateUrl}${list[i].id})" class="btn btn-primary">Update` + "</button>")
+//         $tableList.append($item)
+//     }
+// }
+
+function getExpired(date){
+    var deadline = (new Date(date)).getTime()
+    var today = (new Date()).getTime()
+    var diff = (deadline - today)
+    var numOfDays = new Date(deadline - today).getDay()
+    if(diff < 0){
+        return 'This task already past deadline'
+    } else if (numOfDays == 0){
+        return `Expired in ${numOfDays} day`
+    } else {
+        return `Expired in ${numOfDays} days`
+    }
+    // return dt
 }
 
 
@@ -300,19 +397,6 @@ function getUpdateForm(id){
     })
 }
 
-
-function sortingDate(list){
-    for (var i = 0; i < list.length; i++){
-        for (var j = 0; j < list.length; j++){
-            if(new Date(list[i].due_date) < new Date(list[j].due_date)){
-                let temp = list[j]
-                list[j] = list[i]
-                list[i] = temp
-            }
-        }
-    }
-} 
-
 function showAddForm(){
     console.log($addTask.attr('style'))
     if($addTask.attr('style') == 'display: none;'){
@@ -322,6 +406,45 @@ function showAddForm(){
     }
 }
 
-// CALENDAR
-// 105182697848-11aul2k1uk3vs78c8gj73icpgok0v7nk.apps.googleusercontent.com
-// 3TFb4g7PN0Ys_Iz8tN0tgAyS 
+
+
+function handleClientLoad() {
+    gapi.load('client:auth2', initClient);
+}
+
+
+function initClient() {
+    gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES
+    })
+    .then(function () {
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        authorizeButton.onclick = handleAuthClick;
+    }, 
+    function(error) {
+        appendPre(JSON.stringify(error, null, 2));
+    });
+}
+
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+        authorizeButton.style.display = 'none';
+    } else {
+        authorizeButton.style.display = 'block';
+    }
+}
+
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+function appendPre(message) {
+    var pre = document.getElementById('content');
+    var textContent = document.createTextNode(message + '\n');
+    pre.appendChild(textContent);
+}
