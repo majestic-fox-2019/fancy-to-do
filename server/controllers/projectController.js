@@ -52,6 +52,7 @@ class ProjectController {
   }
 
   static getAllProject(req, res, next) {
+    const id = req.params.id
     Project.findAll()
       .then(results => {
         res.status(200).json(results)
@@ -80,7 +81,7 @@ class ProjectController {
     UserProject.findAll({
       where: { ProjectId: req.params.projectId },
       include: [
-        { model: Project, attributes: ['name', 'owner'] },
+        { model: Project, attributes: ['id', 'name', 'owner'] },
         { model: User, attributes: ['email'] }
       ]
     })
@@ -89,10 +90,12 @@ class ProjectController {
           throw { errCode: 404, msg: 'Project not found' }
         } else {
           let temp = {
+            id: null,
             name: null,
             owner: null,
             members: []
           }
+          temp.id = result[0].Project.id
           temp.name = result[0].Project.name
           temp.owner = result[0].Project.owner
           result.forEach(el => {
@@ -113,7 +116,10 @@ class ProjectController {
 
   static getUserProject(req, res, next) {
     const id = req.loggedIn.id
-    UserProject.findAll({ where: { UserId: id }, include: [Project] })
+    UserProject.findAll({
+      where: { UserId: id, status: 'join' },
+      include: [Project]
+    })
       .then(results => {
         res.status(200).json(results)
       })
@@ -122,26 +128,58 @@ class ProjectController {
       })
   }
 
+  static getUserInvitation(req, res, next) {
+    const id = req.loggedIn.id
+    UserProject.findAll({
+      where: { UserId: id, status: 'pending' },
+      include: [Project]
+    })
+      .then(results => {
+        res.status(200).json(results)
+      })
+      .catch(err => {
+        console.log(err.response)
+        next(err)
+      })
+  }
+
   static inviteProject(req, res, next) {
+    let data
     User.findOne({ where: { email: req.body.email } })
       .then(result => {
         if (!result) {
           throw { errCode: 404, msg: 'User not found' }
         } else {
-          return UserProject.create({
+          data = {
             UserId: result.id,
             ProjectId: req.params.projectId,
             status: 'pending'
+          }
+          return UserProject.findOne({
+            where: { UserId: result.id, ProjectId: req.params.projectId }
           })
+        }
+      })
+      .then(response => {
+        if (response) {
+          throw { errCode: 400, msg: 'User already in this project' }
+        } else {
+          return UserProject.create(data)
         }
       })
       .then(final => {
         res.status(201).json({ final, msg: 'User invited' })
       })
+      .catch(err => {
+        next(err)
+      })
   }
 
   static patchStatus(req, res, next) {
     const id = req.loggedIn.id
+    const status = {
+      status: req.body.status
+    }
     UserProject.findOne({
       where: { ProjectId: req.params.projectId, UserId: id }
     })
@@ -149,17 +187,32 @@ class ProjectController {
         if (!result) {
           throw { errCode: 404, msg: 'Project not found' }
         } else {
-          return UserProject.update(
-            { status: 'join' },
-            { where: { status: 'pending' } }
-          )
+          return UserProject.update(status, {
+            where: { ProjectId: req.params.projectId, status: 'pending' }
+          })
         }
       })
       .then(final => {
+        console.log(final)
         res.status(200).json(final)
       })
       .catch(err => {
-        console.log(err)
+        next(err)
+      })
+  }
+
+  static leaveProject(req, res, next) {
+    const id = req.loggedIn.id
+    UserProject.destroy({
+      where: { UserId: id, ProjectId: req.params.projectId }
+    })
+      .then(result => {
+        res.status(200).json({
+          message: 'User leave project',
+          result
+        })
+      })
+      .catch(err => {
         next(err)
       })
   }

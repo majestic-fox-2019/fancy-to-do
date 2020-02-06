@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min(val) {
             if(val.length < 6) {
-              throw 'Minimun length is 6 character'
+              throw 'Minimun password length is 6 character'
             }
           }
         }

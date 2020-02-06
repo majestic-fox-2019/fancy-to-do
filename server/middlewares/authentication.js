@@ -1,13 +1,12 @@
-const jwt = require('jsonwebtoken')
+const { verify } = require('../helpers/jwt')
 
 module.exports = (req, res, next) => {
-    const token = req.headers.token
-    try {
-        const verify = jwt.verify(token, process.env.JWT_SECRET)
-        req.loggedIn = verify
-        next()
-    }
-    catch (err) {
-        next(err)
-    }
+  const token = req.headers.token
+  try {
+    const payload = verify(token, process.env.JWT_SECRET)
+    req.loggedIn = payload
+    next()
+  } catch (err) {
+    next(err)
+  }
 }
