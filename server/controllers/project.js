@@ -19,6 +19,25 @@ class ProjectController {
     }
     static findAll(req, res, next) {
         Project.findAll({
+            include: [
+                {
+                    model: User,
+                    where: {
+                        id: req.user.id
+                    }
+                }
+            ]
+        })
+            .then((result) => {
+                if (!result) {
+                    next(createError(404, "not found Project"))
+                } else {
+                    res.status(200).json(result)
+                }
+            }).catch(next);
+    }
+    static findOne(req, res, next) {
+        Project.findOne({
             where: {
                 id: req.params.projectId
             },
@@ -32,20 +51,6 @@ class ProjectController {
                 res.status(200).json(result)
             })
             .catch(next);
-    }
-    static findOne(req, res, next) {
-        // Project.findOne({
-        //     where: {
-        //         id: req.params.id
-        //     }
-        // })
-        //     .then((result) => {
-        //         if (!result) {
-        //             next(createError(404, "not found Project"))
-        //         } else {
-        //             res.status(200).json(result)
-        //         }
-        //     }).catch(next);
     }
     static update(req, res, next) {
         const { nameProject } = req.body

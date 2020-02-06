@@ -6,13 +6,14 @@ if (process.env.NODE_ENV === "development") {
 const express = require("express")
 const app = express()
 const routes = require("./routes")
+const cors = require("cors")
 const errorHandler = require("./middleware/errorHandler")
 const PORT = process.env.PORT
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-
+app.use(cors())
 app.use("/", routes)
 app.use(errorHandler)
 

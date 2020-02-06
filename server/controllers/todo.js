@@ -5,13 +5,14 @@ const createError = require("http-errors")
 
 class TodoController {
     static createTodo(req, res, next) {
+        console.log(req.body);
         const { title, description, due_date } = req.body
         Todo.create({
             title,
             description,
             status: "not complete",
             due_date,
-            UserId: req.user.id
+            UserId: req.user.id,
         })
             .then((result) => {
                 res.status(201).json(result)
@@ -44,11 +45,12 @@ class TodoController {
     }
     static update(req, res, next) {
         const { title, description, status } = req.body
+        console.log(req.body);
         Todo.update({
             title,
             description,
             status,
-            updateAt: new Date()
+            updatedAt: new Date()
         }, {
             where: {
                 id: req.params.id

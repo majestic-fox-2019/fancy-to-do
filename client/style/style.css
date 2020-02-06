@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    background-color: #374a5d !important;
+    border: 0 !important;
+}
+
+#container{
+    margin: 0 auto;
+    width: 1060px;
+    min-height: 100%;
+    background-color: transparent;
+    border: 0;
+}
+
+#header{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.task-list{
+    width: 350px;
+    float: left;
+    margin: 0 5px;
+    background-color: #e3e3e3;
+    min-height: 240px;
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+
+#listProject {
+    width: 45%;
+    float: left;
+    margin: 0 5px;
+    background-color: #e3e3e3;
+    min-height: 100%;
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+
+#colProject{
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 9%;
+}
+
+#addProject input{
+    width: 400px;
+    margin: 1px 50px;
+}
+
+.task-list input, .task-list textarea{
+    width: 250px;
+    margin: 1px 50px;
+}
+
+.task-list input{
+    height: 30px;
+}
+
+.todo-task{
+    border-radius: 5px;
+    background-color: #fff;
+    width: 340px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.task-list input[type="button"]{
+    width: 100px;
+    margin: 12px;
+}
+
+.todo-task > .task-header{
+    font-weight: bold;
+}
+
+.todo-task > .task-date{
+    font-size: small;
+    font-style: italic;
+}
+
+.todo-task > .task-description{
+    font-size: smaller;
+}
+
+h3{
+    text-align: center;
+}
+
+#delete-div{
+    display: none;
+    background-color: #fff;
+    border: 3px dotted #000;
+    margin: 10px;
+    height: 75px;
+    line-height: 75px;
+    text-align: center;
+}
