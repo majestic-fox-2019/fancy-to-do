@@ -1,7 +1,7 @@
 const {Todo} = require('../models')
 class Controller{
   static create(req, res, next){
-    console.log(req.body.due_date)
+    console.log(req.body)
     let data = {
       title: req.body.title,
       description: req.body.description,

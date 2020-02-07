@@ -7,6 +7,35 @@ const instance = axios.create({
   baseURL: `https://api.mailboxvalidator.com/v1/validation/single?key=${process.env.CheckEmailApi}&`
 });
 class Usercontroller{
+  static facebookLogin(req, res, next){
+    User.findOne({
+      where: {
+        email: req.body.email
+      }
+    })
+    .then(exists=>{
+      if(exists == null){
+        req.body.username = req.body.name
+        req.body.email = req.body.email
+        req.body.password = Math.random()*10000
+        Usercontroller.register(req,res,next)
+      }else{
+        console.log('ada')
+        let obj = {
+          id: exists.id,
+          username : exists.username,
+          email : exists.email
+        }
+        let token = generateToken(obj, process.env.secret_code);
+        console.log(token,'<<')
+        res.status(200).json({accessToken: token})
+      }
+    })
+    .catch(err=>{
+      console.error
+    })
+  }
+
   static googleLogin(req,res,next){
     const client = new OAuth2Client(process.env.CLIENT_ID)
     console.log(client,'<<<')
@@ -75,10 +104,11 @@ class Usercontroller{
         // }
       // })
       .then(data=>{
+        console.log(data)
         let obj = {
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password
+          id: data.id,
+          username: data.username,
+          email: data.email,
         }
         console.log(obj)
         let token = generateToken(obj, process.env.secret_code);

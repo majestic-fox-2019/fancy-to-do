@@ -20,6 +20,8 @@
   <title>To Do List</title>
 </head>
 <body onload="myFunction()">
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v6.0&appId=636040660493086&autoLogAppEvents=1"></script>
   <div id="loginPage">
     <div class="limiter">
       <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
@@ -56,8 +58,11 @@
             <div class="txt1 text-center p-t-54 p-b-20">
               <span>
                 Or Sign Up Using
-                <div style="margin-left: 133px;" class="g-signin2" data-onsuccess="onSignIn"></div style="margin-left: 20px;">
-                <a href="#" onclick="signOut();">Sign out</a>
+                <div style="margin-left: 133px;" class="g-signin2" data-onsuccess="onSignIn"></div style="margin-left: 20px;"><br/>
+                <!-- <a href="#" onclick="signOut();">Google Sign out</a> -->
+                <!-- <div class="fb-login-button" data-width="" data-size="small" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div> -->
+                  <button id="facebook-login-button" style="background-image: url('./images/FacebookButton.jpg'); width: 120px; height: 30px; background-size: 120px 30px;"></button>
+                  <!-- <button id="faced">man</button> -->
               </span>
             </div>
           </form>
@@ -65,28 +70,12 @@
       </div>
     </div>  
   </div>
-  <!-- <div id="toLoginPage"> -->
-    <!-- <form id="login">
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" value="" class="form-control" id="loginEmail" aria-describedby="emailHelp">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" value="" class="form-control" id="loginPassword">
-      </div>
-      <a href="" id="registerPageButton">register</a>
-      <div class="g-signin2" data-onsuccess="onSignIn"></div>
-      <a href="#" onclick="signOut();">Sign out</a>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div> -->
 
-  <div style="display: none; background-color: bisque;" id="homePage">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div style="display: none; background-image: url('./images/bg-01.jpg'); background-size: cover;" id="homePage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-image: url('./images/bg-01.jpg'); background-size: cover;">
       <ul class="navbar-nav mr-auto">
       </ul>
-      <a class="nav-link logout" href="#">Logout</a>
+      <a class="nav-link logout btn btn-primary" href="#">Logout</a>
     </nav>
     <div style="width: 80%; margin:auto">
       <div style="width: 30%; margin:auto; text-align: center;">
@@ -105,8 +94,8 @@
             <input type="text" class="form-control" id="status">
           </div>
           <div class="form-group">
-            <label>due_date(exp:2020-11-29)</label>
-            <input type="text" class="form-control" id="due_date">
+            <label>due_date</label>
+            <input type="date" class="form-control" id="due_date">
           </div></br>
           <div id="errorAdd" style="display: none; color: red;"></div>
           <button type="submit" class="btn btn-primary">Add Task</button>
@@ -160,7 +149,7 @@
             </div>
             <div class="wrap-input100 validate-input" data-validate="Date is required">
               <span class="label-input100">Date</span>
-              <input class="input100" id="due_dateUpdate type="text" placeholder="Type task date">
+              <input class="input100" id="due_dateUpdate" type="date" placeholder="Type task date">
               <span class="focus-input100" ></span>
             </div></br>
             
@@ -178,35 +167,6 @@
       </div>
     </div>  
   </div>
-
-  <!-- <div style="display: none;" id="updatePage">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-          <a class="nav-link homePage" href="#">home</a>
-        </ul>
-        <a class="nav-link logout" href="#">Logout</a>
-    </nav>
-    <form id="update">
-      <h3>Update List</h3>
-      <div class="form-group">
-        <label >title</label>
-        <input type="text" class="form-control" id="titleUpdate" aria-describedby="emailHelp">
-      </div>
-      <div class="form-group">
-        <label>description</label>
-        <input type="text" class="form-control" id="descriptionUpdate">
-      </div>
-      <div class="form-group">
-        <label>status</label>
-        <input type="text" class="form-control" id="statusUpdate">
-      </div>
-      <div class="form-group">
-        <label>due_date(exp:2020-11-29)</label>
-        <input type="text" class="form-control" id="due_dateUpdate">
-      </div>
-      <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-  </div> -->
 
   <div style="display: none;" id="registerPage">
     <div class="limiter">
@@ -251,34 +211,46 @@
     </div>  
   </div>
 
-  <!-- <div style="display: none;" id="registerPage">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand home" href="#">login</a>
-    </nav>
-    <h2>Register</h2>
-    <form id="register">
-      <div class="form-group">
-        <label for="exampleInputEmail1">username</label>
-        <input type="text" class="form-control" id="usernameRegister">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">email</label>
-        <input type="email" class="form-control" id="emailRegister">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">password</label>
-        <input type="password" class="form-control" id="passwordRegister">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div> -->
-
 </body>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://momentjs.com/downloads/moment.min.js"></script>
-<script src="script.js"></script>
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!-- 
+<script>
+FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
+</script> -->
+
+<script>
+// window.fbAsyncInit = function() {
+  // FB.init({
+  //   appId            : '636040660493086',
+  //   status           : true,
+  //   autoLogAppEvents : true,
+  //   xfbml            : true,
+  //   version          : 'v6.0'
+  // });
+// };
+// FB.AppEvents.logPageView();
+
+// FB.ui({
+//   method: 'share',
+//   href: 'https://developers.facebook.com/docs/'
+// }, function(response){});
+</script>
+<!-- <div id="fb-root"></div><script src="https://connect.facebook.net/en_US/sdk.js"></script><script>
+  FB.init({
+    appId            : '636040660493086',
+    status  : true,
+    xfbml   : true,
+    version : 'v2.9'
+  });
+  FB.AppEvents.logPageView();
+  </script> -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script src="script.js"></script>
+  <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+  <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 	<script src="vendor/animsition/js/animsition.min.js"></script>
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>

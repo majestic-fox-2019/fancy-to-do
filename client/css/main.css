@@ -190,6 +190,9 @@ table, th, td{
   border-radius: 10px;
   overflow: hidden;
 }
+#facebook-login-button:hover {
+  opacity: 0.8;
+}
 
 
 /*------------------------------------------------------------------

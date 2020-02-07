@@ -1,5 +1,44 @@
 // const server = 'http://localhost:3000/data'
 //assign
+$('#facebook-login-button').on("click",function(e){
+  e.preventDefault()
+  console.log('wew')
+  FB.login(function(response) {
+    // handle the response
+    if (response.status === 'connected') {
+      // Logged into your webpage and Facebook.
+      // console.log(response.authResponse.userID)
+      FB.api(
+        '/'+response.authResponse.userID+'/?fields=id,name,email',
+      'GET',
+      {},
+      function(response) {
+        // Insert your code here
+        // console.log(response);
+        let name = response.name;
+        let email = response.email;
+        // console.log(email)
+        onSignInFacebook(name,email)
+      }
+        // `/${response.authResponse.userID}/`,
+        // function (response) {
+        //   if (response && !response.error) {
+        //     console.log(response)
+        //     /* handle the result */
+        //   }
+        // }
+    );
+      console.log(`Success login to facebook`)
+      // FB.api('/me', {fields: 'last_name'}, function(response) {
+      //   console.log(response);
+      // });
+    } else {
+      console.log(`Failed login to facebook`)
+
+      // The person is not logged into your webpage or we are unable to tell. 
+    }
+  }, {scope: 'public_profile,email', auth_type: 'reauthenticate'});
+})
 var $login = $('#login')
 var $addList = $('#addList')
 var $tableList = $('#tableList')
@@ -28,9 +67,6 @@ const template = `
 
 //method
 
-// $loginPage.on("click",function(){
-//   display('loginPage')
-// })
 
 $toLoginPage.on("click",function(){
   display('loginPage')
@@ -39,7 +75,6 @@ $toLoginPage.on("click",function(){
 $home.on("click",function(){
   display('homePage')
 })
-
 
 $login.on("submit",function(e){
   e.preventDefault()
@@ -217,6 +252,26 @@ function updateTask(id){
     })
 }
 
+function onSignInFacebook(name, email) {
+  $.ajax({
+    url: "http://localhost:3000/user/facebook",
+    method: "POST",
+    data: {
+      name,
+      email
+    }
+  })
+  .done(result=>{
+    console.log(result,"initoken")
+    localStorage.setItem("token", result.accessToken)
+    // console.log('berhasil send google token')
+    display("homePage")
+  })
+  .fail(err=>{
+    console.log('gagal send google token')
+  })
+}
+
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var id_token = googleUser.getAuthResponse().id_token;
@@ -226,7 +281,7 @@ function onSignIn(googleUser) {
     data: {token: id_token}
   })
   .done(result=>{
-    // console.log(result,"initoken")
+    console.log(result,"initoken")
     localStorage.setItem("token", result.accessToken)
     // console.log('berhasil send google token')
     display("homePage")
@@ -245,6 +300,14 @@ function signOut() {
     console.log('User signed out.');
   });
   auth2.disconnect();
+  FB.getLoginStatus(function(response) {
+    if (response && response.status === 'connected') {
+        FB.logout(function(response) {
+            // document.location.reload();
+            console.log(`logged out from facebook`)
+        });
+    }
+});
   myFunction()
 }
 
