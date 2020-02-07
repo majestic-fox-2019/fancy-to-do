@@ -75,11 +75,11 @@ module.exports = (sequelize, DataTypes) => {
             });
         },
         afterFind(instance, option) {
-          // let arr = [];
-          // instance.forEach(element => {
-          //   arr.push(element.updateTemperature());
-          // });
-          // return Promise.all(arr);
+          let arr = [];
+          instance.forEach(element => {
+            arr.push(element.updateTemperature());
+          });
+          return Promise.all(arr);
         }
       }
     }

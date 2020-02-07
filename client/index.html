@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="google-signin-client_id"
+      content="162472941446-uctiiot4todbr2kmaki0737fqoam2u4c.apps.googleusercontent.com"
+    />
+    <title>Productivity</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <h1>Project Management</h1>
+      
+      <button
+      type="button"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#addModal"
+      id="addButton">
+      Add Task
+    </button>
+    <button type="button" class="btn btn-primary" onclick="logOut()" id="logoutButton">Log Out</button>
+    </div>
+    <div class="container" id="loginContainer">
+      <div class="row">
+        <div class="col-lg-12 offset-lg-2">
+          <div class="card" style=" max-width: 200rem;">
+            <h5 class="card-header text-center">Login</h5>
+            <div class="card-body">
+              <div class="LoginForm">
+                <form>
+                  <div class="form-group" id="LoginForm">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="LoginEmail" />
+                  </div>
+                  <div class="form-group">
+                    <label for="password ">Password:</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="LoginPassword"
+                    />
+                  </div>
+                  <div class="text-left">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg btn-block"
+                      id="LoginSubmit"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <br>
+                  <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#registerModal">
+                      Register
+                    </button>
+                    <br>
+                    <div
+                    class="g-signin2"
+                    data-onsuccess="onSignIn"
+                  ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- Button trigger modal -->
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="RegisterForm">
+                <div class="form-group" >
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="RegisterEmail"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="RegisterPassword"
+                  />
+                </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+    <div class="container" id="showtableContainer">
+      <div class="row">
+        <div class="col-lg-12 ">
+          <div class="card">
+            <div class="table">
+              <table class="table  table-condensed text-center">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Todo</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col" colspan=2>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="formbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
+      class="modal fade"
+      id="abcd"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Description</label>
+                <input type="text" class="form-control" id="AddDescription" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Status</label>
+                <input type="text" class="form-control" id="AddStatus" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Date</label>
+                <input type="date" class="form-control" id="AddDue_date" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="addButton">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="updateModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered "
+        id="updateModal"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm">
+              <input type="hidden" name="id" id="editId" />
+              <div class="form-group">
+                <label for="exampleInputEmail1">Title</label>
+                <input type="text" class="form-control" id="EditTitle" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Description</label>
+                <input type="text" class="form-control" id="EditDescription" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Status</label>
+                <input type="text" class="form-control" id="EditStatus" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Date</label>
+                <input type="date" class="form-control" id="EditDue_date" />
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">
+              Submit
+            </button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <!-- <a href="#" onclick="signOut();">Sign out</a> -->
+
+    <!-- Button trigger modal -->
+    
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="addModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Task</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addButton">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Title</label>
+                <input type="text" class="form-control" id="AddTitle" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Description</label>
+                <input type="text" class="form-control" id="AddDescription" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Status</label>
+                <input type="text" class="form-control" id="AddStatus" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Date</label>
+                <input type="date" class="form-control" id="AddDue_date" />
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" >
+              Submit
+            </button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+
+  <script src="./scripts/app.js"></script>
+  <link rel="stylesheet" href="./styles/style.css" />
+</html>
