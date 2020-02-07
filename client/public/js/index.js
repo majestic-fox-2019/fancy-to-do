@@ -20,14 +20,13 @@ var todo = function () {
     var $modalAdd = {};
     var $titleAdd = {};
     var $descriptionAdd = {};
-    var $statusAdd = {};
     var $due_dateAdd = {};
 
     var $modalEdit = {};
     var $titleEdit = {};
     var $descriptionEdit = {};
-    var $statusEdit = {};
     var $due_dateEdit = {};
+    var $statusEdit = {};
     var $idEdit = {};
 
     var $data = {};
@@ -55,8 +54,8 @@ var todo = function () {
         $modalEdit = $("#modalEdit");
         $titleEdit = $("#titleEdit");
         $descriptionEdit = $("#descriptionEdit");
-        $statusEdit = $("#statusEdit");
         $due_dateEdit = $("#due_dateEdit");
+        $statusEdit = $("#statusEdit");
         $idEdit = $("#idEdit");
 
         $add = $("#submitAdd");
@@ -69,20 +68,6 @@ var todo = function () {
     }
 
     function bindEvents() {
-        $submitLogin.mouseover(function () {
-            $(this).css("background-color", "white");
-            $(this).css("color", "black");
-        });
-        $submitLogin.mouseout(function () {
-            $(this).css("background-color", "transparent");
-            $(this).css("color", "white");
-        });
-        $submitLogin.on("click", function (e) {
-            e.preventDefault();
-            $emailLogin = $("#emailLogin").val();
-            $passwordLogin = $("#passwordLogin").val();
-            login($emailLogin, $passwordLogin);
-        });
         $submitRegister.mouseover(function () {
             $(this).css("background-color", "white");
             $(this).css("color", "black");
@@ -97,15 +82,37 @@ var todo = function () {
             $passwordRegister = $("#passwordRegister").val();
             register($emailRegister, $passwordRegister);
         });
+        $submitLogin.mouseover(function () {
+            $(this).css("background-color", "white");
+            $(this).css("color", "black");
+        });
+        $submitLogin.mouseout(function () {
+            $(this).css("background-color", "transparent");
+            $(this).css("color", "white");
+        });
+        $submitLogin.on("click", function (e) {
+            e.preventDefault();
+            $emailLogin = $("#emailLogin").val();
+            $passwordLogin = $("#passwordLogin").val();
+            login($emailLogin, $passwordLogin);
+        });
         $registerButton.on("click", function (e) {
             e.preventDefault();
             $loginDiv.css("display", "none");
             $registerDiv.css("display", "block");
+            $emailLogin = $("#emailLogin").val("");
+            $passwordLogin = $("#passwordLogin").val("");
+            $emailRegister = $("#emailRegister").val("");
+            $passwordRegister = $("#passwordRegister").val("");
         });
         $loginButton.on("click", function (e) {
             e.preventDefault();
             $loginDiv.css("display", "block");
             $registerDiv.css("display", "none");
+            $emailLogin = $("#emailLogin").val("");
+            $passwordLogin = $("#passwordLogin").val("");
+            $emailRegister = $("#emailRegister").val("");
+            $passwordRegister = $("#passwordRegister").val("");
         });
         $dropdown.on("click", function () {
             $logout.slideToggle();
@@ -127,28 +134,24 @@ var todo = function () {
             e.preventDefault();
             $titleAdd = $("#titleAdd").val();
             $descriptionAdd = $("#descriptionAdd").val();
-            if ($("input[id='statusAdd']").prop("checked")) {
-                $statusAdd = true;
-            } else {
-                $statusAdd = false;
-            }
             $due_dateAdd = $("#due_dateAdd").val();
             $modalAdd.modal('toggle');
-            add($titleAdd, $descriptionAdd, $statusAdd, $due_dateAdd);
+            add($titleAdd, $descriptionAdd, $due_dateAdd);
         });
         $edit.on("click", function (e) {
             e.preventDefault();
             $titleEdit = $("#titleEdit").val();
             $descriptionEdit = $("#descriptionEdit").val();
-            if ($("input[id='statusEdit']").prop("checked")) {
-                $statusEdit = true;
-            } else {
-                $statusEdit = false;
-            }
             $due_dateEdit = $("#due_dateEdit").val();
             $idEdit = $("#idEdit").val();
+            let status;
+            if ($statusEdit.prop("checked")) {
+                status = true;
+            } else {
+                status = false;
+            }
             $modalEdit.modal('toggle');
-            edit($titleEdit, $descriptionEdit, $statusEdit, $due_dateEdit, $idEdit);
+            edit($titleEdit, $descriptionEdit, status, $due_dateEdit, $idEdit);
         });
     }
 
@@ -189,9 +192,7 @@ var todo = function () {
 
     function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
+        auth2.signOut();
         auth2.disconnect();
     }
 
@@ -277,7 +278,7 @@ var todo = function () {
                     <td>${(date < 10) ? "0" + date : date} - ${(month < 10) ? "0" + (month + 1) : (month + 1)} - ${year}</td >
                     <td>
                         <button onclick="findOne(${el.id})" data-toggle="modal" data-target="#modalEdit" class="btn btn-outline-warning">Edit</button>
-                        <button onclick="deleteOne(${el.id})" class="btn btn-outline-danger">Delete</button>
+                        ${(el.status) ? `<button onclick="deleteOne(${el.id})" class="btn btn-outline-danger">Delete</button>` : `<button onclick="done(${el.id})" class="btn btn-outline-success">Done</button>`}
                     </td>
                 </tr >
     `);
@@ -296,11 +297,10 @@ var todo = function () {
             .done(data => {
                 $titleEdit.val(data.title);
                 $descriptionEdit.val(data.description);
-                $statusEdit.val(data.status);
                 if (data.status) {
                     $statusEdit.prop("checked", true);
                 } else {
-                    $statusEdit.prop("checked", false);
+                    $statusEdit.prop("checked", true);
                 }
                 const due_date = new Date(data.due_date);
                 const year = due_date.getFullYear();
@@ -315,7 +315,7 @@ var todo = function () {
             });
     }
 
-    function add(title, description, status, due_date) {
+    function add(title, description, due_date) {
         const token = localStorage.token;
         $.ajax({
             method: "POST",
@@ -326,14 +326,12 @@ var todo = function () {
             data: {
                 title: title,
                 description: description,
-                status: status,
                 due_date: due_date
             }
         })
             .done(data => {
                 $titleAdd = $("#titleAdd").val("");
                 $descriptionAdd = $("#descriptionAdd").val("");
-                $("input[id='statusAdd']").prop("checked", false);
                 $due_dateAdd = $("#due_dateAdd").val("");
                 getData(token);
             })
@@ -367,13 +365,16 @@ var todo = function () {
             });
     }
 
-    function deleteOne(id) {
+    function done(id) {
         const token = localStorage.token;
         $.ajax({
-            method: "DELETE",
+            method: "PATCH",
             url: `${baseUrl}/todos/${id}`,
             headers: {
                 token: token
+            },
+            data: {
+                status: true
             }
         })
             .done(data => {
@@ -383,6 +384,27 @@ var todo = function () {
                 $error.fadeIn("fast");
                 getError(err.responseText);
             });
+    }
+
+    function deleteOne(id) {
+        const token = localStorage.token;
+        const check = confirm("Are you sure to delete it?");
+        if (check) {
+            $.ajax({
+                method: "DELETE",
+                url: `${baseUrl}/todos/${id}`,
+                headers: {
+                    token: token
+                }
+            })
+                .done(data => {
+                    getData(token);
+                })
+                .fail(err => {
+                    $error.fadeIn("fast");
+                    getError(err.responseText);
+                });
+        }
     }
 
     function getError(str) {
@@ -414,7 +436,8 @@ var todo = function () {
         onSignIn: onSignIn,
         signOut: signOut,
         findOne: findOne,
-        deleteOne: deleteOne
+        deleteOne: deleteOne,
+        done: done
     }
 }();
 
@@ -432,4 +455,8 @@ function findOne(id) {
 
 function deleteOne(id) {
     todo.deleteOne(id)
+}
+
+function done(id) {
+    todo.done(id);
 }

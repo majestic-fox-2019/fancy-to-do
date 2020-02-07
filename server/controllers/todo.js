@@ -59,6 +59,7 @@ class Controller {
 			title: req.body.title,
 			description: req.body.description,
 			due_date: req.body.due_date,
+			status: req.body.status,
 			UserId: req.LoggedId
 		};
 		const where = {
