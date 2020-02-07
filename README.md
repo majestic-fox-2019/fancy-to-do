@@ -14,6 +14,8 @@ Fancy To-Do List API
 | /:id  | PUT       | Mengubah data todo berdasarkan id
 | /:id  | DELETE    | Menghapus data todo berdasarkan id
 
+## Detail API
+
 [Create](server/rest_api_documentations/todos/create.txt) |
 [Read](server/rest_api_documentations/todos/read.txt) |
 [Read By Id](server/rest_api_documentations/todos/readById.txt) |
