@@ -1,29 +1,145 @@
-# FANCY TO-DO LIST API
+# Fancy Todo List API Documentation
 
-### by Adam Rafiandri, forked from [Majestic Fox 2019](https://github.com/majestic-fox-2019/fancy-to-do "Majestic Fox 2019")
+#### by Adam Rafiandri, forked from [Majestic Fox 2019](https://github.com/majestic-fox-2019/fancy-to-do "Majestic Fox 2019")
 
 This is my first project on Phase 2.
 This simple Todo API gives what you need if you're only looking for some data to store your tasks.
 
-__LET'S JUMP INTO IT!!__
+**LET'S JUMP INTO IT!!**
 
 ---
 
 These are the routes/endpoints this API has:
 
-| HTTP Method      | Route         | Description                                      |
-| ---------------- | ------------- | ------------------------------------------------ |
-| __GET__          | _/todos_      | Shows all tasks in form of __Array of Objects__. |
-| __POST__         | _/todos_      | Create a new task.                               |
-| __GET__          | _/todos/:id_  | Shows specified task.                            |
-| __PUT__          | _/todos/:id_  | Updates specified task.                          |
-| __DELETE__       | _/todos/:id_  | Deletes specified task.                          |
+| HTTP Method | Route           | Overview                                         |
+| ----------- | --------------- | ------------------------------------------------ |
+| **POST**    | _/register_     | Posts data to register.                          |
+| **POST**    | _/login_        | Posts data to log in via email and password.     |
+| **POST**    | _/login/google_ | Posts data to log in via Google account.         |
+| **GET**     | _/todos_        | Shows all tasks in form of **Array of Objects**. |
+| **POST**    | _/todos_        | Create a new task.                               |
+| **GET**     | _/todos/:id_    | Shows specified task.                            |
+| **PUT**     | _/todos/:id_    | Updates specified task.                          |
+| **DELETE**  | _/todos/:id_    | Deletes specified task.                          |
 
 <br><br>
 
 ---
 
-## __GET__ _/todos_
+## **POST** _/login_
+
+This generates a token to later be used for authentication.
+
+### Properties Breakdown
+
+- Email (String)
+- Password (String)
+
+<br>
+
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### Request Body
+
+```javascript
+{
+  "email": "your email",
+  "password": "your password"
+}
+```
+
+#### Response
+
+```javascript
+{
+  "email": "your email",
+  "message": "Please login to continue!"
+}
+```
+
+<br>
+
+## **POST** _/login_
+
+This generates a token to later be used for authentication.
+
+### Properties Breakdown
+
+- Email (String)
+- Password (String)
+
+<br>
+
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### Request Body
+
+```javascript
+{
+  "email": "your email",
+  "password": "your password"
+}
+```
+
+#### Response
+
+```javascript
+{
+  "token": "generated token"
+}
+```
+
+<br>
+
+## **POST** _/login/google_
+
+This also generates a token to later be used for authentication.
+
+### Properties Breakdown
+
+- Google Token (String)
+
+<br>
+
+#### Request Header
+
+```javascript
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### Request Body
+
+```javascript
+{
+  "google_token": "your google token"
+}
+```
+
+#### Response
+
+```javascript
+{
+  "token": "generated token"
+}
+```
+
+<br>
+
+## **GET** _/todos_
 
 #### Request Header
 
@@ -37,38 +153,39 @@ These are the routes/endpoints this API has:
 
 ```javascript
 [
-    {
-        "id": 9,
-        "title": "Make docs",
-        "description": "Finish making docs",
-        "status": false,
-        "due_date": "2020-02-23T00:00:00.000Z",
-        "createdAt": "2020-02-03T12:40:15.030Z",
-        "updatedAt": "2020-02-03T12:40:15.030Z"
-    },
-    {
-        "id": 10,
-        "title": "Learn Vue",
-        "description": "Learn hello world using Vue",
-        "status": false,
-        "due_date": "2020-03-01T00:00:00.000Z",
-        "createdAt": "2020-02-03T12:42:30.860Z",
-        "updatedAt": "2020-02-03T12:42:30.860Z"
-    }
+  {
+    "id": 9,
+    "title": "Make docs",
+    "description": "Finish making docs",
+    "status": false,
+    "due_date": "2020-02-23T00:00:00.000Z",
+    "createdAt": "2020-02-03T12:40:15.030Z",
+    "updatedAt": "2020-02-03T12:40:15.030Z"
+  },
+  {
+    "id": 10,
+    "title": "Learn Vue",
+    "description": "Learn hello world using Vue",
+    "status": false,
+    "due_date": "2020-03-01T00:00:00.000Z",
+    "createdAt": "2020-02-03T12:42:30.860Z",
+    "updatedAt": "2020-02-03T12:42:30.860Z"
+  },
+  ...
 ]
 ```
 
 <br>
 
-## __POST__ _/todos_
+## **POST** _/todos_
 
 ### Properties Breakdown
 
-* Title (String)
-  * Cannot be null or empty.
-* Description (String)
-* Status (Boolean)
-* Due Date (Date)
+- Title (String)
+  - Cannot be null or empty.
+- Description (String)
+- Status (Boolean)
+- Due Date (Date)
 
 > Created At and Update At properties are automatically updated upon PUT and POST methods.
 
@@ -109,20 +226,18 @@ These are the routes/endpoints this API has:
 
 ID is automatically incremented and generated.
 
-
 <br>
 
-## __GET__ _/todos/:id_
+## **GET** _/todos/:id_
 
 ### Properties Breakdown
 
-* ID (Number)
-  * Gotten from client.
+- ID (Number)
+  - Gotten from client.
 
-Example: http:localhost:3000/__10__
+Example: http:localhost:3000/**10**
 
-> __10__ is the ID.
-
+> **10** is the ID.
 
 #### Request Header
 
@@ -131,7 +246,6 @@ Example: http:localhost:3000/__10__
   "Content-Type": "application/json"
 }
 ```
-
 
 #### Response
 
@@ -147,27 +261,24 @@ Example: http:localhost:3000/__10__
 }
 ```
 
-
 <br>
 
-
-## __PUT__ _/todos/:id_
+## **PUT** _/todos/:id_
 
 ### Properties Breakdown
 
-* ID (Number)
-  * Gotten from client.
+- ID (Number)
+  - Gotten from client.
 
-Example: http:localhost:3000/__10__
+Example: http:localhost:3000/**10**
 
-> __10__ is the ID.
+> **10** is the ID.
 
-* Title (String)
-  * Cannot be null or empty.
-* Description (String)
-* Status (Boolean)
-* Due Date (Date)
-
+- Title (String)
+  - Cannot be null or empty.
+- Description (String)
+- Status (Boolean)
+- Due Date (Date)
 
 #### Request Header
 
@@ -176,7 +287,6 @@ Example: http:localhost:3000/__10__
   "Content-Type": "application/json"
 }
 ```
-
 
 #### Request Body
 
@@ -205,22 +315,18 @@ Example: http:localhost:3000/__10__
 
 _The "updatedAt" property will automatically update itself._
 
-
-
 <br>
 
-
-## __DELETE__ _/todos/:id_
+## **DELETE** _/todos/:id_
 
 ### Properties Breakdown
 
-* ID (Number)
-  * Gotten from client.
+- ID (Number)
+  - Gotten from client.
 
-Example: http:localhost:3000/__9__
+Example: http:localhost:3000/**9**
 
-> __9__ is the ID.
-
+> **9** is the ID.
 
 #### Request Header
 
@@ -229,7 +335,6 @@ Example: http:localhost:3000/__9__
   "Content-Type": "application/json"
 }
 ```
-
 
 #### Response
 
