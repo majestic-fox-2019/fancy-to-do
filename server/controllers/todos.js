@@ -1,10 +1,12 @@
-const {Todo,User} = require("../models")
+const {Todo} = require("../models")
+const createError = require('http-errors')
+const sequelize = require('sequelize')
 class TodosController{
   static create(req,res,next){
     const {title, description, status, due_date} = req.body
     const UserId = req.user.id
     Todo
-      .create({title, description, status, due_date,UserId})
+      .create({title, description, status, due_date, UserId})
       .then(todo => {
         res
           .status(201)
@@ -16,21 +18,25 @@ class TodosController{
   }
 
   static findAll(req,res,next){
-    Todo
-      .findAll({
-        include : [{model:User}],
-        where : {
-          UserId: req.user.id
-        }
-      })
-      .then(todos => {
-        res
-          .status(200)
-          .json(todos)
-      })
-      .catch(err => {
-        next(err)
-      })
+  Todo
+    .findAll({
+      where : {
+        UserId: req.user.id, 
+      },
+      order: [
+          [sequelize.literal(`CASE status
+                WHEN 'incomplete' THEN 1
+                ELSE 2
+            END`)],
+          ["due_date","ASC"]
+        ]
+    })
+    .then(todos => {
+      res
+        .status(200)
+        .json(todos)
+    })
+    .catch(next)
   }
 
   static findById(req,res,next){
@@ -43,15 +49,10 @@ class TodosController{
             .status(200)
             .json(todo)
         }else{
-          next({
-            statusCode : 404,
-            message : "todo not found"
-          })
+          throw createError(404,"todo not found")
         }
       })
-      .catch(err => {
-        next(err)
-      })
+      .catch(next)
   }
 
   static update(req,res,next){
@@ -67,10 +68,7 @@ class TodosController{
           return todo
                   .update({title, description, status, due_date},opt)
         }else{
-          throw {
-            statusCode : 404,
-            message : "todo not found"
-          }
+          throw createError(404,"todo not found")
         } 
       })
       .then(todo => {
@@ -78,9 +76,7 @@ class TodosController{
           .status(200)
           .json(todo)
       })
-      .catch(err => {
-        next(err)
-      })
+      .catch(next)
   }
 
   static delete(req,res,next){
@@ -91,23 +87,17 @@ class TodosController{
       .then(todo => {
         if (todo){
           deleted = todo
-          return todo
-                  .destroy()
+          return todo.destroy()
         }else{
-          throw {
-            statusCode : 404,
-            message : "todo not found"
-          }
+          throw createError(404,"todo not found")
         } 
       })
       .then(todo => {
         res
           .status(200)
-          .json(responseApi(deleted,"Success delete todo"))
+          .json(deleted)
       })
-      .catch(err => {
-        next(err)
-      })
+      .catch(next)
   }
 }
 

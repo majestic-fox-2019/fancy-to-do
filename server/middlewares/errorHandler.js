@@ -5,16 +5,14 @@ function client(err, req, res, next) {
     }else{
       let result = null
       if(err.errors){
-        result = []
+        result = {}
         err.errors.map(el => {
-          let obj = {}
-          obj[el.path] = el.message
-          result.push(obj)
+          result[el.path] = el.message
         })
       }
       res
         .status(err.statusCode || 400)
-        .json(result || err.message)
+        .json(result || err)
     }
   } catch (err) {
     next(err)
