@@ -1,20 +1,22 @@
 const showAlert = () => {
-    $("#alert,#alertRegister,#alertTodo,#alertTodoTable").show();
+    $(".messageClass").show();
 }
 
 const hideAlert = () => {
-    $("#alert,#alertRegister,#alertTodo,#alertTodoTable").hide();
+    $(".messageClass").hide();
+    $(".messageClass > .header").val("");
+
 }
 
 const setSuccessAlert = () => {
-    $("#alert,#alertRegister,#alertTodo,#alertTodoTable").prop('class', 'ui success message');
-    $("#alert,#alertRegister,#alertTodo,#alertTodoTable > .header").text("Success");
+    $(".messageClass").prop('class', 'ui success message messageClass');
+    $(".messageClass > .header").text("Success");
 }
 
 const setErrorAlert = (err) => {
-    $("#alert,#alertRegister,#alertTodo,#alertTodoTable").prop('class', 'ui negative message');
+    $(".messageClass").prop('class', 'ui negative message messageClass');
     const {Error, msg, Validations} = err.responseJSON;
-    let allAlerts = $("#alert,#alertRegister,#alertTodo, #alertTodoTable > .header");
+    let allAlerts = $(".messageClass > .header");
     if(Error) {
         allAlerts.text(Error);
     }
@@ -23,7 +25,7 @@ const setErrorAlert = (err) => {
     }else if(msg){
         allAlerts.text(msg);
     }else{
-        allAlerts.text(Error.message);
+        allAlerts.text(Error.messageClass);
     }
     
 }
@@ -58,7 +60,9 @@ function onSignIn(googleUser) {
     let profile = googleUser.getBasicProfile();
     let email   = profile.getEmail();
     $("#email").val(email);
-    registerUser(email, "123") // asumsi default password user yang sign in by google adalah 123
+    if (!localStorage.getItem("email")) {
+        registerUser(email, "123") // asumsi default password user yang sign in by google adalah 123
+    }
 }
   
 function signOut() {
