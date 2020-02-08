@@ -1,8 +1,7 @@
 const {User} = require('../models')
-const createError = require('http-errors')
 let bcrypt = require('bcryptjs');
 let jwt = require('jsonwebtoken')
-
+let kirimEmail = require('../middleware/sendEmail')
 class UserController {
 
     static Register(req,res,next){
@@ -14,7 +13,9 @@ class UserController {
         User
         .create(isi)
         .then(data=>{
+            // console.log(data)
             res.status(201).json(data)
+            kirimEmail(data.email,data.username)
         })
         .catch(err=>{
             if(err.message){
@@ -37,6 +38,7 @@ class UserController {
             if(user){
                 console.log('masuk')
                 if(bcrypt.compareSync(password, user.password)){
+                    console.log('masuk ni')
                     let token = jwt.sign({email:user.email,id:user.id},process.env.secret_key)
                     res.status(201).json(token)
                 }
@@ -62,6 +64,35 @@ class UserController {
             if(err.message){
                 err.StatusCode = 400
             }
+            next(err)
+        })
+    }
+
+    static googleLogin(req,res,next){
+        User
+        .findOne({
+            where:{email:req.payload.email}
+        })
+        .then(data=>{
+            console.log(data)
+            if(!data){
+                return User.create({
+                            username:req.payload.given_name,
+                            name:req.payload.name,  
+                            email:req.payload.email,
+                            password:"user"
+                        })
+            }
+            else{
+                return data
+            }
+        })
+        .then(data=>{
+            let token = jwt.sign({email:data.email,id:data.id},process.env.secret_key)
+            res.status(200).json(token)
+        })
+        .catch(err=>{
+            res.status(500).json(err)
         })
     }
 }

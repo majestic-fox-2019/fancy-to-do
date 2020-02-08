@@ -1,21 +1,69 @@
-# fancy-to-do
-Fancy To-Do List API
+# Fancy-To-Do
 
-# 1. POST /todos (create)
-Diperlukannya field title,description,status,due_date untuk membuat sebuah instance di table ToDos.
 
-Jika proses penginputan terdapat field yang kosong maka akan muncul pesan error field yang diinput tidak boleh kosong dengan error status 400.
+## Getting Started
 
-* ### Schema
-Value :
+#### Install Package
+
+```javascript
+npm install
+```
+
+
+
+#### Getting API KEY
+
+Register on darksky and SendGrid to get the API key
+
+##### link:
+
+DarkSky
+
+<u>https://darksky.net/dev</u>
+
+SendGrid
+
+<u>https://sendgrid.com/</u>
+
+## ROUTE
+
+#### Routes /todos
+
+| Method | Route      | Description                |
+| ------ | ---------- | -------------------------- |
+| POST   | /todos     | Create a to-do             |
+| GET    | /todos     | Get all list to-dos        |
+| GET    | /todos/:id | Get  a to-do based on id   |
+| PUT    | /todos/:id | Update a to-do based on i  |
+| DELETE | /todos/:id | Delete a to-do based on id |
+
+#### Route /register
+
+| Method | Route     | Description    |
+| ------ | --------- | -------------- |
+| POST   | /register | Create an user |
+
+#### Route /login
+
+| Method | Route  | Description   |
+| ------ | ------ | ------------- |
+| POST   | /login | Login an user |
+
+
+
+## 1. POST /todos (create)
+
+#### Schema:
+​	Value :
 
 * title: string,
 * description: string,
 * status: boolean,
 * due_date: date
 
-Request Body:
-```javascript 
+##### Request Body:
+
+```json
 {
 	"title": "Learn REST API",
 	"description":"Learn how to create RESTful API with Express and Sequelize",
@@ -24,11 +72,13 @@ Request Body:
 }
 ```
 
-Response:
+#### Response:
+
+##### 		success:
 
 * 201
 
-```javascript
+```json
 {
     "id": 16,
     "title": "Learn REST API",
@@ -39,31 +89,33 @@ Response:
     "createdAt": "2020-02-03T10:54:12.837Z"
 }
 ```
+##### 	error:
+
 * 400
 
-    Example
-   ```javascript
+    ```json
     {
     "message": "Validation error: description must be filled"
     }
-
-   ``` 
-
-
-Response yang akan didapatkan jika berhasil  adalah menampilkan instance yang dibuat dalam bentuk JSON dan terbentuknya instance baru di dalam database.
+   ```
 
 
-# 2. Get /todos (findAll)
-digunakan untuk menampilkan semua data yang ada di table ToDos
 
-Contoh:
 
-* Request Parameter:
+
+# 2. Get /todos 
+##### Request Parameter:
+
 ```javascript
 http://localhost:3000/todos
 ```
-* Response:
-```javascript
+#### Response:
+
+##### 		success:
+
+- 200
+
+```json
 [
     {
         "id": 15,
@@ -77,16 +129,20 @@ http://localhost:3000/todos
 ]
 ```
 
-# 3. Get /todos/:id (findOne)
-digunakan untuk menampilkan sebuah instance sesuai dengan inputan id oleh pengguna, jika tidak ditemukan maka akan muncul error message command not found dengan status error 404. Jika ditemukan maka yang ditampilkan adalah sesuai inputan id oleh pengguna
+# . Get /todos/:id 
+##### Request parameter:
 
-* Request parameter:
 ```javascript
 http://localhost:3000/todos/12
 ```
 
-* response:
-```javascript
+#### response:
+
+##### 		success:
+
+- 200
+
+```json
 {
     "id": 12,
     "title": "makandsd",
@@ -98,15 +154,28 @@ http://localhost:3000/todos/12
 }
 ```
 
-# 4. Put /todos/:id (update)
-Digunakan untuk update todos berdasarkan id yang diinput. Apabila id tidak ditemukan maka akan muncul status error 404 dengan message command not found. Jika ditemukan maka yang ditampilkan adalah hasil update yang diisi oleh pengguna.
+##### 		error:
 
-request parameter:
+- 404
+
+```json
+{
+    "message": "command not found"
+}
+```
+
+
+
+# 4. Put /todos/:id (update)
+
+##### request parameter:
+
 ```javascript
 http://localhost:3000/todos/12
 ```
 
-request body:
+##### request body:
+
 ```javascript
 {
     "title": "berlari",
@@ -118,7 +187,12 @@ request body:
 }
 ```
 
-response :
+##### response :
+
+##### 	Success
+
+- 200
+
 ```javascript
 {
     "id": 12,
@@ -131,15 +205,40 @@ response :
 }
 ```
 
-# 5. Delete todos/:id
-Digunakan untuk menghapus data sesuai dengan inputan id  oleh user. jika id yang diinput salah maka akan muncul error status 404 dengan message command not found. Jika berhasil maka yang akan ditampilkan adalah data yang berhasil dihapus oleh user
+##### 	Error
 
-request parameter:
+- 400
+
+```json
+{
+ "message": "Validation error: description must be filled"
+ }
+```
+
+- 404
+
+```json
+{
+    "message": "command not found"
+}
+```
+
+
+
+# 5. Delete todos/:id
+
+##### Request parameter:
+
 ```javascript
 http://localhost:3000/todos/12
 ```
 
-response:
+##### Response:
+
+##### 	Success
+
+- 200
+
 ```javascript
 {
     "id": 12,
@@ -151,3 +250,81 @@ response:
     "updatedAt": "2020-02-03T11:07:34.782Z"
 }
 ```
+
+##### Error:
+
+- 404
+
+```json
+{
+    "message": "command not found"
+}
+```
+
+
+
+## 6. POST /register
+
+##### Request body:
+
+```json
+{
+    "id": 51,
+    "username": "user",
+    "password": "user",
+    "name": "tambah",
+    "email": "tambah@email.com"
+}
+```
+
+##### Response:
+
+##### 	Success
+
+- 201
+
+```json
+{
+    "id": 51,
+    "username": "user",
+    "password": "$2a$10$4KE6cyadeGnkmJotn6y4E.UBL6avbTx0Nod.VUjnE69m3l.U0PIi.",
+    "name": "tambah",
+    "email": "tambah@email.com",
+    "updatedAt": "2020-02-08T08:31:08.131Z",
+    "createdAt": "2020-02-08T08:31:08.131Z"
+}
+```
+
+##### 	Error
+
+- 400
+
+```json
+{
+ "message": "Validation error: username must be filled"
+ }
+```
+
+
+
+## 7.POST LOGIN
+
+##### Request Body
+
+```json
+{
+  "email": "tambah@email.com",  
+  "password": "user"
+}
+```
+
+##### Response:
+
+- 404
+
+```json
+{
+ "message": "Username or password wrong'"
+ }
+```
+
