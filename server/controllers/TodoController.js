@@ -22,7 +22,11 @@ class TodoController {
 
     static read(req, res, next) {
         Todo
-            .findAll()
+            .findAll({
+                where: {
+                    UserId: req.user.id
+                }
+            })
             .then(todos => {
                 res.status(200).json(todos);
             })

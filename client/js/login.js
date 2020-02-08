@@ -35,7 +35,7 @@ $(document).ready(() => {
                 hideLoginModal();
             }, 1000);
             checkLogin();
-            $("#btnHome").click();
+            $("#todo").click();
         })
         .catch(err => {
             setErrorAlert(err);
