@@ -1,11 +1,13 @@
 const { Todo, User, ProjectUser } = require('../models')
+const { Op } = require('sequelize')
 
 class TodoController {
     static create(req, res, next) {
+        // console.log(req.body)
         Todo.create({
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
+            status: 'Not Done',
             due_date: req.body.due_date,
             UserId: req.loggedUser.id,
             ProjectId: null
@@ -21,11 +23,27 @@ class TodoController {
 
     static findAll(req, res, next) {
         // console.log(req.loggedUser.id)
-        Todo.findAll({
+        let today = new Date()
+        today.setDate(today.getDate() - 1)
+        console.log(today)
+        Todo.update({
+            status: 'Expired'
+        },{
             where: {
-                UserId: req.loggedUser.id,
-                ProjectId: null
+                due_date: {
+                  [Op.lt]: today
+                },
+                status: 'Not Done'
             }
+        })
+        .then(result => {
+            return Todo.findAll({
+                where: {
+                    UserId: req.loggedUser.id,
+                    ProjectId: null
+                },
+                order: [['due_date', 'ASC']]
+            })
         })
             .then(todos => {
                 res.status(200).json(todos)
@@ -60,7 +78,6 @@ class TodoController {
         Todo.update({
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
             due_date: req.body.due_date,
             updatedAt: new Date()
         }, {
@@ -73,12 +90,14 @@ class TodoController {
                 res.status(200).json(result)
             })
             .catch(err => {
+                // console.log('INI======>',err)
                 next(err)
             })
     }
 
     static changeStatus(req, res, next) {
-        return Todo.update({
+        // console.log('INI CONTROLLER')
+        Todo.update({
             status: req.body.status
         }, {
             where: {
@@ -90,6 +109,7 @@ class TodoController {
                 res.status(200).json(result)
             })
             .catch(err => {
+                // console.log('MASA SIH MASUKNYA KESINI?')
                 next(err)
             })
     }
@@ -109,19 +129,18 @@ class TodoController {
     }
 
     static filterPersonalTodo(req, res, next) {
+        if(req.params.status == 'NotDone'){
+            req.params.status = 'Not Done'
+        }
         Todo.findAll({
             where: {
-                UserId: req.loggedUser.id
-            }
+                UserId: req.loggedUser.id,
+                ProjectId: null,
+                status: req.params.status
+            },
+            order: [['due_date', 'ASC']]
         })
         .then(userTodo => {
-            let filter = req.params.status
-            if(req.params.status == 'NotDone'){
-                filter = 'Not Done'
-            }
-            userTodo = userTodo.filter(element => 
-                element.status == filter
-            )
             res.status(200).json(userTodo)
         })
         .catch(err => {
@@ -168,7 +187,7 @@ class TodoController {
         Todo.create({
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
+            status: 'Not Done',
             due_date: req.body.due_date,
             UserId: req.loggedUser.id,
             ProjectId: req.params.projectId

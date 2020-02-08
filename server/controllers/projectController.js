@@ -15,9 +15,11 @@ class ProjectController {
                 })
             })
             .then(finalResult => {
+                // console.log('INIIIIIIII=====>>>>', finalResult);
                 res.status(201).json(finalResult)
             })
             .catch(err => {
+                // console.log(err)
                 next(err)
             })
     }
@@ -38,6 +40,7 @@ class ProjectController {
     }
 
     static addProjectMember(req, res, next) {
+        // console.log('INI=====>>>>',req.body)
         let userInfo
         User.findOne({
             where: {
@@ -85,7 +88,8 @@ class ProjectController {
         let project = {}
         ProjectUser.findAll({
             where: { ProjectId: req.params.projectId },
-            include: [{ model: User, attributes: ['userName'] }, { model: Project }]
+            include: [{ model: User, attributes: ['userName', 'email'] }, { model: Project }],
+            order: [['createdAt', 'ASC']]
         })
             .then(ProjectDatas => {
                 if (ProjectDatas.length < 1) {
@@ -95,15 +99,22 @@ class ProjectController {
                     })
                 }
                 let members = []
+                let owner = false
                 ProjectDatas.forEach(element => {
-                    members.push(element.User.userName)
+                    members.push({userName: element.User.userName, email: element.User.email})
                 })
+                if(members[0].email == req.loggedUser.email) {
+                    owner = true
+                }
                 let projectName = ProjectDatas[0].Project.name
+                let projectId = ProjectDatas[0].Project.id
                 let projectStatus = ProjectDatas[0].Project.status
                 project.name = projectName
                 project.status = projectStatus
                 project.member = members
-                res.status(200).json({ projectName, projectStatus, members })
+                
+                // console.log(members)
+                res.status(200).json({ projectId, projectName, projectStatus, members, owner })
                 // res.status(200).json(ProjectDatas)
             })
             .catch(err => {
@@ -123,6 +134,21 @@ class ProjectController {
                     id: req.params.projectId
                 }
             })
+        })
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
+    static leaveGroup(req, res, next){
+        ProjectUser.destroy({
+            where: {
+                UserId: req.loggedUser.id,
+                ProjectId: req.params.projectId
+            }
         })
         .then(result => {
             res.status(200).json(result)

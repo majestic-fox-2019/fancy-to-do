@@ -7,6 +7,7 @@ function todoAuth (req, res, next) {
         }
     })
     .then(todoData => {
+        // console.log(req.loggedUser.id, '==========', todoData.UserId)
         if(!todoData) {
             throw ({
                 statusCode: 404,
@@ -27,8 +28,8 @@ function todoAuth (req, res, next) {
 }
 
 function projectAuth (req, res, next) {
-    let projectId = req.params.projectId || req.body.projectId
-    // console.log(req.loggedUser.id  projectId)
+    let projectId = req.params.projectId || req.body.projectId || req.targetTodo
+    // console.log(req.targetTodo)
     ProjectUser.findOne({
         where: {
             UserId: req.loggedUser.id,
@@ -46,6 +47,23 @@ function projectAuth (req, res, next) {
             message: 'You are not authorized to access this project'
         })
         }
+    })
+    .catch(err => {
+        next(err)
+    })
+}
+
+function projectTodoAuth(req, res, next) {   
+    // console.log('already HERE'); 
+    Todo.findOne({
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(todoData => {
+        // console.log(todoData)
+        req.targetTodo = todoData.ProjectId
+        next()
     })
     .catch(err => {
         next(err)
@@ -78,5 +96,6 @@ function deleteProjectAuth(req, res, next) {
 module.exports = {
     todoAuth,
     projectAuth,
-    deleteProjectAuth
+    deleteProjectAuth,
+    projectTodoAuth
 }

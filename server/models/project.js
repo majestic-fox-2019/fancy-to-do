@@ -5,7 +5,16 @@ const { Model } = sequelize.Sequelize
 class Project extends Model {}
 
 Project.init({
-  name: DataTypes.STRING,
+  name: {
+    type:DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notNull: {msg: 'Please fill in all fields'},
+      notEmpty: {
+        msg: 'Please fill in all fields'
+      }
+    }
+  },
   status: {
     type: DataTypes.STRING,
     allowNull: false,
