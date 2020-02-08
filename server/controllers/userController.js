@@ -11,9 +11,13 @@ class userController {
       email: req.body.email,
       password: req.body.password
     };
-    User.create(objInput).then(result => {
-      res.status(201).json(result);
-    });
+    User.create(objInput)
+      .then(result => {
+        res.status(201).json(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   static login(req, res, next) {
     const email = req.body.email;

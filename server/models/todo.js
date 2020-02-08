@@ -75,7 +75,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         afterFind(instance, option) {
           let arr = [];
-          console.log(instance);
           instance.forEach(element => {
             arr.push(element.updateTemperature());
           });

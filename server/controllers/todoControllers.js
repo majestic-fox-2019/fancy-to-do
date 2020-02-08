@@ -34,10 +34,9 @@ class todoController {
         });
       })
       .catch(err => {
-        console.log(err);
         let objError = {
-          // statusError: 400,
-          // message: errorMaker(err)
+          statusError: 400,
+          message: errorMaker(err)
         };
         next(objError);
       });
@@ -79,9 +78,7 @@ class todoController {
       // plain : true
     })
       .then(data => {
-        console.log(data);
         if (data[0] > 0) {
-          console.log(data[0]);
           res.status(200).json({
             message: "success",
             result: data[1]

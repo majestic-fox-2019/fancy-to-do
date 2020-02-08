@@ -42,16 +42,13 @@ $registerForm.on("submit", function(e) {
     .done(result => {
       $("#registerModal").modal("hide");
     })
-    .fail(err => {
-      console.log(err);
-    });
+    .fail(err => {});
 });
 
 $submit.click(function(e) {
   e.preventDefault();
   var $email = $("#LoginEmail").val();
   var $password = $("#LoginPassword").val();
-  console.log($email);
   $.ajax({
     method: "POST",
     url: `${localhost}/user/login`,
@@ -66,9 +63,7 @@ $submit.click(function(e) {
       $("#registerModal").modal("hide");
       start();
     })
-    .fail(err => {
-      console.log(err, "nnnnnnn");
-    });
+    .fail(err => {});
 });
 
 var $template = `  <tr>
