@@ -52,6 +52,7 @@ class UserController {
                 throw createError(400, 'Email does not exist or not verified')
             })
             .then(user => {
+                console.log(user)
                 if(user.data.is_verified == 'True'){
                     return User.create({
                         username,

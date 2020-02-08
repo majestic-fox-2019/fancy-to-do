@@ -11,30 +11,18 @@ var $proceedUpdate = $('#proceedUpdate')
 var $checkLogin = $('#checkLogin')
 var $logout = $('#logout')
 
+
 var CLIENT_ID = '105182697848-11aul2k1uk3vs78c8gj73icpgok0v7nk.apps.googleusercontent.com'
 var API_KEY = 'AIzaSyCfLb30dhm_sY-WHHHFv4NopdboehepFKQ'
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 var authorizeButton = document.getElementById('authorize_button');
 
-
 const url = 'http://localhost:3000'
-const template = `
-<tr>
-    <td class="no"></td>
-    <td class="title"></td>
-    <td class='description'></td>
-    <td class='due_date'></td>
-    <td class='status'></td>
-    <td class='action'></td>
-</tr>
-`
 var deleteUrl = `<button onClick="deleteOnClick(`
-var updateUrl = `<button onClick="getUpdateForm(`
+var updateUrl = `<button onClick="changeStatus(`
 
-function getUpdateForm(id){
-    // console.log(id)
-    
+function changeStatus(id){
     $.ajax({
         method: 'PATCH',
         url: `${url}/todos/${id}`,
@@ -46,7 +34,11 @@ function getUpdateForm(id){
         }
     })
     .done(response => {
-        console.log(response)
+        Swal.fire(
+            `${response.title} Status Changed!`,
+            `Task marked as ${response.status}`,
+            'success'
+        )
         getData()
     })
     .fail(err => {
@@ -66,42 +58,13 @@ $logout.on('click', function(e){
     localStorage.clear()
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-      console.log('User signed out.');
+        Swal.fire({
+            icon: 'success',
+            text: 'Logout Success!'
+        })
     });
     checkLogin()
 })
-
-// $proceedUpdate.on('submit', function(e){
-//     e.preventDefault()
-//     var title = $("#updateTitle").val()
-//     var description = $("#updateDescription").val()
-//     var due_date = $("#updateDue_date").val()
-//     var status = $("#updateStatus").val().toLowerCase()
-
-//     console.log(title,description,due_date,status)
-//     $.ajax({
-//         method: 'PUT',
-//         url: `${url}/todos/${localStorage.id}`,
-//         data: {
-//             title: title,
-//             description: description,
-//             due_date: due_date,
-//             status: status
-//         },
-//         headers: {
-//             token: localStorage.token
-//         }
-//     })
-//     .done(response => {
-//         localStorage.removeItem("id")
-//         getData()
-//         display('main_content')
-//     })
-//     .fail(err => {
-//         console.log(err)
-//     })
-// })
-
 
 
 
@@ -117,7 +80,6 @@ $register.on('submit', function(e){
     var email = $register.find('#emailRegister').val()
     var password = $register.find('#passwordRegister').val()
 
-    console.log(username, email, password)
     $.ajax({
         method: 'POST',
         url: `${url}/users/register`,
@@ -163,7 +125,7 @@ $login.on('submit', function(e){
         ($('#body')).css('background-image', 'none')
         var token = response.accessToken
         localStorage.setItem('token', token)
-        getData(token)
+        getData()
         display('main_content')
     })
     .fail(err => {
@@ -178,10 +140,10 @@ $login.on('submit', function(e){
 
 $addTask.on('submit', function(e){
     e.preventDefault()
-    var title = $addTask.find('#title').val()
-    var description = $addTask.find('#description').val()
-    var due_date = $addTask.find('#due_date').val()
-    var status = $addTask.find('#status').val().toLowerCase()
+    var title = $('#title').val()
+    var description = $('#description').val()
+    var due_date = $('#due_date').val()
+    var status = $('#status').val().toLowerCase()
     
     $.ajax({
         method: 'POST',
@@ -238,7 +200,7 @@ $addTask.on('submit', function(e){
         text += `${title} added to Todo list`
         console.log(text)
 
-        getData(token)
+        getData()
         Swal.fire({
             icon: "success",
             text: text,
@@ -255,16 +217,30 @@ $addTask.on('submit', function(e){
 
 function checkLogin(){
     if(localStorage.token){
-        ($('#body')).css('background-image', 'none')
+        $('#body').css('background-image', 'none')
+        $('#due_date').attr('min', getMinDate())
         getData()
         display('main_content')
     } else {
-        ($('#body')).css('background-image', 'linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33))')
+        $('#body').css('background-image', 'linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33))')
         display('login')
     }
 }
 
-function getData(token){
+function getMinDate(){
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    return year + "-" + month + "-" + day;
+}
+
+function getData(){
     $.ajax({
         method: 'GET',
         url: `${url}/todos`,
@@ -273,11 +249,16 @@ function getData(token){
         }
     })
     .done(response => {
-        //DISINI EDIT
-
-
-        // generateData(response)
+        if(response.length == 0){
+            Swal.fire({
+                icon: 'info',
+                title: 'Todo Is Empty',
+                text: 'Please add new task',
+            })
+        }
         generateCard(response)
+    })
+    .fail(err => {
     })
 }
 
@@ -301,6 +282,7 @@ var templateCard = `
                 <div class="card-body">
                 <p class="card-text description"></p>
                 <p class="card-text due_date"></p>
+                <p class="card-text expired_date"></p>
                 <p class="card-text status"></p>
                 <p class="card-text action"></p>
                 </div>
@@ -313,44 +295,39 @@ function generateCard(list){
     for (var i = 0; i < list.length; i++){
         var $item = $(templateCard)
         $item.find('.no').text(i+1)
-        $item.find('.title').text(list[i].title)
+        $item.find('.title').text(capitalizeFirstLetter(list[i].title))
         $item.find('.description').text(list[i].description)
-        $item.find('.due_date').text(list[i].due_date + ` (${getExpired(list[i].due_date)})`)
-        $item.find('.status').text(list[i].status)
+        $item.find('.due_date').text(changeDateFormat(list[i].due_date))
+        $item.find('.expired_date').text(getExpired(list[i].due_date))
+        $item.find('.status').text(capitalizeFirstLetter(list[i].status))
         $item.find('.action').append(`${deleteUrl}${list[i].id})" class="btn btn-danger">Delete` + "</button> ")
         $item.find('.action').append(`${updateUrl}${list[i].id})" class="btn btn-primary">Update` + "</button>")
         $todoCard.append($item)
     }
 }
 
-// function generateData(list){
-//     $tableList.empty()
-//     for (var i = 0; i < list.length; i++){
-//         var $item = $(template)
-//         $item.find('.no').text(i+1)
-//         $item.find('.title').text(list[i].title)
-//         $item.find('.description').text(list[i].description)
-//         $item.find('.due_date').text(list[i].due_date + ` (${getExpired(list[i].due_date)})`)
-//         $item.find('.status').text(list[i].status)
-//         $item.find('.action').append(`${deleteUrl}${list[i].id})" class="btn btn-danger">Delete` + "</button> ")
-//         $item.find('.action').append(`${updateUrl}${list[i].id})" class="btn btn-primary">Update` + "</button>")
-//         $tableList.append($item)
-//     }
-// }
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function changeDateFormat(date){
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    return new Date(date).toLocaleDateString('en-GB', options)
+}
+
 
 function getExpired(date){
-    var deadline = (new Date(date)).getTime()
-    var today = (new Date()).getTime()
-    var diff = (deadline - today)
-    var numOfDays = new Date(deadline - today).getDay()
-    if(diff < 0){
-        return 'This task already past deadline'
-    } else if (numOfDays == 0){
-        return `Expired in ${numOfDays} day`
+    var deadline = new Date(date).getTime()
+    var today = new Date().getTime()
+    var diffTime = deadline - today
+    var diff = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    if (diff == 0){
+        return `Due in ${diff} day`
     } else {
-        return `Expired in ${numOfDays} days`
+        return `Due in ${diff} days`
     }
-    // return dt
 }
 
 
@@ -365,7 +342,6 @@ function deleteOnClick(id){
         confirmButtonText: 'Yes, delete it!'
     })
     .then((result) => {
-        console.log(result)
         if (result.value) {
             Swal.fire(
                 'Deleted!',
@@ -381,7 +357,7 @@ function deleteOnClick(id){
             })
             .done(response => {
                 var token = localStorage.token
-                getData(token)
+                getData()
             })
             .fail(err => {
                 console.log(err)
@@ -390,40 +366,7 @@ function deleteOnClick(id){
     })
 }
 
-// function getUpdateForm(id){
-//     console.log(localStorage)
-//     $.ajax({
-//         method: 'GET',
-//         url: `${url}/todos/${id}`,
-//         headers: {
-//             token: localStorage.token
-//         }
-//     })
-//     .done(response => {
-//         $("#updateTitle").val(response.title)
-//         $("#updateDescription").val(response.description)
-//         $("#updateDue_date").val(new Date(response.due_date))
-
-//         // console.log(new Date(response.due_date))
-
-//         if(response.status == 'incomplete'){
-//             $(".updateIncomplete").attr('selected', 'selected');
-//             $(".updateComplete").attr('selected', '');
-//         } else {
-//             $(".updateComplete").attr('selected', 'selected');
-//             $(".updateIncomplete").attr('selected', '');
-//         }
-//         localStorage.setItem('id', id)
-//         display('updateTask')
-//         // generateData(response)
-//     })
-//     .fail(err => {
-//         console.log(err)
-//     })
-// }
-
 function showAddForm(){
-    console.log($addTask.attr('style'))
     if($addTask.attr('style') == 'display: none;'){
         $addTask.show()
     } else {

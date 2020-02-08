@@ -11,8 +11,11 @@ function onSignIn(googleUser) {
     .done(response=>{
         $('#login').hide();
         $('#main_content').show();
-        localStorage.setItem('token',response)
+        // console.log(response)
+        localStorage.setItem('token',response.accessToken)
+        checkLogin()
         getData()
+        // console.log(localStorage.token)
     })
     .fail(err=>{
         console.log(err);
