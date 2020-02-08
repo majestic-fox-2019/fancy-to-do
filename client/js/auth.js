@@ -48,6 +48,7 @@ function register(form) {
       M.toast({ html: `Registration success`, classes: 'green lighten-1' })
     })
     .catch(err => {
+      console.log(err.response)
       const errors = err.response.data.err
       errors.forEach(el => {
         M.toast({
