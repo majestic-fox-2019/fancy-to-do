@@ -35,6 +35,7 @@ module.exports = function (err, req, res, next) {
       message: err.message
     })
   } else {
+    console.log(err, '< ini error di error')
     res.status(500).send('Something broke!')
   }
 }

@@ -7,6 +7,7 @@ module.exports = function (req, res, next) {
     req.user = user
     next()
   } catch (error) {
+    console.log(error, '< error di auth')
     res.status(404).json({ message: 'invalid token!' })
   }
 }

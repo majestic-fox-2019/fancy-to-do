@@ -27,7 +27,8 @@ module.exports = function (req, res, next) {
     .then(result => {
       // console.log(result, '< ini result')
       if (result == null) {
-        next()
+        // next()
+        throw createError(404, 'Not found!')
       } else if (result.UserId == req.user.id) {
         next()
       } else if (result.UserId !== req.user.id) {

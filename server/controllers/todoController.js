@@ -56,7 +56,7 @@ class TodoController {
           res.status(200).json(result)
         } else {
           //   // let err = {
-          //   //   StatusCode: '404',
+          //   //   statusCode: '404',
           //   //   message: 'Error 404, command not found!'
           //   // }
           //   // next(err)

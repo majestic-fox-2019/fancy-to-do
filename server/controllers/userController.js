@@ -2,6 +2,7 @@ const { User } = require('../models')
 const createError = require('http-errors')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 
 
 class UserController {
@@ -51,7 +52,10 @@ class UserController {
         }
       })
       .then(result => {
+        // console.log(result, 'masuk sini')
         let compare = bcrypt.compareSync(user.password, result.password)
+
+        console.log(compare, '< compare')
         if (compare) {
           const token = jwt.sign({ email: result.email, id: result.id }, process.env.JWT_KEY);
           res.status(200).json(token)
@@ -60,12 +64,50 @@ class UserController {
         }
       })
       .catch(err => {
+        console.log(err, '< masuk sini')
         next(err)
       })
   }
 
+  static googleSignIn(req, res, next) {
+    let user = null
+    const client = new OAuth2Client(process.env.CLIENT_ID);
+    client
+      .verifyIdToken({
+        idToken: req.body.id_token,
+        audience: process.env.CLIENT_ID
+      })
+      .then(result => {
+        user = result.getPayload()
+        return User
+          .findOne({
+            where: {
+              email: user.email
+            }
+          })
+      })
+      .then(result => {
+        if (result) {
+          const token = jwt.sign({ email: result.email, id: result.id }, process.env.JWT_KEY);
+          res.status(200).json(token)
+        } else {
+          return User
+            .create({
+              name: user.family_name,
+              email: user.email
+            }, {
+              hooks: false
+            })
+        }
+      })
+      .then(result => {
+        const token = jwt.sign({ email: result.email, id: result.id }, process.env.JWT_KEY);
+        res.status(200).json(token)
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
 }
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWQiOjEsImlhdCI6MTU4MDc5NTk4Nn0.uPEM53p1UX522PFrNCcE5DmEh-h6S3uD9vto5WQEKHw
 
 module.exports = UserController
