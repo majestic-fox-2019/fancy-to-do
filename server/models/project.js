@@ -1,26 +1,24 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.Sequelize.Model
-  class Todo extends Model{}
-  Todo.init({
-    title: {
+  class Project extends Model{}
+  Project.init({
+    project_name: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
           args: true,
-          msg: 'please input title'
+          msg: 'please input project name'
         }
       }
     },
-    description: {
-      type: DataTypes.STRING,
-    },
+    description: DataTypes.STRING,
     status: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
           args: true,
-          msg: 'please input status'
+          msg: 'please input project status'
         }
       }
     },
@@ -30,21 +28,14 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'please input due date'
-        },
-        isDate: {
-          args: true,
-          msg: 'please use date format. ex:2020-12-29'
         }
       }
-    },
-    UserId: {
-      type: DataTypes.INTEGER
     }
-  },{sequelize})
-
-  Todo.associate = function(models) {
+  }, {sequelize})
+  Project.associate = function(models) {
     // associations can be defined here
-    Todo.belongsTo(models.User)
+    Project.belongsToMany(models.User, { through : 'UserProject' })
+    Project.hasMany(models.UserProject)
   };
-  return Todo;
+  return Project;
 };

@@ -71,9 +71,12 @@
     </div>  
   </div>
 
-  <div style="display: none; background-image: url('./images/bg-01.jpg'); background-size: cover;" id="homePage">
+  <div style="display: none; background-image: url('./images/bg-01.jpg'); background-size: cover; min-height: 650px;" id="homePage">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-image: url('./images/bg-01.jpg'); background-size: cover;">
       <ul class="navbar-nav mr-auto">
+        <li>
+          <a class="nav-link project btn btn-primary" href="#">Project</a>
+        </li>
       </ul>
       <a class="nav-link logout btn btn-primary" href="#">Logout</a>
     </nav>
@@ -83,7 +86,7 @@
           <h3>Add List</h3>
           <div class="form-group">
             <label >title</label>
-            <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+            <input type="text" class="form-control" id="title">
           </div>
           <div class="form-group">
             <label>description</label>
@@ -102,6 +105,7 @@
         </form></br>
       </div>
       <table class="table">
+        <center><h3>To Do List</h3></center>
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -112,8 +116,104 @@
             <th scope="col">Actions</th>
           </tr>
         </thead>
-        <tbody id="tableList">
+        <tbody id="taskList">
           <div id="errorEdit" style="display: none; color: red;"></div>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: none; background-image: url('./images/bg-01.jpg'); background-size: cover;  min-height: 650px;" id="projectPage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-image: url('./images/bg-01.jpg'); background-size: cover;">
+      <ul class="navbar-nav mr-auto">
+        <li>
+          <a class="nav-link homePage btn btn-primary" style="float: left;" href="#">home</a>
+        </li>
+      </ul>
+      <a class="nav-link logout btn btn-primary" href="#">Logout</a>
+    </nav>
+    <div style="width: 80%; margin:auto">
+      <div style="width: 30%; margin:auto; text-align: center;">
+        <form id="addProject">
+          <h3>Add Project</h3>
+          <div class="form-group">
+            <label >Project Name</label>
+            <input type="text" class="form-control" id="name">
+          </div>
+          <div class="form-group">
+            <label>description</label>
+            <input type="text" class="form-control" id="description">
+          </div>
+          <div class="form-group">
+            <label>status</label>
+            <input type="text" class="form-control" id="status">
+          </div>
+          <div class="form-group">
+            <label>due_date</label>
+            <input type="date" class="form-control" id="due_date">
+          </div></br>
+          <div id="errorAddProject" style="display: none; color: red;"></div>
+          <button type="submit" class="btn btn-primary">Add Project</button>
+        </form></br>
+      </div>
+      <table class="table">
+        <center><h3>Project List</h3></center>
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Members</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due_date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="projectList">
+          <div id="errorView" style="display: none; color: red;"></div>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: none; background-image: url('./images/bg-01.jpg'); background-size: cover; min-height: 650px;" id="projectDetailPage">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-image: url('./images/bg-01.jpg'); background-size: cover;">
+      <ul class="navbar-nav mr-auto" style="display: inline;">
+        <li style="float: left;">
+          <a class="nav-link homePage btn btn-primary" href="#">home</a>
+        </li>
+        <li style="float: left; margin-left: 20px;">
+          <a class="nav-link project btn btn-primary" href="#">Project</a>
+        </li>
+      </ul>
+      <a class="nav-link logout btn btn-primary" href="#">Logout</a>
+    </nav>
+    <center><div id="projectData">
+      <h2>Project Details</h2>
+    </div></center></br>
+    <div style="width: 80%; margin:auto">
+      <div style="width: 30%; margin:auto; text-align: center;">
+        <form id="addMember">
+          <h3>Add Member</h3>
+          <div class="form-group">
+            <label >Email</label>
+            <input type="email" class="form-control" id="email">
+          </div></br>
+          <div id="errorAddMember" style="display: none; color: red;"></div>
+          <button type="submit" class="btn btn-primary">Add Member</button>
+        </form></br>
+      </div>
+      <table class="table">
+        <center><h3>Members List</h3></center>
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="membersList">
+          <div id="errorMember" style="display: none; color: red;"></div>
         </tbody>
       </table>
     </div>

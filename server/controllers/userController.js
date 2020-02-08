@@ -8,16 +8,19 @@ const instance = axios.create({
 });
 class Usercontroller{
   static facebookLogin(req, res, next){
+    console.log('haih')
     User.findOne({
       where: {
         email: req.body.email
       }
     })
     .then(exists=>{
+      console.log('mana')
       if(exists == null){
+        console.log('sini')
         req.body.username = req.body.name
         req.body.email = req.body.email
-        req.body.password = Math.random()*10000
+        req.body.password = Math.round(Math.random()*10000)
         Usercontroller.register(req,res,next)
       }else{
         console.log('ada')

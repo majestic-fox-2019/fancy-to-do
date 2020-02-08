@@ -4,7 +4,14 @@ Fancy To-Do List API
 # Api Documentation
 Base URL : http://localhost:3000
 
-[Todo list](list)
+# Api used
+
+* Google login API
+
+* Facebook login API
+
+* Mailboxvalidator API
+
 # Register
 URL:/user/register
 
@@ -77,8 +84,9 @@ Error Codes:
 * 500: error from server
 
 
-# Todo List {#list}
+# Todo List
 
+# List Task
 
 URL:/todo
 
@@ -93,32 +101,185 @@ Request body:
 
 Response:
 
-[
-  {
-    "id": 2,
-    "title": "study",
-    "description": "",
-    "status": "asasa",
-    "due_date": "2020-02-02T00:00:00.000Z",
-    "createdAt": "2020-02-03T10:39:10.916Z",
-    "updatedAt": "2020-02-03T10:39:10.916Z"
-  },
-  {
-    "id": 1,
-    "title": "study",
-    "description": "coding",
-    "status": "undone",
-    "due_date": "2020-02-02T00:00:00.000Z",
-    "createdAt": "2020-02-03T08:32:04.885Z",
-    "updatedAt": "2020-02-03T11:09:59.421Z"
-  }
-]
+{
+  "id": 2,
+  "title": "study",
+  "description": "",
+  "status": "asasa",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "createdAt": "2020-02-03T10:39:10.916Z",
+  "updatedAt": "2020-02-03T10:39:10.916Z"
+},
+{
+  "id": 1,
+  "title": "study",
+  "description": "coding",
+  "status": "undone",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "createdAt": "2020-02-03T08:32:04.885Z",
+  "updatedAt": "2020-02-03T11:09:59.421Z"
+}
 
 Error Codes:
 * 500: error from server
 
-[List](documentation/list.txt) | 
-[Create](documentation/create.txt) |
-[Edit](documentation/update.txt) |
-[Find](documentation/find.txt) |
-[Delete](documentation/delete.txt)
+# Create Task
+
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+{
+	"title": "study",
+	"description": "coding",
+	"status": "on going",
+	"due_date": "2020-02-02"
+}
+
+Response:
+
+{
+  "id": 1,
+  "title": "study",
+  "description": "coding",
+  "status": "on going",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "updatedAt": "2020-02-03T11:03:20.920Z",
+  "createdAt": "2020-02-03T11:03:20.920Z"
+}
+
+Error Codes:
+* 400: parameters validation
+
+  "title": not empty
+
+  "date": not empty
+
+  "due_date": "Date Format", not empty
+
+* 500: error from server
+
+# Edit Task
+
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+{
+	"title": "study",
+	"description": "coding",
+	"status": "undone",
+	"due_date": "2020-02-02"
+}
+
+Response:
+
+{
+  "id": 1,
+  "title": "study",
+  "description": "coding",
+  "status": "undone",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "createdAt": "2020-02-03T08:32:04.885Z",
+  "updatedAt": "2020-02-03T11:09:59.421Z"
+}
+
+Error Codes:
+* 400: parameters validation
+
+  "title": not empty
+
+  "date": not empty
+
+  "due_date": "Date Format", not empty
+
+* 500: error from server
+
+
+# Find Task
+
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+
+Response:
+
+{
+  "id": 1,
+  "title": "study",
+  "description": "coding",
+  "status": "on progress",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "createdAt": "2020-02-03T08:32:04.885Z",
+  "updatedAt": "2020-02-03T11:09:59.421Z"
+}
+
+Error Codes:
+
+* 404: Task not found
+
+* 500: error from server
+
+
+# Delete Task
+
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+
+Response:
+
+{
+  "id": 3,
+  "title": "study",
+  "description": "coding",
+  "status": "on going",
+  "due_date": "2020-02-02T00:00:00.000Z",
+  "createdAt": "2020-02-03T11:03:20.920Z",
+  "updatedAt": "2020-02-03T11:03:20.920Z"
+}
+
+Error Codes:
+* 400: Task not found
+
+* 500: error from server
+
+# Add Project
+
+Error Codes:
+* 400: parameters validation
+
+  "project_name": not empty
+
+  "status": not empty
+
+  "due_date": "Date Format", not empty
+
+* 500: error from server
+
+# Add Member to project
+
+Error Codes:
+* 400: Email format, not empty, not yet added in the project
+
+* 404: Email not found
+
+* 500: error from server
