@@ -1,4 +1,4 @@
-SECRET_KEY =
-API_KEY_CALENDAR =
-CLIENT_ID =
-CLIENT_SECRET =
+SECRET_KEY = "your jwt secret key"
+API_KEY_CALENDAR = '18abe9dd456e29e0f43700d87e34506d6f9d1e47'
+CLIENT_ID = "your client id google auth"
+CLIENT_SECRET = "your client secret google auth"
