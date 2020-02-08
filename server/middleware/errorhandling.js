@@ -1,7 +1,7 @@
 const allerror = require('../helper/allerror')
 
 module.exports = (err, req, res, next) => {
-  console.log(err)
+  console.log(err,'aaaa')
   switch (err.name) {
       case 'SequelizeValidationError': {
           res.status(400).json(allerror(err))

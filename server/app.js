@@ -20,7 +20,7 @@ app.use(cors())
 const user = require('./routes/routeUser')
 app.use('/', user)
 
-// authentication login
+
 app.use(authentication)
 
 

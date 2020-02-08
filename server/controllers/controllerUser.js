@@ -1,7 +1,10 @@
 const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { OAuth2Client } = require('google-auth-library')
+const client = new OAuth2Client(process.env.CLIENT_ID)
 const createError = require('http-errors')
+
 
 
 class ControllerUser {
@@ -13,9 +16,25 @@ class ControllerUser {
         password : req.body.password
       }
 
-      User.create(data)
-      .then(result=>{
-        res.status(201).json(result)
+      User.findOne({
+        where : {
+          email : data.email
+        }
+      })
+      .then(avail=>{
+        if(avail){
+          
+        throw createError(404,'email already exists')
+
+        } else{
+          User.create(data)
+          .then(result=>{
+            res.status(201).json(result)
+          })
+          .catch(err=>{
+            throw err
+          })
+        }
       })
       .catch(err=>{
         next(err)
@@ -52,6 +71,38 @@ class ControllerUser {
     })
     .catch(err=>{
       next(err)
+    })
+  }
+
+  static googleSignIn(req,res,next){
+    client.verifyIdToken({
+      idToken : req.body.id_token,
+      audience : '805990535894-9oa8ccvfgh0auoufqog8dkqae3n5vera.apps.googleusercontent.com'
+    })
+    .then(ticket=>{
+      
+      let payload = ticket.getPayload()
+      console.log({payloads : payload})
+      User.findOne({where : {email : payload.email}})
+      .then(user=>{
+        if(user){
+          const token = jwt.sign({id : user.id}, process.env.SECRET_CODE)
+          res.status(200).json(token)
+        } else {
+          User.create({
+            name : payload.name,
+            email: payload.email,
+            password : "default password"
+          })
+          .then(user =>{
+            const token = jwt.sign({ id: user.id}, process.env.SECRET_CODE)
+            res.status(200).json(token)
+          })
+        }
+      })
+      .catch(err=>{
+        next(err)
+      })
     })
   }
 

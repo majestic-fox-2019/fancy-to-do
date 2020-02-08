@@ -4,6 +4,8 @@ const controllerUser = require('../controllers/controllerUser')
 
 router.post('/register',controllerUser.register)
 router.post('/login',controllerUser.login)
+router.post('/google-sign-in', controllerUser.googleSignIn)
+
 
 
 

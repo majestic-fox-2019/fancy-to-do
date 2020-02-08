@@ -16,10 +16,7 @@ class ControllerTodo{
       if(result.length>0){
         res.status(200).json(result)
       }else {
-        const message ={
-          statusCode : 204,
-          data : 'Data is Empty'
-        }
+    
         // throw message
         res.status(204).json({message: 'data is empty'})
       }
