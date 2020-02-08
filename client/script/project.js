@@ -49,7 +49,7 @@ function loadProjects(){
 function editProjectForm(id){
   clearMessage()
   clearModal()
-  $.ajax(`${urlBase}project/${id}`,{
+  $.ajax(`${urlBase}project${id}`,{
     method : "GET",
     headers : {
       token : localStorage.getItem('token')
@@ -92,7 +92,7 @@ function editProjectForm(id){
 
 function editProject(name,due_date,id){
   clearMessage()
-  $.ajax(`${urlBase}project/${id}`,{
+  $.ajax(`${urlBase}project${id}`,{
     method : "PUT",
     headers : {
       token : localStorage.getItem('token')
@@ -163,7 +163,7 @@ function memberList(users){
 
 function deleteMember(id){
   clearMessage()
-  $.ajax(`${urlBase}projectuser/${id}`,{
+  $.ajax(`${urlBase}projectuser${id}`,{
     method : "DELETE",
     headers : {
       token : localStorage.getItem('token')
@@ -181,7 +181,7 @@ function deleteMember(id){
 
 function deleteProject(id){
   clearMessage()
-  $.ajax(`${urlBase}project/${id}`,{
+  $.ajax(`${urlBase}project${id}`,{
     method : "DELETE",
     headers : {
       token : localStorage.getItem('token')
