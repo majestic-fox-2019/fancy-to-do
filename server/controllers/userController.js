@@ -88,24 +88,24 @@ class Usercontroller{
   }
   static register(req,res,next){
     console.log(req.body,'yo')
-    // instance.get(`&email=${req.body.email}`)
-    //   .then(result=>{
-    //     if(result.data.is_verified == 'True'){
+    instance.get(`&email=${req.body.email}`)
+      .then(result=>{
+        if(result.data.is_verified == 'True'){
           let data = {
             username: req.body.username,
             email: req.body.email,
             password: String(req.body.password)
           }
-    User.create(data)
+    // User.create(data)
 
-          // return User.create(data)
-        // }else{
-        //   throw {
-        //     status: 401,
-        //     message: 'email is not valid'
-        //   }
-        // }
-      // })
+          return User.create(data)
+        }else{
+          throw {
+            status: 401,
+            message: 'email is not valid'
+          }
+        }
+      })
       .then(data=>{
         console.log(data)
         let obj = {
