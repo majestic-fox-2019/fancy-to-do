@@ -28,7 +28,7 @@ class TodoController {
 
     Todo.create(addTodo)
       .then(result => {
-        // helper.sendMail(req.user.email, result.title, result.description, result.due_date)
+        helper.sendMail(req.user.email, result.title, result.description, result.due_date)
         res.status(201).json(result)
       })
       .catch(err => {
