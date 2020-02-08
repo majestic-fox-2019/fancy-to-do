@@ -264,10 +264,10 @@ $ live-server --host=localhost
 
   ```javascript
   {
-      "title": "Learn REST API",
-      "description": "Learn how to create RESTful API with Express and Sequelize",
+      "title": "Learn REST API", //required
+      "description": "Learn how to create RESTful API with Express", //required
       "status": "incomplete",
-      "due_date": "2020-01-29",
+      "due_date": "2020-01-29", //required
   }
   ```
 
@@ -434,7 +434,7 @@ $ live-server --host=localhost
     {
         "errors": "Server currently unable to handle this request"
     }
-    ```
+  ```
 
 
 
@@ -499,5 +499,4 @@ $ live-server --host=localhost
         "errors": "Server currently unable to handle this request"
   }
     ```
-  
   
