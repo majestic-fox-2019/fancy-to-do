@@ -40,6 +40,7 @@ Do the same on `client` directory
 
 Run script from packages by using the command below on `server` directory
 
+{
 ```
 $ npm run dev
 ```
@@ -489,9 +490,9 @@ $ live-server --host=localhost
         "errors": [
             "Data not found!"
         ]
-  }
-  ```
-  
+    }
+    ```
+    
 - **Status:** `500`
   
   ```javascript
