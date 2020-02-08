@@ -2,6 +2,20 @@
 
 Your Everyday Todo List App!
 
+### Web URL:
+
+```
+http://fancytodov2.s3-website-ap-southeast-1.amazonaws.com/
+```
+
+
+
+### Server  URL:
+
+```
+http://fancy-todo-v2.herokuapp.com
+```
+
 
 
 #### Before you do anything else..
