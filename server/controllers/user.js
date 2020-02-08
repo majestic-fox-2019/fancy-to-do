@@ -71,6 +71,44 @@ class Controller{
             next(err)
         })
     }
+    static signInGoogle(req, res, next) {
+        const email = req.body.email;
+        console.log(req.body)
+		const password = process.env.API_GOOGLE;
+        User
+        .findOne({
+                    where: {
+                        email: email
+                    }
+		})
+			.then(data => {
+				if (!data) {
+					const obj = {
+						email: email,
+						password: password
+					}
+					return User.create(obj);
+				} else {
+					const payload = {
+                        id: data.id,
+                        email:data.email
+                    }
+                    const token = generateToken(payload)
+                    res.status(200).json({token: token})
+				}
+			})
+			.then(data => {
+				const payload = {
+                    id: data.id,
+                    email:data.email
+                }
+                const token = generateToken(payload)
+                res.status(200).json({token: token})
+			})
+            .catch(err =>{
+                next(err)
+            })
+	}
 }
 
 module.exports = Controller
