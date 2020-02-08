@@ -5,11 +5,9 @@ const Login = require('../helpers/login')
 
 class ControllerUser {
 
-    static register (req, res, next, gmail){
+    static register (req, res, next){
         let { username, email, password } = req.body
-        console.log(email, username, password, "blakblakblak")
-        console.log(gmail, "kuntullllll");
-        
+        console.log(email, username, password, "blakblakblak")        
         // res.status(200).json(req.body)
         UserModel.create(
                 {
