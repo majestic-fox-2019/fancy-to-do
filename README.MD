@@ -28,7 +28,7 @@ URL : "http://localhost:3000/users/:id"
 Method : "PUT"
 URL : "http://localhost:3000/users/:id"
 ```
-- Edit / Update Todo
+- Delete Todo
 ```
 Method : "DELETE"
 URL : "http://localhost:3000/users/:id"
