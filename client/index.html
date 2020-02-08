@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id"
+        content="701978972252-o6phkbclms4gt9k076jfr7qoh8q1le9l.apps.googleusercontent.com">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Fancy Todo</title>
+</head>
+
+<body>
+    <div id="home">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="">Fancy Todo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" onclick="myTodo(event)" href="#">Todo<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="projectTodo(event)" href="#">Project</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0 mr-2">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <div>
+                    <button onclick="logOut()" type="button" class="btn btn-primary">Log Out</button>
+                </div>
+            </div>
+        </nav>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateTodo">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="update_title" aria-describedby="emailHelp">
+                            </div>
+                            <div>
+                                <label for="title">Description</label>
+                                <br>
+                                <textarea name="description" id="update_description" cols="48" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Due_date</label>
+                                <input type="date" class="form-control" id="update_due_date">
+                            </div>
+                            <button type="submit" class="btn  btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myTodo" class="container-sm">
+            <div class="container">
+                <!-- Button trigger modal -->
+                <div style="margin-left: 47%; margin-top: 20px;">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Create
+                    </button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create New Todo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addTodo">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="add_title"
+                                            aria-describedby="emailHelp">
+                                    </div>
+                                    <div>
+                                        <label for="title">Description</label>
+                                        <br>
+                                        <textarea name="description" id="add_description" cols="48" rows="5"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Due_date</label>
+                                        <input type="date" class="form-control" id="add_due_date">
+                                    </div>
+                                    <button type="submit" class="btn  btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col">
+                    <h2 class="text-center mb-5">TODO</h2>
+                    <div id="todo">
+                    </div>
+                </div>
+                <div class="col">
+                    <h2 class="text-center mb-5">DOING</h2>
+                    <div class="col" id="doing">
+                    </div>
+                </div>
+                <div class="col">
+                    <h2 class="text-center mb-5">DONE</h2>
+                    <div class="col" id="done">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="projectTodo" class="container mt-5" style="display: none;">
+            <div class="row">
+                <div class="col-2 d-flex flex-column mr-3">
+                    <div class="mb-5">
+                        <h2>My Project</h2>
+                        <div class="d-flex flex-column" id="myProject">
+
+                        </div>
+                        <div>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalLong">
+                                Add New Project
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="createProject">
+                                                <div class="form-row">
+                                                    <div class="col-7">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Project Name" id="project_name">
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-danger">Create</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <div>
+                            <h2>Members</h2>
+                            <div class="row" id="myFriends"></div>
+                        </div>
+                        <div id="inviteButtons">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal2">
+                                Invite
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Invite Another Member</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="inviteMember">
+                                                <div class="form-group">
+                                                    <label for="formGroupExampleInput">Email</label>
+                                                    <input type="email" class="form-control" id="emailForInvite"
+                                                        placeholder="Example input placeholder">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="leaveProject">
+                        <button type="button" class="btn btn-danger">Leave</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex flex-column" id="myProject">
+                        <div id="buttonAddTodo" class="mt-5 mb-4" style="margin-left: 45%;">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalLong1">
+                                Create
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="createProjectTodo">
+                                                <div class="form-group">
+                                                    <label for="title">Title</label>
+                                                    <input type="text" class="form-control" id="project_title"
+                                                        aria-describedby="emailHelp">
+                                                </div>
+                                                <div>
+                                                    <label for="title">Description</label>
+                                                    <br>
+                                                    <textarea name="description" id="project_description" cols="48"
+                                                        rows="5"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Due_date</label>
+                                                    <input type="date" class="form-control" id="project_due_date">
+                                                </div>
+                                                <button type="submit" class="btn  btn-primary">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <h2 class="text-center mb-5">TODO</h2>
+                                    <div id="todoProject">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h2 class="text-center mb-5">DOING</h2>
+                                    <div class="col" id="doingProject">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h2 class="text-center mb-5">DONE</h2>
+                                    <div class="col" id="doneProject">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="login" style="display: none;">
+        <div class="container" id="loginForm">
+            <div class=" row">
+                <div class="col" style="margin-top: 10%;">
+                    <h1 class="text-center" style="color: black;">Log In with</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4 "
+                    style="background-color: black; border-radius: 10px; padding-top: 20px; padding-bottom: 20px;">
+                    <form id="submitLogin">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" style="color: white;">Email address</label>
+                            <input type="email" class="form-control" id="email_login" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" style="color: white" ;>Password</label>
+                            <input type="password" class="form-control" id="password_login">
+                        </div>
+                        <button type="submit" class="btn btn-primary text-center"
+                            style="margin-left: 40%;">Submit</button>
+                    </form>
+                    <div class="cotainer">
+                        <div class="row mt-2">
+                            <div class="col text-center">
+                                <button onclick="register()" type="button" class="btn btn-light"
+                                    style="margin-left: 60px;">Register</button>
+                            </div>
+                            <div class="col text-center">
+                                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="registerForm">
+            <div class="row">
+                <div class="col" style="margin-top: 10%;">
+                    <h1 class="text-center" style="color: black;">Sign Up with</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4 "
+                    style="background-color: black; border-radius: 10px; padding-top: 20px; padding-bottom: 20px;">
+                    <form id="submitRegister">
+                        <div class="form-group">
+                            <label for="username" style="color: white;">Username</label>
+                            <input type="text" class="form-control" id="username_register" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" style="color: white;">Email address</label>
+                            <input type="email" class="form-control" id="email_register" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" style="color: white" ;>Password</label>
+                            <input type="password" class="form-control" id="password_register">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 30px;">Submit</button>
+                    </form>
+                    <div class="cotainer">
+                        <div class="row mt-2">
+                            <div class="col text-center">
+                                <button onclick="login()" type="button" class="btn btn-light"
+                                    style="margin-left: 60px;">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/checkUser();npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        style="border: solid 2px black; border-radius: 10px;"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js//loginAndRegister.js"></script>
+    <script src="./js//data.js"></script>
+    <script src="./js/project.js"></script>
+</body>
+
+</html>
+
+<!-- 701978972252-o6phkbclms4gt9k076jfr7qoh8q1le9l.apps.googleusercontent.com
+1YHaQ23MhdC2J6MNk_5gf84Y -->
