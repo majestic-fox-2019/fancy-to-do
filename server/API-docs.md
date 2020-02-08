@@ -17,15 +17,6 @@ created by Muhammad Ali Mazhuda
         "due_date":"2020-02-03T11:45:29.537Z",
         "createdAt":"2020-02-03T11:39:30.451Z",
         "updatedAt":"2020-02-03T11:45:29.431Z"
-        },
-        { 
-        "id": 2,
-        "title": "Belajar",
-        "description": "Sequelize",
-        "status": false,
-        "due_date":"2020-02-03T11:45:29.537Z",
-        "createdAt":"2020-02-03T11:39:30.451Z",
-        "updatedAt":"2020-02-03T11:45:29.431Z"
         }
     ]
     ```

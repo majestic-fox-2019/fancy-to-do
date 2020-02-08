@@ -2,6 +2,8 @@ const { User, Todo } = require('../models/index')
 const createError = require('http-errors')
 const { generateToken } = require('../helper/jwt')
 const { comparePassword } = require('../helper/helper')
+const { OAuth2Client } = require('google-auth-library');
+
 
 class UserController {
     static register(req, res, next) {
@@ -35,7 +37,7 @@ class UserController {
                         id: user.id
                     }
                     const token = generateToken(payload)
-                    res.status(200).json({ token: token })
+                    res.status(200).json({ token: token, email : user.email })
                 } else {
                     throw createError(401, 'Invalid username or password')
                 }
@@ -58,6 +60,35 @@ class UserController {
         }).catch(err => {
             next(err)
         })
+    }
+
+    static googleSignIn(req, res, next) {
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        let newEmail = null
+        client.verifyIdToken({
+            idToken: req.body.id_token,
+            audience: process.env.CLIENT_ID
+        }).then(ticket => {
+            const payload = ticket.getPayload()
+            newEmail = payload.email
+            return User.findOne({ where: { email: newEmail } })
+        }).then(user => {
+            if (user) {
+                return user
+            } else {
+                return User.create(
+                    { email: newEmail, password: null },
+                    { hooks: false }
+                )
+            }
+
+        }).then(user => {
+            const payload = {
+                id: user.id
+            }
+            const token = generateToken(payload)
+            res.status(200).json({ token: token, email : user.email })
+        }).catch(next)
     }
 }
 

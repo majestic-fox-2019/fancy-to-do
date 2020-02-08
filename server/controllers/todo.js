@@ -4,7 +4,8 @@ const createError = require('http-errors')
 class TodoController {
     static getTodos(req, res, next) {
         Todo.findAll({
-            order: [['id', 'ASC']]
+            order: [['id', 'ASC']],
+            where : {UserId : req.loggedUserId}
         }).then(todos => {
             if (todos.length > 0) {
                 res.status(200).json(todos)
