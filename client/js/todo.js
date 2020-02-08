@@ -4,6 +4,7 @@ if (typeof clearForm != 'function') {
         $("#input_title").val("");
         $("#input_description").val("");
         $("#input_due_date").val("");
+        $("#input_status").val("");
     }
 }
 
@@ -20,14 +21,15 @@ if (typeof closeModal != 'function') {
 }
 
 
-function updateTodo(id, title, description, due_date) {    
+function updateTodo(id, title, description, due_date, status) {    
     openModal();
     $(".modalTodo .title-modal").text("Edit Todo");
 
     $(".modalTodo #input_id").val(id);
     $(".modalTodo #input_title").val(title);
     $(".modalTodo #input_description").val(description);
-    $(".modalTodo #input_due_date").val(due_date);
+    $(".modalTodo #input_due_date").val(due_date.substr(0, 10));
+    $(".modalTodo #input_status").val(status);
 }
 
 $(document).ready(function() {    
@@ -49,16 +51,13 @@ $(document).ready(function() {
                             <h2 class="ui center aligned header">${index+1}</h2>
                         </td>
                         <td>${todo.title}</td>
-                        <td>
-                            ${todo.description}
-                        </td>
-                        <td>
-                            ${todo.status}
-                        </td>
+                        <td>${todo.description}</td>
+                        <td>${todo.status}</td>
+                        <td>${formatDate(todo.due_date)}</td>
                         <td>${formatDate(todo.createdAt)}</td>
                         <td>${formatDate(todo.updatedAt)}</td>
                         <td>
-                            <button class="ui green button" id="edit${todo.id}" onclick="updateTodo(${todo.id},'${todo.title}', '${todo.description}', '${todo.due_date}')" idtodo="${todo.id}">
+                            <button class="ui green button" id="edit${todo.id}" onclick="updateTodo(${todo.id},'${todo.title}', '${todo.description}', '${todo.due_date}', '${todo.status}')" idtodo="${todo.id}">
                                 <i class="edit icon"></i>
                                 Edit
                             </button>
@@ -94,12 +93,13 @@ $(document).ready(function() {
         let title           = $("#input_title").val();
         let description     = $("#input_description").val();
         let due_date        = $("#input_due_date").val();
+        let status          = $("#input_status").val();
 
         if (!id) { // add     
             $.ajax({
                 type: "POST",
                 url: `${BACKEND_URL}/todos`,
-                data: {title, description, due_date},
+                data: {title, description, due_date, status},
                 headers: {
                     accesstoken: localStorage.getItem("accesstoken")
                 }
@@ -126,7 +126,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "PUT",
                 url: `${BACKEND_URL}/todos/${id}`,
-                data: {title, description, due_date},
+                data: {title, description, due_date, status},
                 headers: {
                     accesstoken: localStorage.getItem("accesstoken")
                 }

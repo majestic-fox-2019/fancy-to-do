@@ -149,6 +149,17 @@
                           <input type="date" id="input_due_date" placeholder="Due Date: (format: YYYY-MM-DD)">
                         </div>
                       </div>                      
+                      <div class="field">
+                        Status
+                        <div class="ui left icon input">
+                          <select id="input_status">
+                            <option value="To Do">To Do</option>
+                            <option value="Hold">Hold</option>
+                            <option value="Done">Done</option>
+                          </select>
+                        </div>
+                      </div>                      
+
                       <div class="ui fluid large teal submit button" id="btnSubmitForm">Save</div>
                     </div>              
                   </form>
@@ -217,6 +228,7 @@
                         <th>Title</th>
                         <th>Description</th>
                         <th>Status</th>
+                        <th>Due Date</th>
                         <th>Created</th>
                         <th>Modified</th>
                         <th>Actions</th>

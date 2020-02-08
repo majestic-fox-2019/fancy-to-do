@@ -1,3 +1,3 @@
 const formatDate = (date) => {
-    return new Date(date).toDateString();
+    return new Date(date).toISOString().substr(0, 10);
 }
