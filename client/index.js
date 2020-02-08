@@ -1,12 +1,15 @@
+const server = 'http://localhost:3000';
+
+
 $(document).ready(function () {
+
   var username = $('#username')
   var email = $('#email')
   var password = $('#password')
   const $todoListContainer = $('#todolistPage');
   const $editTodolist = $('#editTodosDiv');
   const $formEditTodos = $('#editTodos');
-  const server = 'http://localhost:3000';
-  var itemArray = []
+
 
 
   var registerClass = $('#registerClass')
@@ -14,14 +17,20 @@ $(document).ready(function () {
   registerClass.hide()
   $('#todolistPage').hide()
 
+
   if (!localStorage.getItem('token')) {
     $('#loginClass').show()
     $('#addTodosDiv').hide()
+    $('#editTodosDiv').hide()
   } else {
+    $('#todolistPage').show()
     $('#loginClass').hide()
     $('#addTodos').hide()
     showAllTodos()
   }
+
+
+  // Register
 
   function register(username, email, password) {
     $.ajax({
@@ -31,18 +40,26 @@ $(document).ready(function () {
         username: username.val(),
         email: email.val(),
         password: password.val()
-        // username: $('#username').val(),
-        // email: $('#email').val(),
-        // password: $('#password').val()
       },
       success: function (data) {
-        // showTableTodos(data)
+
+        localStorage.setItem('token', data)
+
         showAllTodos()
-        $('#todolistPage').show()
+        // $('#loginClass').show()
+        // $('#todolistPage').show()
         // console.log(data, '<<<< data sukses register')
       },
       error: function (err) {
-        console.log(err, 'error')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<a href>Why do I have this issue?</a>'
+        })
+
+        // console.log(err, 'error')
+        $('#loginClass').show()
       }
     });
   }
@@ -60,6 +77,42 @@ $(document).ready(function () {
     $('#registerClass').show()
     // register(username, email, password)
   })
+  // --------------------------------------------------------------------//
+
+  // login..
+  function login(email, password) {
+    $.ajax({
+      method: 'POST',
+      url: `${server}/user/login`,
+      data: {
+        email: $('#emailLogin').val(),
+        password: $('#passwordLogin').val()
+      },
+      success: function (data) {
+        localStorage.setItem('token', data)
+        loginClass.hide()
+        showAllTodos()
+        $('#todolistPage').show()
+      },
+      error: function (err) {
+        console.log(err, 'error')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Periksa kembali Email atau Password Anda'
+        })
+      }
+    });
+  }
+
+  $('#loginWeb').on('click', function (event) {
+    event.preventDefault()
+    login(email, password)
+  })
+
+  // --------------------------------------------------------------------//
+
+
 
   // add Todos
   function addTodos(titleAdd, descriptionAdd, due_dateAdd) {
@@ -79,8 +132,13 @@ $(document).ready(function () {
         // showTableTodos(data)
         $('#todolistPage').show()
         $('#addTodosDiv').hide()
-
-        // console.log(data, 'ini add')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'To-Do List Sudah Tersimpan',
+          showConfirmButton: false,
+          timer: 2000
+        })
       },
       error: function (err) {
         console.log(err)
@@ -104,36 +162,11 @@ $(document).ready(function () {
     $('#addTodosDiv').show()
   })
 
-  // login..
-  function login(email, password) {
-    $.ajax({
-      method: 'POST',
-      url: `${server}/user/login`,
-      data: {
-        email: $('#emailLogin').val(),
-        password: $('#passwordLogin').val()
-      },
-      success: function (data) {
-        localStorage.setItem('token', data)
-        loginClass.hide()
-        showAllTodos()
-        $('#todolistPage').show()
-      },
-      error: function (err) {
-        console.log(err, 'error')
-      }
-    });
-  }
-
-  $('#login').on('click', function (event) {
-    event.preventDefault()
-    login(email, password)
-  })
 
 
   // showAll todos
   function showAllTodos() {
-    return $.ajax({
+    $.ajax({
       method: 'GET',
       url: `${server}/todos`,
       headers: {
@@ -152,6 +185,19 @@ $(document).ready(function () {
     })
   }
 
+  $('#logoutTodoList').on('click', function (event) {
+    event.preventDefault()
+    localStorage.removeItem('token')
+
+    $('#loginClass').show()
+    $('#todolistPage').hide()
+
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      // console.log('User signed out.');
+    });
+
+  })
 
   var table = $('#tableTodos')
   var template = `
@@ -184,16 +230,6 @@ $(document).ready(function () {
       $item.find('#deleteTodos').prop('href', `${server}/todos/${data[i].id}`)
       $item.find('#editTodos').prop('href', `${server}/todos/${data[i].id}`)
 
-      // set Text ke data
-      // $item.find('.editTodos').data('index', itemArray.length)
-      // $item.find('.deleteTodos').data('index', itemArray.length)
-      // $item.data('id', data[i].id);
-      // $item.data('title', data[i].title);
-      // $item.data('description', data[i].description);
-      // $item.data('status', data[i].status);
-      // $item.data('due_date', data[i].due_date);
-
-      // itemArray.push($item)
       table.append($item)
     }
   }
@@ -216,18 +252,36 @@ $(document).ready(function () {
   })
 
   function deleteTodos(url) {
-    $.ajax({
-      method: 'DELETE',
-      url: url,
-      headers: {
-        token: localStorage.token
-      },
-      success: function () {
-        showAllTodos()
-        $('#todolistPage').show()
-      },
-      error: function (err) {
-        console.log(err)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        $.ajax({
+          method: 'DELETE',
+          url: url,
+          headers: {
+            token: localStorage.token
+          },
+          success: function () {
+
+            showAllTodos()
+            $('#todolistPage').show()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
     })
   }
@@ -244,7 +298,7 @@ $(document).ready(function () {
         $('#titleEdit').val(data.title)
         $('#descriptionEdit').val(data.description)
         $('#statusEdit').val(data.status)
-        $('#due_dateEdit').val(data.due_date)
+        $('#due_dateEdit').val(`${new Date(data.due_date).toISOString().substring(0, 10)}`)
       },
       fail: function (err) {
         console.log(err)
@@ -252,64 +306,55 @@ $(document).ready(function () {
     })
   }
 
-  function editTodos(url) {
+
+  $('#editTodos').on('submit', function (event) {
+    event.preventDefault()
     $.ajax({
-      method: 'PUT',
-      url: url,
+      method: "PUT",
+      url: `${server}/todos/${localStorage.id}`,
       headers: {
         token: localStorage.token
       },
+      data: {
+        title: $('#titleEdit').val(),
+        description: $('#descriptionEdit').val(),
+        status: $('#statusEdit').val(),
+        due_date: $('#due_dateEdit').val()
+      },
       success: function () {
+        localStorage.removeItem('id')
         showAllTodos()
         $('#todolistPage').show()
+        $('#editTodosDiv').hide()
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'To-Do List Sudah Tersimpan',
+          showConfirmButton: false,
+          timer: 2000
+        })
       },
       error: function (err) {
         console.log(err)
       }
     })
-  }
 
-  // $todoListContainer.on('click', '.editTodos', function (event) {
-  //   let index = $(this).data('index')
-  //   editTodos(index)
-  // })
-
-  // function editTodos(index) {
-  //   $todoListContainer.hide();
-  //   $editTodolist.show()
-  //   $editTodolist.find('#idTodo').val(itemArray[index].data('id'));
-  //   $editTodolist.find('#titleEdit').val(itemArray[index].data('title'));
-  //   $editTodolist.find('#descriptionEdit').val(itemArray[index].data('description'));
-  // }
-
-  // $formEditTodos.on('submit', function (e) {
-  //   e.preventDefault();
-  //   var title = $editTodolist.find('#titleEdit').val();
-  //   var id = $editTodolist.find('#idTodo').val();
-  //   var description = $editTodolist.find('#descriptionEdit').val();
-
-  //   postTodoEdit(id, { title: title, description: description }, function () {
-  //     showAllTodos()
-  //     $todoListContainer.show();
-  //     $editTodolist.hide()
-  //   })
-  // })
-
-  // function postTodoEdit(id, data, cb) {
-  //   $.ajax({
-  //     url: `${server}/todos/${id}`,
-  //     method: "PUT",
-  //     data: data,
-  //     headers: { token: localStorage.getItem('token') },
-  //     success: cb,
-  //     error: function (err, data) {
-  //       console.log(err, data)
-  //     }
-  //   })
-  // }
-
-
-
-
+  })
 
 })
+
+function onSignIn(googleUser) {
+  var id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    method: "POST",
+    url: `${server}/user/googleSignIn`,
+    data: {
+      token: id_token
+    },
+    success: function (data) {
+      localStorage.setItem('token', data)
+      $('#loginClass').hide()
+      $('#todolistPage').show()
+    }
+  })
+}
