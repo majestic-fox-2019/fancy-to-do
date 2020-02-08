@@ -3,8 +3,7 @@ const todoRoute = require('./todoRoute')
 const userRoute = require('./userRoute')
 const authentication = require('../middlewares/authentication')
 
-route.use('/users', userRoute)
-route.use(authentication)
-route.use('/todos', todoRoute)
+route.use('/', userRoute)
+route.use('/todos', authentication, todoRoute)
 
 module.exports = route

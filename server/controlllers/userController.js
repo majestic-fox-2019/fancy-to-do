@@ -49,10 +49,9 @@ class UserController {
                 if(!user){
                     return mailboxValidator.get(`&email=${email}`)
                 }
-                throw createError(400, 'Email does not exist or not verified')
+                throw createError(400, 'Email already registered')
             })
             .then(user => {
-                console.log(user)
                 if(user.data.is_verified == 'True'){
                     return User.create({
                         username,
@@ -68,7 +67,7 @@ class UserController {
             .catch(next)
     }
 
-    static googleLogin(req, res, next){
+    static  googleLogin(req, res, next){
         console.log(req.payload)
         User
             .findOne({

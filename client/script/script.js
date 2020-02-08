@@ -28,9 +28,6 @@ function changeStatus(id){
         url: `${url}/todos/${id}`,
         headers: {
             token: localStorage.token
-        },
-        data: {
-            id
         }
     })
     .done(response => {
@@ -82,7 +79,7 @@ $register.on('submit', function(e){
 
     $.ajax({
         method: 'POST',
-        url: `${url}/users/register`,
+        url: `${url}/register`,
         data: {
             username: username,
             email: email,
@@ -94,17 +91,27 @@ $register.on('submit', function(e){
             title: `User Registered!`,
             text: 'Good Job!',
             icon: 'success',
-            confirmButtonText: `Proceed`
+            confirmButtonText: `Login`
         })
+
+        $register.hide()
+        $login.show()
     })
-    .fail(err => {
-        console.log(err)
-        Swal.fire({
-            title: 'Error!',
-            text: err.responseJSON.errors.join('\n'),
-            icon: 'error',
-            confirmButtonText: 'Ok!'
-        })
+    .fail(({ responseJSON }) => {
+        if (responseJSON.errors.length > 0){
+            Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: `Please fill in all fields`
+            })
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: responseJSON.errors.join('\n'),
+                icon: 'error',
+                confirmButtonText: 'Ok!'
+            })
+        }
     })
 })
 
@@ -115,7 +122,7 @@ $login.on('submit', function(e){
     console.log(email, password)
     $.ajax({
         method: 'POST',
-        url: `${url}/users/login`,
+        url: `${url}/login`,
         data: {
             email: email,
             password: password

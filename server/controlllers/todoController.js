@@ -113,7 +113,7 @@ class TodoController {
         Todo
             .findOne({
                 where: {
-                    id: req.body.id,
+                    id: req.params.id,
                     UserId: req.user.id
                 },
             })
