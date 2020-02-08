@@ -48,6 +48,7 @@ function loadProjects(){
 
 function editProjectForm(id){
   clearMessage()
+  clearModal()
   $.ajax(`${urlBase}project/${id}`,{
     method : "GET",
     headers : {
@@ -82,7 +83,7 @@ function editProjectForm(id){
   })
   .fail(function(err){
     console.log(err)
-    
+    hideModal()
     makeMessage(err.responseJSON.message || "Something Wrong",'danger')
   })
 
@@ -191,6 +192,6 @@ function deleteProject(id){
     makeMessage('Success Delete Project')
   })
   .fail(function(err){
-    makeMessage('Failed Delete',"danger")
+    makeMessage(err.responseJSON.message ||'Failed Delete',"danger")
   })
 }
