@@ -8,7 +8,8 @@ class todoController {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      due_date: req.body.due_date
+      due_date: req.body.due_date,
+      UserId: req.headers.user.id
     }
     Todo.create(todoForm)
       .then((result) => {
@@ -21,7 +22,16 @@ class todoController {
   }
   // find all
   static findAll(req, res, next) {
-    Todo.findAll()
+    const {id: UserId} = req.headers.user;
+    Todo.findAll({
+      where: {
+        UserId
+      },
+      order: [
+        ["due_date"],
+        ["createdAt"]
+      ]
+    })
       .then((result) => {
         res.status(200);
         res.json(result);
@@ -61,6 +71,50 @@ class todoController {
       due_date: req.body.due_date
     }
     Todo.update(todoUpdate, {
+      where: {
+        id
+      },
+      returning: true
+    })
+      .then((result) => {
+        if (!result[0]) {
+          next(createError(404));
+        }
+        res.status(200);
+        res.json(result[1]);
+      })
+      .catch((err) => {
+        next(err)
+      });
+  }
+  // mark done
+  static done(req, res, next) {
+    const { id } = req.params;
+    Todo.update({
+      status: "done"
+    }, {
+      where: {
+        id
+      },
+      returning: true
+    })
+      .then((result) => {
+        if (!result[0]) {
+          next(createError(404));
+        }
+        res.status(200);
+        res.json(result[1]);
+      })
+      .catch((err) => {
+        next(err)
+      });
+  }
+  // mark undone
+  static undone(req, res, next) {
+    const { id } = req.params;
+    Todo.update({
+      status: "undone"
+    }, {
       where: {
         id
       },
