@@ -1,43 +1,59 @@
-## fancy-to-do
+# [Fancy-To-Do](https://github.com/jetlysandita/fancy-to-do/blob/master/server/README.md)
 Fancy To-Do List API
 
 learn build Rest-API with express js
 
-# Features ! 
+# Feature ! 
 * [POST /todos](#POST-/todos) - Create todo
 * [GET /todos](#GET-/todos) - Find all todo
 * [GET /todos/:id](#GET-/todos:id) - Find one todo by id
 * [PUT /todos/:id](#PUT-/todos:id) - Update one todo by id
 * [DELETE /todos/:id](#DELETE-/todos:id) - Delete one todo by id
+* [POST /register](#POST-/register) - Register
+* [POST /login](#POST-/login) - Login
 
 # POST /todos
-> ## Description 
-* use this to create new todo
-> ## URL
-* /todos
-> ## Method
-* POST
-> ## Data Params
-* ### Request Headers
-```
-{
-  "Content-Type: "application/json"
-}
-```
+## Description
+
+use this to create new todo
+
+## URL
+
+- /todos
+
+## Method
+
+- POST
+
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+    "token":""
+  }
+  ```
+
 * ### Request Body
-```
-{
-	"title":"",
-	"description": "",
-	"due_date": ""
-}
-```
+
+  ```
+  {
+    "title":"",
+  	"description": "",
+  	"due_date": ""
+  }
+  ```
+
+  
 | Attribute | Type | Null | Empty | Default |
 | ------ | ------ | ------ | ------ | ------ |
 | title | String | False | False | No Default |
 | deescription | String | False | False | No Default |
 | due_date | Date | False | False | No Default |
-> ## Success Response
+## Success Response
+
 ```
 {
   "data": {
@@ -52,10 +68,11 @@ learn build Rest-API with express js
   "message": "Success create todo"
 }
 ```
-> ## Error Response
+## Error Response
 
 * Code 400
-if Attribute( title , description , or due_date is null or empty)
+
+  If Attribute( title , description , or due_date is null or empty)
 ```
 {
   "data": null,
@@ -74,13 +91,23 @@ if Attribute( title , description , or due_date is null or empty)
 ```
 
 # GET /todos
-> ## Description 
+## Description 
 * use this to find all todo
-> ## URL
+## URL
 * /todos
-> ## Method
+## Method
 * GET
-> ## Success Response
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+    "token":""
+  }
+  ```
+## Success Response
 
 * data is array of object
 ```
@@ -119,18 +146,28 @@ if Attribute( title , description , or due_date is null or empty)
 ```
 
 # GET /todos/:id
-> ## Description 
+## Description 
 * use this to find one todo by id
-> ## URL
+## URL
 * /todos/:id
-> ## Method
+## Method
 * GET
-> ## URL Params
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+    "token":""
+  }
+  ```
+## URL Params
 * Require
 ```
 id = Integer
 ```
-> ## Success Response
+## Success Response
 
 * data is object
 ```
@@ -147,10 +184,11 @@ id = Integer
     "message": null
 }
 ```
-> ## Error Response
+## Error Response
 
 * Code 404
-if data todo with id not found
+
+  If data todo with id not found
 ```
 {
     "data": null,
@@ -159,18 +197,28 @@ if data todo with id not found
 ```
 
 # PUT /todos/:id
-> ## Description 
+## Description 
 * use this to update one todo by id
-> ## URL
+## URL
 * /todos/:id
-> ## Method
+## Method
 * PUT
-> ## URL Params
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+    "token":""
+  }
+  ```
+## URL Params
 * Require
 ```
 id = Integer
 ```
-> ## Data Params
+## Data Params
 * ### Request Headers
 ```
 {
@@ -191,7 +239,7 @@ id = Integer
 | deescription | String | False | False | No Default |
 | due_date | Date | False | False | No Default |
 | status | String("complete","incomplete") | False | False | No Default |
-> ## Success Response
+## Success Response
 
 * data is object
 ```
@@ -208,10 +256,11 @@ id = Integer
     "message": "Success update todo"
 }
 ```
-> ## Error Response
+## Error Response
 
 * Code 400
-if Attribute( title , description , status , or due_date is null or empty)
+
+  If Attribute( title , description , status , or due_date is null or empty)
 ```
 {
     "data": null,
@@ -233,18 +282,28 @@ if Attribute( title , description , status , or due_date is null or empty)
 ```
 
 # DELETE /todos/:id
-> ## Description 
+## Description 
 * use this to delete one todo by id
-> ## URL
+## URL
 * /todos/:id
-> ## Method
+## Method
 * DELETE
-> ## URL Params
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+    "token":""
+  }
+  ```
+## URL Params
 * Require
 ```
 id = Integer
 ```
-> ## Success Response
+## Success Response
 
 * data is object
 ```
@@ -261,13 +320,138 @@ id = Integer
     "message": "Success delete todo"
 }
 ```
-> ## Error Response
+## Error Response
 
 * Code 404
-if data todo with id not found
+
+  If data todo with id not found
 ```
 {
     "data": null,
     "message": "todo not found"
+}
+```
+
+# POST /register
+## Description
+
+use this to register
+
+## URL
+
+- /register
+
+## Method
+
+- POST
+
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+  }
+  ```
+
+* ### Request Body
+
+  ```
+  {
+    "email":"",
+  	"password": "",
+  }
+  ```
+
+  
+| Attribute | Type | Null | Empty | Default |
+| ------ | ------ | ------ | ------ | ------ |
+| email | String | False | False | No Default |
+| password | String | False | False | No Default |
+## Success Response
+
+```
+{
+    "id": 1,
+    "email": "jetly27sandita@gmail.com",
+    "password": "$2b$10$6crftepk05WMFdRibPROXuY5YAisEVrEVqAR9AiRQpdBQT0V2X8S2",
+    "updatedAt": "2020-02-08T06:46:11.341Z",
+    "createdAt": "2020-02-08T06:46:11.341Z"
+}
+```
+## Error Response
+
+* Code 400
+```
+jika email kosong
+{
+    "message": "Email is empty"
+}
+jika email tidak valid
+{
+    "message": "Email not valid"
+}
+jika password tidak diisi
+{
+    "password": "Enter a Password"
+}
+```
+
+# POST /login
+## Description
+
+use this to login
+
+## URL
+
+- /login
+
+## Method
+
+- POST
+
+## Data Params
+
+- ### Request Headers
+
+  ```
+  {
+    "Content-Type: "application/json"
+  }
+  ```
+
+* ### Request Body
+
+  ```
+  {
+    "email":"",
+  	"password": "",
+  }
+  ```
+
+  
+| Attribute | Type | Null | Empty | Default |
+| ------ | ------ | ------ | ------ | ------ |
+| email | String | False | False | No Default |
+| password | String | False | False | No Default |
+## Success Response
+
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqZXRseTI3c2FuZGl0YUBnbWFpbC5jb20iLCJpYXQiOjE1ODExNDg0NTh9.izR7c3xoTWxWwFj2rqaFk8gFh0yw11e-qpSq4ndOjNs"
+}
+```
+## Error Response
+
+* Code 400
+```
+jika email tidak terdaftar
+{
+    "message": "Email not found"
+}
+jika password salah
+{
+    "message": "Password false"
 }
 ```
