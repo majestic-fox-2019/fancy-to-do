@@ -1,4 +1,5 @@
 const { Todo } = require('../models')
+const helper = require('../helpers/helper')
 
 class TodoController {
   static getTodolist(req, res, next){
@@ -20,13 +21,14 @@ class TodoController {
     const addTodo = {
       title: req.body.title,
       description: req.body.description,
-      status: req.body.status,
+      status: 0,
       due_date: req.body.due_date,
       UserId: req.user.id
     }
 
     Todo.create(addTodo)
       .then(result => {
+        // helper.sendMail(req.user.email, result.title, result.description, result.due_date)
         res.status(201).json(result)
       })
       .catch(err => {

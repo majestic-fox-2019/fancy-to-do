@@ -1,7 +1,5 @@
 'use strict';
 
-const axios = require('axios')
-
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize
 
@@ -10,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   Todo.init({
     title: {
       type : DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty : {
           args: true,
@@ -19,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type : DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty : {
           args: true,
@@ -27,10 +27,17 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     status: DataTypes.INTEGER,
-    due_date: DataTypes.DATE
+    due_date: {
+      type : DataTypes.DATE,
+      validate: {
+        notEmpty : {
+          args: true,
+          msg: 'Due date must be filled'
+        }
+      }
+    }
   }, 
   {
-    
     sequelize 
   })
 

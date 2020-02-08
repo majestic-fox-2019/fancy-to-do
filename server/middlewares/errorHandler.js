@@ -10,8 +10,9 @@ exports.client = function(err, req, res, next){
         break
       case 'SequelizeValidationError':
         newError.statusCode = 400
+        newError.message = {}
         err.errors.map(el => {
-          newError[el.path] = el.message
+          newError.message[el.path] = el.message
         })
         throw newError
       case 'JsonWebTokenError':
@@ -22,7 +23,9 @@ exports.client = function(err, req, res, next){
         throw newError
       default:
         newError.statusCode = err.statusCode
-        newError.message = err
+        newError.message = {
+          message : err.message
+        }
         throw newError
     }
   }
