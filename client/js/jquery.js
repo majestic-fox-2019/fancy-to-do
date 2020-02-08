@@ -9,6 +9,8 @@ var templateAdd = ``
 $('#login-page').hide()
 // registerPage.hide()
 tableList.hide()
+$("#logout").hide()
+$("#addBtn").hide()
 
 $("#register-form").on("submit",(e)=>{
     e.preventDefault()
@@ -25,6 +27,8 @@ $("#register-form").on("submit",(e)=>{
         registerPage.hide()
         tableList.hide()
         loginPage.show()
+        $("#logout").hide()
+        $("#addBtn").hide()
         // console.log(res)
     })
     .fail(err=>{
@@ -54,6 +58,8 @@ function login() {
     registerPage.hide()
     loginPage.hide()
     tableList.show()
+    $("#logout").show()
+    $("#addBtn").show()
     // console.log("ini berhasil")
 })
 .fail(err=>{
@@ -92,6 +98,9 @@ if (token) {
     registerPage.hide()
     loginPage.hide()
     tableList.show()
+    $("#logout").show()
+    $("#addBtn").show()
+    
     getList();
     $("#logout").on("click", function(e){
         console.log(localStorage)
@@ -100,7 +109,8 @@ if (token) {
         tableList.hide()
         registerPage.hide()
         loginPage.show()
-        
+        $("#logout").hide()
+        $("#addBtn").hide()
     })
 }
 
@@ -213,7 +223,33 @@ function onSignIn(googleUser) {
 //     console.log('Image URL: ' + profile.getImageUrl());
     // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     // console.log(profile, "lontongggg sayurrr");
+    
     if (profile) {
-        login()
+        $.ajax({
+            method:"GET",
+            url:"http://localhost:3000/data",
+            success:(result)=>{
+                console.log(result, "MASUKKKKK??");
+                result.forEach(data =>{
+                    if (data.email==profile.getEmail()) {
+                        login()
+                    } else if (data.email!==profile.getEmail()){
+                        $.ajax({
+                            method:"POST",
+                            url:"http://localhost:3000/register",
+                            data:{
+                                email: profile.getEmail(),
+                                username: "apaaja",
+                                password: "123"
+                            },
+                            success: (res)=>{
+                               login()
+                            }
+                        })
+                    }
+
+                })
+            }
+        })
     }
   }  
