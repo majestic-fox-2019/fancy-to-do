@@ -490,7 +490,8 @@ $ live-server --host=localhost
             "Data not found!"
         ]
   }
-    ```
+  ```
+  
 - **Status:** `500`
   
   ```javascript
