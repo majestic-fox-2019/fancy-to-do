@@ -174,11 +174,6 @@ _Response :_
 
     3000
 
-### Running Client
-
-    npm run dev
-
-
 # API Documentation
 
 ## Todos
