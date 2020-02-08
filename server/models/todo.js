@@ -1,5 +1,7 @@
 'use strict';
 
+const today = new Date();
+
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize;
 
@@ -13,20 +15,19 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             args: true,
-            msg: "Title cannot be empty!"
+            msg: "Task title cannot be empty!"
           },
           notEmpty: {
             args: true,
-            msg: "Title cannot be empty!"
+            msg: "Task title cannot be empty!"
           }
         }
       },
       description: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
       },
       status: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
         defaultValue: false
       },
       due_date: {
@@ -35,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
           isDate: {
             args: true,
             msg: "Please provide proper date format!"
+          },
+          isAfter: {
+            args: `${today.split("T")[0]}`,
+            msg: "Cannot create task with due date of today!"
           }
         }
       },

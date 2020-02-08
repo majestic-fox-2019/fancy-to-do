@@ -1,6 +1,7 @@
 'use strict';
 
 const bcrypt = require("bcrypt");
+const createError = require("http-errors");
 
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize;
@@ -9,8 +10,34 @@ module.exports = (sequelize, DataTypes) => {
   
   User.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: "Please provide proper email format!"
+          },
+          notNull: {
+            args: true,
+            msg: "Email cannot be empty!"
+          },
+          notEmpty: {
+            args: true,
+            msg: "Email cannot be empty!"
+          },
+          alreadyTaken: value => {
+            User.findOne({ where: { email: value } }).then(foundUser => {
+              if (foundUser) {
+                throw createError(400, "Email is already taken!");
+              }
+            });
+          }
+        }
+      },
+      password: {
+        type: DataTypes.STRING
+      }
     },
     {
       hooks: {
