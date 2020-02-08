@@ -1,6 +1,7 @@
 $('.error').hide()
 $("#registerForm").hide()
 var $todos = []
+var idUpdate = 0
 var $err = ""
 
 checkLogin()
@@ -48,24 +49,18 @@ $('.create-todo').on('click', function(event) {
     }
 })
 
-$('.delete-todo').on('click',function(event) {
-    // event.preventDefault()
-  
-    console.log(id)
-    deleteTodo(id)
+$('.update-btn').on('submit', function(event) {
+    event.preventDefault()
+     
+    var tittle = $(".update-title").val()
+    var description = $(".update-description").val()
+    var status = $(".update-status").val()
+    var date = $(".update-date").val()
+    console.log("masuk update")
+    // console.log(tittle, description, status, date)
+    updateTodo(idUpdate, tittle, description, status, date)
+    
 })
-
-
-
-// $(window).click(function(event) {
-//     // console.log(event.target.className)
-//     if(event.target.className == 'create-todo'){
-//         console.log('masuk woe')
-//         $('.create-todo').hide()
-//         $('.list-todo').show()
-//         reloadData()
-//     }
-// })
 
 function reloadData(){
     $.ajax({
@@ -86,6 +81,7 @@ function reloadData(){
             `
             $(".list-todo").append(noTodo)
         } else {
+            $('.list-todo').empty()
             for(let i = 0; i < response.length; i++){
                 var todoList = `
                 <div class="card-todo-user">
@@ -95,8 +91,9 @@ function reloadData(){
                         <p style="font-size: 8px; margin-top: 10px;">${response[i].due_date}</p>
                     </div>
                     <div class="btn-todo">
+                        <span>${response[i].status}</span>
                         <button class="delete-todo" onClick="deleteTodo(${response[i].id})">delete</button>
-                        <button class="edit-todo">edit</button>
+                        <button class="edit-todo" onClick="showUpdateForm(${response[i].id})">edit</button>
                     </div>
                 </div>
                 `
@@ -215,7 +212,8 @@ function createTodo(title, description, due_date){
     })
     .done(response => {
         console.log(response)
-        $('.list-todo').show
+        $('.create-todo').hide()
+        reloadData()
     })
     .fail(err => {
         console.log(err)
@@ -226,10 +224,55 @@ function deleteTodo(id){
     // console.log(id)
     $.ajax({
         url: `http://localhost:3000/todo/${id}`,
-        method: 'POST',
+        method: 'DELETE',
     })
     .done(response => {
         console.log(response)
+        // checkLogin()
+        reloadData()
+    })
+    .fail(err => {
+        console.log(err)
+    })
+}
+
+function showUpdateForm(id) {
+    $.ajax({
+        url: `http://localhost:3000/todo/${id}`,
+        method: "GET",
+        headers:{
+            "Authorization": localStorage.getItem("token")
+        }
+    })
+    .done(response => {
+        console.log(response)
+        $(".update-title").val(response.tittle)
+        $(".update-description").val(response.description)
+        $(".update-status").val(response.status)
+        $(".update-date").val(response.due_date)
+        $idUpdate = response.id
+        $('.update-todo').show()
+    })
+}
+
+function updateTodo(id, tittle, description, status, due_date) {
+    console.log(tittle, description, status, date)
+    $.ajax({
+        url: `http://localhost:3000/todo/${id}`,
+        headers: {
+            "Authorization": localStorage.getItem("token")
+        },
+        data: {
+            tittle,
+            description,
+            status,
+            due_date
+        }
+    })
+    .done(response => {
+        console.log(response)
+        $('update-todo').hide()
+        reloadData()
     })
     .fail(err => {
         console.log(err)

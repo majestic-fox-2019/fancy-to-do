@@ -10,6 +10,11 @@ html, body {
     font-family: 'Montserrat', sans-serif;
 }
 
+
+ul {
+    list-style-type: none;
+}
+
 .container-login {
     height: 100vh;
     background-image: linear-gradient(to right bottom, 
@@ -148,7 +153,7 @@ html, body {
 }
 
 
-.create-todo {
+.create-todo, .update-todo {
     width: 100%;
     padding: 5rem;
     display: none;
@@ -164,7 +169,7 @@ html, body {
     background-color: rgba(0red, 0, 0, 0.4);
 }
 
-.create-form {
+.create-form, .update-form {
     width: 80%;
     background-color: #ecf0f1;
     border-radius: 0.5rem;
