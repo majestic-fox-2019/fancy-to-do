@@ -1,7 +1,28 @@
 # fancy-to-do
 Fancy To-Do List API
 
+<br>
 Route on My Fancy To-Do LIST API is:
+<br>
+POST /register
+<br>
+POST /signInGoogle
+<br>
+POST /login
+<br>
+GET /todos
+<br>
+GET /todos/{ id }
+<br>
+POST /todos
+<br>
+PUT /todos/{ id }
+<br>
+PATCH /todos/{ id }
+<br>
+DELETE /todos/{ id }
+<br>
+
 <br>
 ## 1. GET /todos
 
@@ -15,13 +36,16 @@ http://localhost:3000/todos
 
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "token": "<<jwt_token>>"
 }
 ```
 
 * **RESPONSE**
 
 If request success and data available on server:
+
+* Status Code: 200
+
 
 ```javascript
   [
@@ -47,13 +71,13 @@ If request success and data available on server:
 ```
 
 If request success but there is no data on server:
-
+* Status Code: 404
 ```javascript
 "Error Not Found"
 ```
 
 If request failed caused by server:
-
+* Status Code: 500
 ```javascript
 Internal Server Error
 ```
@@ -92,6 +116,7 @@ If request success:
 ```
 
 If request failed because id todo not found:
+* Status Code: 404
 
 ```javascript
 {
@@ -151,6 +176,7 @@ If request failed because validation is not complete:
 ```
 
 If request failed caused by server:
+* Status Code: 500
 
 ```javascript
 Internal Server Error
@@ -195,6 +221,7 @@ If request success:
 ```
 
 If request failed because id todo not found:
+* Status Code: 404
 
 ```javascript
 {
@@ -211,6 +238,7 @@ If request failed because validation is not complete:
 ```
 
 If request failed caused by server:
+* Status Code: 500
 
 ```javascript
 Internal Server Error
@@ -235,6 +263,7 @@ http://localhost:3000/todos/1
 * **RESPONSE**
 
 If request success:
+status code: 200
 
 ```javascript
 {
@@ -248,12 +277,14 @@ If request success:
 }
 ```
 If request failed because id todo not found:
+* Status Code: 404
 ```javascript
 {
     "name": "Error Not Found"
 }
 ```
 If request failed caused by server:
+* Status Code: 500
 ```javascript
 Internal Server Error
 ```
