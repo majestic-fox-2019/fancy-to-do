@@ -6,17 +6,13 @@ if (process.env.NODE_ENV == 'development') {
 
 const { Todo } = require("../models");
 const createError = require("http-errors");
-const mailjet = require("node-mailjet").connect(
-  process.env.MJ_APIKEY_PUBLIC,
-  process.env.MJ_APIKEY_PRIVATE
-);
 
 class TodoController {
   static findAll(req, res, next) {
     Todo.findAll({ where: { UserId: req.user.id } })
       .then(todos => {
         if (!todos) {
-          throw createError(404, "There are no tasks!");
+          throw createError(404);
         }
         else {
           res.status(200).json(todos);
@@ -24,10 +20,10 @@ class TodoController {
       })
       .catch(err => {
         if (err.status != 500) {
-          res.status(err.status).json(err);
+          next(err);
         }
         else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(createError(500));
         }
       });
   }
@@ -45,40 +41,15 @@ class TodoController {
 
     Todo.create(todoData)
       .then(todo => {
-        // MAILJET
         createdTodo = todo;
-        return mailjet.post("send", {
-          version: "v3.1"
-        }).request({
-          Messages: [{
-            From: {
-              Email: `${process.env.SENDER_EMAIL}`,
-              Name: "Fancy Todo"
-            },
-            To: [{
-              Email: `${req.user.email}`,
-              Name: `${req.user.email}`
-            }],
-            Subject: `Fancy Todo - ${todoData.title}`,
-            TextPart: `Fancy Todo - ${todoData.title}`,
-            HTMLPart: `
-            <h3>Dear, ${req.user.email}. Thank you for using Fancy Todo!</h3>
-            <p>You have just created <b>${todoData.title}</b> with <b>${todoData.description}</b> due on <b>
-            ${Date(todoData.due_date)}</b></p>
-            `
-          }]
-        });
-      })
-      .then(result => {
         res.status(201).json(createdTodo);
       })
       .catch(err => {
-        console.log(err);
         if (err.message.includes("Validation error:")) {
-          res.status(401).json({ message: err.message });
+          next(createError(400, err.message));
         }
         else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(createError(500));
         }
       });
   }
@@ -87,7 +58,7 @@ class TodoController {
     Todo.findOne({ where: { id: req.params.id, UserId: req.user.id } })
       .then(todos => {
         if (!todos) {
-          throw createError(404, "No task found!");
+          throw createError(404);
         }
         else {
           res.status(200).json(todos);
@@ -95,10 +66,10 @@ class TodoController {
       })
       .catch(err => {
         if (err.status != 500) {
-          res.status(err.status).json(err.message);
+          next(createError(err.status, err.message));
         }
         else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(createError(500));
         }
       });
   }
@@ -120,7 +91,7 @@ class TodoController {
     })
       .then(todo => {
         if (!todo) {
-          throw createError(404, "No task found!");
+          throw createError(404);
         }
         else {
           return Todo.update(todoData, {
@@ -144,13 +115,13 @@ class TodoController {
       })
       .catch(err => {
         if (typeof err.message != "undefined" && err.message.includes("Validation error:")) {
-          res.status(400).json({ message: err.message });
+          next(createError(400, err.message));
         }
         else if (err.status != 500) {
-          res.status(err.status).json(err);
+          next(createError(err.status, err.message));
         }
         else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(createError(500));
         }
       });
   }
@@ -161,7 +132,7 @@ class TodoController {
     Todo.findOne({ where: { id: req.params.id, UserId: req.user.id } })
       .then(todo => {
         if (!todo) {
-          throw createError(404, "No task found!");
+          throw createError(404);
         }
         else {
           deletedTodo = todo;
@@ -178,10 +149,10 @@ class TodoController {
       })
       .catch(err => {
         if (err.status != 500) {
-          res.status(err.status).json(err);
+          next(createError(err.status, err.message));
         }
         else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(createError(500));
         }
       });
   }

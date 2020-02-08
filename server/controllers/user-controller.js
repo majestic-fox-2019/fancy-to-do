@@ -1,41 +1,82 @@
 "use strict";
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV == "development") {
   require("dotenv").config();
 }
 
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 const { User } = require("../models");
 
 class UserController {
+  static googleSignIn(req, res, next) {
+    let payload = null;
+    client.verifyIdToken({
+      idToken: req.body.google_token,
+      audience: process.env.CLIENT_ID
+    })
+      .then(response => {
+        payload = response.getPayload();
+        return User.findOne({ where: { email: payload.email } })
+      })
+      .then(user => {
+        if (!user) {
+          return User.create({email: payload.email});
+        } else {
+          const userData = {
+            id: user.id,
+            email: payload.email
+          };
+          res.status(200).json({
+            token: jwt.sign(userData, process.env.SECRET_KEY)
+          });
+          next();
+        }
+      })
+      .then(newUser => {
+        const newUserData = {
+          id: newUser.id,
+          email: payload.email
+        };
+        res.status(200).json({
+          token: jwt.sign(newUserData, process.env.SECRET_KEY)
+        });
+        next();
+      })
+      .catch(err => {
+        console.log(err);
+        next(createError(500));
+      });
+  }
+
   static login(req, res, next) {
     User.findOne({ where: { email: req.body.email } })
       .then(user => {
         if (!user) {
           throw createError(404, "User not found!");
-        }
-        else {
+        } else {
           if (bcrypt.compareSync(req.body.password, user.password)) {
             const userData = {
               id: user.id,
               email: user.email
             };
-            res.status(200).json({ token: jwt.sign(userData, process.env.secret_key) });
+            res
+              .status(200)
+              .json({ token: jwt.sign(userData, process.env.SECRET_KEY) });
             next();
-          }
-          else {
+          } else {
             throw createError(400, "Wrong email or password!");
           }
         }
       })
       .catch(err => {
         if (err.status != 500) {
-          res.status(err.status).json(err);
-        }
-        else {
-          res.status(500).json({ message: "Internal server error!" });
+          next(err);
+        } else {
+          next(createError(500));
         }
       });
   }
@@ -51,11 +92,9 @@ class UserController {
       })
       .catch(err => {
         if (err.status != 500) {
-          res.status(err.status).json(err);
+          next(createError(err.status, err.message));
         } else {
-          res.status(500).json({
-            message: "Internal server error!"
-          });
+          next(createError(500));
         }
       });
   }
