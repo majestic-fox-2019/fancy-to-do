@@ -20,20 +20,33 @@ $(document).ready(function() {
 
   $(document).on('click', '#logout-btn', function(event) {
     event.preventDefault()
-    var auth2 = gapi.auth2.getAuthInstance()
-    auth2.signOut().then(function() {
-      console.log('User signed out.')
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Logout'
+    }).then(result => {
+      if (result.value) {
+        var auth2 = gapi.auth2.getAuthInstance()
+        auth2.signOut().then(function() {
+          console.log('User signed out.')
+        })
+        localStorage.removeItem('token')
+        localStorage.removeItem('id')
+        allTodos = []
+        myProjects = []
+        expired = []
+        projectId = null
+        editId = null
+        $('#welcome').empty()
+        $('loginModal').modal('close')
+        showHome()
+        M.toast({ html: `Logout success`, classes: 'green lighten-1' })
+      }
     })
-    localStorage.removeItem('token')
-    localStorage.removeItem('id')
-    allTodos = []
-    myProjects = []
-    expired = []
-    projectId = null
-    editId = null
-    $('#welcome').empty()
-    showHome()
-    M.toast({ html: `Logout success`, classes: 'green lighten-1' })
   })
 
   $(document).on('click', '#login', function(event) {
@@ -45,9 +58,15 @@ $(document).ready(function() {
     login(form)
   })
 
+  $(document).on('click', '#loginGithub', function(event) {
+    event.preventDefault()
+    githubLogin()
+  })
+
   $(document).on('click', '#my-todos', function(event) {
     event.preventDefault()
     $('#showModalAdd').show()
+    projectId = null
     fetchUserTodo()
   })
 

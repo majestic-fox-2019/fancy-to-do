@@ -105,6 +105,12 @@ function expiredTodos(data) {
 
 function appendProjects(data) {
   $('#myProjects').empty()
+  if (data.length == 0) {
+    $('#myProjects').append(` 
+            <h5>Sorry you dont have any active project create one? 
+            <a href="#projectModal" class="collection-item modal-trigger" id="create-project">click here</a></h5>
+            `)
+  }
   data.forEach(el => {
     $('#myProjects').append(` 
             <li>

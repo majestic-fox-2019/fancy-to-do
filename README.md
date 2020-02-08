@@ -41,4 +41,4 @@ _/todos/:id_ | **PATCH**| {token: ACCESS_TOKEN} | {status:string} | Update statu
 
 ```
 $ npm install
-$ npm start
+$ npm run dev

@@ -37,6 +37,14 @@ function register(form) {
       showInvitations()
       fetchUserProjects()
       closeHome()
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Thank you for registering to our app, Welcome!',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+      })
       M.toast({ html: `Registration success`, classes: 'green lighten-1' })
     })
     .catch(err => {
@@ -61,6 +69,7 @@ function onSignIn(googleUser) {
       showInvitations()
       fetchUserProjects()
       closeHome()
+      $('loginModal').modal('close')
       M.toast({ html: `Login success`, classes: 'green lighten-1' })
     })
     .catch(err => {

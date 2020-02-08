@@ -1,4 +1,5 @@
 const { Project, UserProject, User, Todo } = require('../models')
+const sendEmail = require('../helpers/mail')
 
 class ProjectController {
   static createProject(req, res, next) {
@@ -79,7 +80,7 @@ class ProjectController {
   static getOneProject(req, res, next) {
     let data = null
     UserProject.findAll({
-      where: { ProjectId: req.params.projectId },
+      where: { ProjectId: req.params.projectId, status: 'join' },
       include: [
         { model: Project, attributes: ['id', 'name', 'owner'] },
         { model: User, attributes: ['email'] }
@@ -145,7 +146,8 @@ class ProjectController {
 
   static inviteProject(req, res, next) {
     let data
-    User.findOne({ where: { email: req.body.email } })
+    let email = req.body.email
+    User.findOne({ where: { email: email } })
       .then(result => {
         if (!result) {
           throw { errCode: 404, msg: 'User not found' }
@@ -168,6 +170,7 @@ class ProjectController {
         }
       })
       .then(final => {
+        sendEmail(email)
         res.status(201).json({ final, msg: 'User invited' })
       })
       .catch(err => {

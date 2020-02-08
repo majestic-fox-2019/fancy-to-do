@@ -30,11 +30,19 @@ function deleteTodo(id) {
         html: `Todo deleted`,
         classes: 'red lighten-2'
       })
+      allTodos.forEach((el, i) => {
+        if (el.id == id) {
+          allTodos[i].splice(i, 1)
+        }
+      })
     })
     .catch(err => {
-      M.toast({
-        html: `${err.response.status} | ${el}`,
-        classes: 'red darken-2'
+      const errors = err.response.data.err
+      errors.forEach(el => {
+        M.toast({
+          html: `${err.response.status} | ${el}`,
+          classes: 'red darken-2'
+        })
       })
     })
 }
@@ -59,6 +67,7 @@ function patchStatus(id, status) {
       fetchUserTodo()
     })
     .catch(err => {
+      console.log(err.response)
       const errors = err.response.data.err
       errors.forEach(el => {
         M.toast({
@@ -243,7 +252,11 @@ function showInvitations() {
     .get(`${BASE_URL}/projects/user/invitation`, { headers: { token: token } })
     .then(results => {
       let data = results.data
-      console.log(data)
+      if (data.length == 0) {
+        $('#invitations').append(`
+          <h6 class="red-text"> You dont have any invitation yet </h6>
+        `)
+      }
       data.forEach(el => {
         $('#invitations').append(`
                     <div class="card-panel teal lighten-2" style="border-radius: 10px;" id="${el.ProjectId}">
