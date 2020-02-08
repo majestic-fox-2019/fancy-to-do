@@ -1,0 +1,40 @@
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.basic-color {
+  color: #1a5b42;
+}
+
+.basic-background-color {
+  background-color: #0079bf;
+}
+
+.btn-tosca {
+  background-color: #62c1b3;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.abcRioButtonLightBlue {
+  width: 100%;
+  margin: 20px auto !important;
+}
+
+.toaster {
+  display: none;
+  top: 5px;
+  right: 10px;
+  position: absolute;
+  z-index: 1;
+}
+
+.trello-btn-bg {
+  background-color: hsla(0, 0%, 100%, .3)
+}
+
+.trello-color {
+  color: hsla(0, 0%, 100%, .5);
+}
