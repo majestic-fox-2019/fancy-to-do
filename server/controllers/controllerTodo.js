@@ -27,6 +27,7 @@ class ControllerTodo{
   }
 
   static create(req,res,next){
+
     let data = {
       title: req.body.title,
       description: req.body.description,
@@ -47,6 +48,7 @@ class ControllerTodo{
       const text = `title : ${result.title} , description : ${result.description}`
 
       nexmo.message.sendSms('TodoList', to, text, (err,responseData)=>{
+        
         if(err){
           throw err
         }else{

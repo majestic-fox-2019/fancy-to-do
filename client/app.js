@@ -207,6 +207,7 @@ function updateform(id) {
     method : 'POST',
     data :{ id_token },
     success : function (res){
+      
       let token = res
       localStorage.setItem("token", token)
       localStorage.setItem('type', 'google')

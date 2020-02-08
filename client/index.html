@@ -14,7 +14,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 
 <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-
 <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 <style type="text/css">
 	body{
@@ -122,6 +121,14 @@
 		margin-top: 30px;
 	}
 
+	.header-logo{
+		color:black;
+		
+		margin-top: 40px;
+		background-color:rgba(235, 235, 235, 0.1);,
+
+	}
+
 
 
 </style>
@@ -130,11 +137,12 @@
   </script>
 </head>
 <body>
-<div class="container mx-y">
+<div class="container-fluid header-logo" style="text-align: center;">
+	<img src="https://www.freelogodesign.org/file/app/client/thumb/8375b914-9283-4553-9f28-542bfb9bfb75_200x200.png?1581158699164" alt="">
 
 </div>
 	
-<div class="signup-form" id="register-page">
+<div class="signup-form custom" id="register-page">
     <form action="" method="post" id="register-form">
 		<h2>Register</h2>
 		<p class="hint-text">Create your account. It's free and only takes a minute.</p>
@@ -162,7 +170,7 @@
 		</div>
 </div>
 
-<div class="signup-form" id="login-page">
+<div class="signup-form custom" id="login-page">
     <form action="" method="post" id="login-form">
 		<h2>Login</h2>
 	
@@ -173,11 +181,12 @@
             <input type="password" class="form-control" id="password-login" name="password" placeholder="Password" required="required">
         </div>
 	   
-		<div class="form-group">
+		<div class="form-group" style="text-align: center;">
 						<button type="submit" class="btn btn-success btn-lg btn-block">Sign In</button>
+				<br>
+				<p>- - -  or  - - -</p>
 			
-
-						<div class="g-signin2" data-width="340" data-height="43" datadata-longtitle="true"></div>
+						<div class="g-signin2"  data-onsuccess="onSignIn" data-width="340" data-height="43" datadata-longtitle="true"></div>
 						
 				</div>
 				<div><p>don't have account ?</p><a id="show-register" href="">Create One</a></div>

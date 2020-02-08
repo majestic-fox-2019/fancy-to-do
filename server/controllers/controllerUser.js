@@ -82,7 +82,7 @@ class ControllerUser {
     .then(ticket=>{
       
       let payload = ticket.getPayload()
-      console.log({payloads : payload})
+   
       User.findOne({where : {email : payload.email}})
       .then(user=>{
         if(user){
