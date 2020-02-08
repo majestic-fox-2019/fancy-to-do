@@ -1,0 +1,23 @@
+body {
+  height: 100%;
+}
+
+#frontpage {
+  min-height: 100%;
+}
+
+#frontpage {
+  background-image: url('https://picsum.photos/1080/720?random=2');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.image {
+  margin-top: -100px;
+}
+
+.g-signin2 {
+  border: none;
+  background-color: transparent;
+}

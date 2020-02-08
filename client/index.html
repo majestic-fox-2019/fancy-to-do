@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="google-signin-client_id"
+    content="615852926047-dqi88uo4flsd59su6brngmsjgo8fv54v.apps.googleusercontent.com" />
+  <title>TODO APP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/custom-tailwind.css" />
+</head>
+
+<body>
+  <div id="frontpage" class="ui middle aligned center aligned grid" style="display: none;">
+    <div class="ui column segment" style="max-width: 50%; background-color: teal;">
+      <figure class="ui small image mb-10">
+        <img src="https://media.giphy.com/media/TIjbCrdh6LBOgvjXZ8/giphy.gif" alt="todo.gif" />
+      </figure>
+      <h2 class="ui header">
+        <div class="content">
+          LOGIN
+        </div>
+      </h2>
+      <form class="ui large form" onsubmit="Frontpage.login(event)">
+        <div class="ui stacked segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" name="email-login" placeholder="E-mail address" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password-login" placeholder="Password" />
+            </div>
+          </div>
+          <button type="submit" class="ui fluid large teal submit button text-xl">
+            Login
+          </button>
+          <h4 class="ui horizontal divider header">
+            OR
+          </h4>
+          <button class="g-signin2" data-onsuccess="onSignIn"></button>
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div class="err-login"></div>
+      </form>
+      <div class="ui message text-xl">
+        Register ? <a id="show-register" href="#">here</a>
+      </div>
+
+      <!-- Register -->
+      <div class="ui basic modal" style="display: none;">
+        <div class="ui icon header">
+          <i class="registered icon"></i>
+          Register
+        </div>
+        <div class="ui segment content bg-teal-900">
+          <form class="ui form" onsubmit="Frontpage.register(event)">
+            <div class="field">
+              <label class="text-white text-xl">Username</label>
+              <input type="text" name="username-register" placeholder="Username" />
+            </div>
+            <div class="field">
+              <label class="text-white text-xl">Email</label>
+              <input type="email" name="email-register" placeholder="Email" />
+            </div>
+            <div class="field">
+              <label class="text-white text-xl">Password</label>
+              <input type="password" name="password-register" placeholder="Password" />
+            </div>
+            <div class="ui field center aligned middle aligned grid">
+              <button type="submit" class="ui green ok inverted button">
+                <i class="checkmark icon"></i>
+                Register
+              </button>
+              <div class="actions">
+                <button type="button" class="ui red basic cancel inverted button">
+                  <i class="remove icon"></i>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="err-register mt-5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="homepage" style="display: none; width: 100%; height: 100%;">
+    <div class="ui top attached menu">
+      <a class="item text-xl font-bold" onclick="Component.showSidebar(event)">
+        <i class="sidebar icon"></i>
+        Menu
+      </a>
+    </div>
+
+    <nav class="ui top vertical inverted sidebar labeled icon menu">
+      <a class="item" onclick="Navigation.toHome()">
+        <i class="home icon"></i>
+        Home
+      </a>
+      <a class="item" onclick="Navigation.toProjects()">
+        <i class="list icon"></i>
+        Projects
+      </a>
+      <a class="item" onclick="Navigation.logout(event)">
+        <i class="power off icon"></i>
+        Logout
+      </a>
+    </nav>
+
+    <div id="loading" class="ui center middle aligned segment" style="min-height: 100%; margin: auto 0; display: none;">
+      <div class="ui center middle aligned page active dimmer" style="min-height: 100%; margin: auto 0;">
+        <div class="ui text loader">Loading...</div>
+      </div>
+    </div>
+
+    <div id="home" class="ui container" style="display: none;">
+      <!-- Create Private Todo -->
+      <div class="ui container">
+        <div class="ui segment mt-5 center aligned row" style="background-color: rgb(224, 217, 217);">
+          <h2 class="text-4xl">Create Todo</h2>
+          <form class="ui form my-10 mx-auto segment" style="max-width: 50%; background-color: rgb(197, 204, 204);"
+            onsubmit="Homepage.create(event)">
+            <div class="field">
+              <label class="text-xl">Todo Title</label>
+              <input type="text" name="title-create-todo" placeholder="First Name" />
+            </div>
+            <div class="field">
+              <label class="text-xl">Todo Description</label>
+              <textarea name="description-create-todo" cols="30" rows="10" placeholder="Description"></textarea>
+            </div>
+            <div class="field">
+              <label class="text-xl">Due Date</label>
+              <input type="date" name="due_date-create-todo" />
+            </div>
+            <button class="ui primary button text-xl" type="submit">
+              CREATE
+            </button>
+          </form>
+          <div id="err-create-personal-todo"></div>
+        </div>
+      </div>
+
+      <div class="ui three column grid my-10 container" style="background-color: rgb(224, 217, 217);">
+        <div class="column">
+          <h2 class="text-center">Undone</h2>
+          <div class="ui segment" style="background-color: rgb(197, 204, 204);">
+            <div id="personal-todo-undone" class="ui cards mx-auto"></div>
+          </div>
+        </div>
+        <div class="column">
+          <h2 class="text-center">Doing</h2>
+          <div class="ui segment" style="background-color: rgb(197, 204, 204);">
+            <div id="personal-todo-doing" class="ui cards mx-auto"></div>
+          </div>
+        </div>
+        <div class="column">
+          <h2 class="text-center">Done</h2>
+          <div class="ui segment" style="background-color: rgb(197, 204, 204);">
+            <div id="personal-todo-done" class="ui cards mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui tiny modal" id="detail-modal"></div>
+    <!-- end of home -->
+
+    <!-- Projects -->
+    <div id="projects" class="ui container" style="display: none;">
+      <div class="ui container">
+        <div class="ui segment mt-10 right aligned" style="background-color: rgb(224, 217, 217);">
+          <button class="ui primary button" onclick="Component.showAddProjectModal(event)">
+            Add Project
+          </button>
+        </div>
+        <div class="ui segment" style="background-color: rgb(224, 217, 217);">
+          <h2 class="text-center">Projects</h2>
+          <!-- Projects append target -->
+          <div class="ui relaxed divided list" id="project-list"></div>
+        </div>
+      </div>
+      <!-- Create Project Modal -->
+      <div class="ui tiny modal" id="add-project-modal">
+        <div class="header">
+          CREATE PROJECT
+        </div>
+        <div class="content">
+          <form class="ui form" onsubmit="(Project.create(event))">
+            <div class="field">
+              <label class="text-xl">Project Name</label>
+              <input type="text" name="name-create-project" placeholder="Project name" />
+            </div>
+            <div class="ui field center aligned middle aligned grid">
+              <button type="submit" class="ui positive right labeled icon button">
+                <i class="checkmark icon"></i>
+                Create
+              </button>
+              <div class="actions">
+                <div type="button" class="ui black deny button">
+                  <i class="remove icon"></i>
+                  Cancel
+                </div>
+              </div>
+            </div>
+          </form>
+          <div id="err-create-project" class="my-5"></div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Projects -->
+    <div id="project-detail" class="ui container" style="display: none;">
+      <div class="ui two column grid">
+        <div class="ui left aligned column mt-10">
+          <button class="ui black button" onclick="Navigation.toProjects()">
+            BACK
+          </button>
+        </div>
+        <div id="create-project-todo-button" class="ui right aligned column mt-10">
+          <button class="ui primary button" onclick="Component.showAddTodoProjectModal()">
+            ADD TODO
+          </button>
+        </div>
+      </div>
+
+      <!-- Create Todo Project -->
+      <div class="ui tiny modal" id="add-todo-project-modal">
+        <div class="header">
+          Create Todo
+        </div>
+        <div class="content">
+          <form class="ui form" id="create-project-todo" onsubmit="Project.createTodo(event)">
+            <div class="field">
+              <label class="text-xl">Todo Title</label>
+              <input type="text" name="title-create-project-todo" placeholder="Todo title" />
+            </div>
+            <div class="field">
+              <label class="text-xl">Todo Description</label>
+              <textarea name="description-create-project-todo" cols="30" rows="10" placeholder="Description"></textarea>
+            </div>
+            <div class="field">
+              <label class="text-xl">Due Date</label>
+              <input type="date" name="due_date-create-project-todo" />
+            </div>
+            <div class="ui field center aligned middle aligned grid">
+              <button type="submit" class="ui positive right labeled icon button">
+                <i class="checkmark icon"></i>
+                Create
+              </button>
+              <div class="actions">
+                <button type="button" class="ui black deny button">
+                  <i class="remove icon"></i>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+          <div id="err-create-project-todo" class="my-5"></div>
+        </div>
+      </div>
+
+      <div class="ui segment center aligned two column grid my-10" id="project-detail-list"
+        style="background-color: rgb(224, 217, 217);">
+      </div>
+
+      <div class="ui tiny modal" id="add-project-member-modal">
+        <div class="header">
+          ADD MEMBER
+        </div>
+        <div class="content">
+          <form class="ui form" onsubmit="Project.addMember(event)">
+            <div class="field">
+              <label class="text-xl">Username</label>
+              <div class="ui fluid search" id="input-search-user">
+                <div class="ui icon input">
+                  <input name="add-user-project" class="prompt" type="text" placeholder="......." onkeyup="search()">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+            <div class="ui field center aligned middle aligned grid">
+              <button type="submit" class="ui positive right labeled icon button">
+                <i class="checkmark icon"></i>
+                Add
+              </button>
+              <div class="actions">
+                <div type="button" class="ui black deny button">
+                  <i class="remove icon"></i>
+                  Close
+                </div>
+              </div>
+            </div>
+          </form>
+          <div id="err-create-project" class="my-5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- <script src="script.js"></script> -->
+  <script src="src/app.js"></script>
+  <script src="src/project.js"></script>
+  <script src="src/component.js"></script>
+</body>
+
+</html>
