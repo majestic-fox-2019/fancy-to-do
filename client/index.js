@@ -6,9 +6,7 @@ $(document).ready(function () {
   var username = $('#username')
   var email = $('#email')
   var password = $('#password')
-  const $todoListContainer = $('#todolistPage');
-  const $editTodolist = $('#editTodosDiv');
-  const $formEditTodos = $('#editTodos');
+
 
 
 
@@ -16,17 +14,22 @@ $(document).ready(function () {
   var loginClass = $('#loginClass')
   registerClass.hide()
   $('#todolistPage').hide()
+  $('#addTodosDiv').hide()
+  $('#editTodosDiv').hide()
+  $('#loginClass').hide()
+
 
 
   if (!localStorage.getItem('token')) {
-    $('#loginClass').show()
     $('#addTodosDiv').hide()
     $('#editTodosDiv').hide()
+    $('#loginClass').show()
   } else {
+    showAllTodos()
     $('#todolistPage').show()
     $('#loginClass').hide()
     $('#addTodos').hide()
-    showAllTodos()
+    // $('.container').hide()
   }
 
 
@@ -44,11 +47,10 @@ $(document).ready(function () {
       success: function (data) {
 
         localStorage.setItem('token', data)
-
         showAllTodos()
-        // $('#loginClass').show()
-        // $('#todolistPage').show()
-        // console.log(data, '<<<< data sukses register')
+        // $('#loginClass').hide()
+        $('#todolistPage').show()
+
       },
       error: function (err) {
         Swal.fire({
@@ -71,12 +73,12 @@ $(document).ready(function () {
     register(username, email, password)
   })
 
-  $('#registerShow').on('click', function (event) {
-    event.preventDefault()
-    $('#loginClass').hide()
-    $('#registerClass').show()
-    // register(username, email, password)
-  })
+  // $('#registerShow').on('click', function (event) {
+  //   event.preventDefault()
+  //   $('#loginClass').hide()
+  //   $('#registerClass').show()
+  //   // register(username, email, password)
+  // })
   // --------------------------------------------------------------------//
 
   // login..
@@ -93,6 +95,7 @@ $(document).ready(function () {
         loginClass.hide()
         showAllTodos()
         $('#todolistPage').show()
+        $('#editTodosDiv').hide()
       },
       error: function (err) {
         console.log(err, 'error')
@@ -174,9 +177,9 @@ $(document).ready(function () {
       },
       success: function (data) {
         showTableTodos(data)
-        $('#todolistPage').show()
-        $('#addTodosDiv').hide()
-        $('#editTodosDiv').hide()
+        // $('#todolistPage').show()
+        // $('#addTodosDiv').hide()
+        // $('#editTodosDiv').hide()
         // console.log(data, 'ini data showall')
       },
       error: function (err) {
@@ -185,19 +188,6 @@ $(document).ready(function () {
     })
   }
 
-  $('#logoutTodoList').on('click', function (event) {
-    event.preventDefault()
-    localStorage.removeItem('token')
-
-    $('#loginClass').show()
-    $('#todolistPage').hide()
-
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      // console.log('User signed out.');
-    });
-
-  })
 
   var table = $('#tableTodos')
   var template = `
@@ -218,7 +208,7 @@ $(document).ready(function () {
 
   function showTableTodos(data) {
     table.empty()
-    itemArray = [];
+    // itemArray = [];
     for (let i = 0; i < data.length; i++) {
       var $item = $(template)
       // set text ke DOM
@@ -286,6 +276,18 @@ $(document).ready(function () {
     })
   }
 
+  $('#logoutTodoList').on('click', function (event) {
+    event.preventDefault()
+    localStorage.removeItem('token')
+
+    $('#loginClass').show()
+    $('#todolistPage').hide()
+
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      // console.log('User signed out.');
+    });
+  })
 
   function getTodos(url) {
     $.ajax({
