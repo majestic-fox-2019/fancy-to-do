@@ -11,7 +11,7 @@ $(document).ready(() => {
     }
 
     $("#btnLogin").on('click', () => {
-        $('.ui.modal.modalLogin').modal('show');
+        $('.ui.modal.modalLogin').modal({closable: false}).modal('show');
     });
 
     $("#btnSubmitLogin").on('click', () => {

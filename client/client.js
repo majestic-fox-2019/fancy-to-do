@@ -12,6 +12,7 @@ app.use('/root_folder', express.static(`${__dirname}/`));
 
 // Ketika page url berubah misal /todos dan page direfresh redirect ke index.html agar tidak error
 app.use((req, res) => {
+    console.log(req);
     res.sendFile(`${__dirname}/index.html`);
 })
 

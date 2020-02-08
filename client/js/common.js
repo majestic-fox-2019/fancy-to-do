@@ -49,6 +49,7 @@ const checkLogin = () => {
         showBtnLogout();
         $("#emailLoggedIn").text(emailLoggedIn);
     }else{
+        $('.modalLogin').modal({closable: false}).modal('show');
         showBtnLogin();
     }
 }

@@ -6,7 +6,6 @@ if (typeof registerUser != 'function') {
             data: {email: emailRegister, password: passwordRegister}
         })
         .then(newUser => {
-            console.log(newUser);
             setSuccessAlert();
             showAlert();
             clearRegisterForm();
@@ -37,9 +36,12 @@ $(document).ready(() => {
         $(".modalRegister > .close").click();
     }
 
+    $("#btnLogin2").on('click', function(){
+        $("#btnLogin").click();
+    });
 
     $("#btnRegister").on('click', () => {
-        $('.ui.modal.modalRegister').modal('show');
+        $('.ui.modal.modalRegister').modal({closable: false}).modal('show');
     });
 
     $("#btnSubmitRegister").on('click', () => {
