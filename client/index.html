@@ -76,6 +76,8 @@
                        </button>
                         <div id="tombolAsli" style="display: none;" class="g-signin2" data-onsuccess="onSignIn"></div> 
                         <br>*Jika anda sign in dengan akun google, akun anda langsung <b>terdaftar otomatis</b> didatabase todo, default password: <b>123</b>
+                        <br><br>Demo User: <br>user: admin@todo.com | password:  admin  |
+                        <br>user@todo.com | password: user | </b>
                     </div>
                  </div>
             </div>
@@ -260,6 +262,20 @@
         <script id="users" type="text/x-handlebars-template">
             <h1 class="ui header">User List</h1>
             <hr>
+            <table class="ui padded table">
+              <thead>
+                  <tr>
+                      <th class="single line">No</th>
+                      <th>Email</th>
+                      <th>Created</th>
+                      <th>Modified</th>
+                  </tr>
+              </thead>
+              <tbody id="dataUsers" style="overflow-y: 500px">
+                
+              </tbody>
+          </table>
+          <script src="root_folder/js/user.js"></script>
         </script>
 
         <script src="scripts/jquery/dist/jquery.min.js"></script>
