@@ -52,7 +52,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     due_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
+      timestamp: false,
       allowNull: false,
       validate: {
         notNull: {
@@ -75,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     hooks: {
       beforeCreate: (todo, options) => {
-
+        // todo.due_date = todo.due_date.toISOString().split('T')[0]
         return axios({
           headers: {
             'Authorization': `Bearer ${process.env.API_KEY}`

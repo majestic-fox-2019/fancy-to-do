@@ -48,12 +48,14 @@ class UserController {
     User
       .findOne({
         where: {
-          email: user.email,
-          password: user.password
+          email: user.email
         }
       })
       .then(result => {
         console.log(result, 'result login')
+        if (result == null) {
+          throw createError(400, 'User not found!')
+        }
         let compare = bcrypt.compareSync(user.password, result.password)
 
         console.log(compare, '< compare')

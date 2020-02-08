@@ -28,10 +28,13 @@ class TodoController {
       UserId: req.user.id
     }
 
+    console.log(todo, '< ini todo di create todoController')
+
     Todo
       .create(todo)
       .then(result => {
         res.status(201).json(result)
+        console.log(result, '< result create todo')
       })
       .catch(err => {
         if (err.message) {
