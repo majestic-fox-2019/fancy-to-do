@@ -365,13 +365,13 @@ $ live-server --host=localhost
     ```
 
   - **Status:** `500`
-  
+
     ```javascript
-    {
-        "errors": "Server currently unable to handle this request"
-  }
+      {
+          "errors": "Server currently unable to handle this request"
+      }
     ```
-  
+
   
 
 ## PATCH Todos
