@@ -1,5 +1,38 @@
 # Fancy To Do
 Fancy To Do by Muhammad Anova Nurfaqih
+## URL's
+- Register
+```
+Method : "POST"
+URL : "http://localhost:3000/users"
+```
+- Login
+```
+Method : "POST"
+URL : "http://localhost:3000/users/login"
+```
+- Add Todo
+```
+Method : "POST"
+URL : "http://localhost:3000/users"
+```
+- Get List Todo
+```
+Method : "GET"
+URL : "http://localhost:3000/users"
+```
+- Edit / Update Todo
+```
+Method : "GET"
+URL : "http://localhost:3000/users/:id"
+Method : "PUT"
+URL : "http://localhost:3000/users/:id"
+```
+- Edit / Update Todo
+```
+Method : "DELETE"
+URL : "http://localhost:3000/users/:id"
+```
 ## POST/users
 - Response
 ```
