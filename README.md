@@ -500,7 +500,3 @@ $ live-server --host=localhost
         "errors": "Server currently unable to handle this request"
     }
     ```
-<<<<<<< HEAD
-  
-=======
->>>>>>> 50f4cc074902d8c87e34ee763535080e0ef157b7
