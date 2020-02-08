@@ -491,13 +491,10 @@ $ live-server --host=localhost
         ]
   }
     ```
-
-  - **Status:** `500`
+- **Status:** `500`
   
-    ```javascript
+  ```javascript
     {
         "errors": "Server currently unable to handle this request"
-  }
+    }
     ```
-  
-  
