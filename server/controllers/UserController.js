@@ -3,6 +3,8 @@
 const { User } = require('../models');
 const { generateToken } = require('../middlewares/jwt');
 const { compareHash } = require('../helpers/bcrypt');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_TOKEN);
 
 class UserController {
     static register(req, res, next) {
@@ -22,7 +24,6 @@ class UserController {
             });
         })
         .catch(err => {
-            console.log('next user login ', err.name)
             next(err);
         })
     }
@@ -56,6 +57,41 @@ class UserController {
 
     static getUser(req, res, next) {
         res.status(200).json(req.userLoggedIn)
+    }
+
+    static googlesignin(req, res, next) {
+        let email = null;
+        client.verifyIdToken({
+            idToken: req.body.id_token,
+            audience: process.env.GOOGLE_TOKEN
+        })
+        .then(ticket => {
+            email = ticket.payload.email;
+            return User.findOne({
+                where: {
+                    email
+                }
+            })    
+        })
+        .then(user => {
+            if(user) {
+                return user;
+            } else {
+                return User.create({
+                    name: email,
+                    email: email,
+                    password: 'default'
+                });
+            }
+        })
+        .then(user => {
+            const token = generateToken(user.dataValues);
+            res.status(200).json({ 
+                email: user.dataValues.email,
+                token: token,
+            });
+        })
+        .catch(next);
     }
 }
 

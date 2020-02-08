@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="498306790294-4con8ic54gfkskd0tghqo56kicrhpuoe.apps.googleusercontent.com">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -27,7 +28,9 @@
             </div>
             <button type="submit" class="btn btn-warning mr-2 mb-3" id="login">Login</button>
             <button type="submit" class="btn btn-secondary mb-3" id="gotoRegister" >Register</button>
-        </form>
+            
+            <div class="g-signin2" data-onsuccess="googleSignIn"></div>
+            </form>
 
         <form id="registerForm">
             <h3>register</h3>
@@ -70,7 +73,7 @@
                         <a class="nav-link text-white" href="" id="navTodo">Todo</a>
                         </li>
                         <li class="nav-item col-5">
-                        <a class="nav-link text-white" href="" id="navLogout">{ logout }</a>
+                        <a class="nav-link text-white" href="" id="navLogout"><span style="font-weight: bolder;font-size:large; color:ghostwhite">{ logout }</span></a>
                         </li>
                     </ul>
                 </div>
@@ -83,38 +86,154 @@
         
         <!-- project page -->
         <div id="projectPage">
+            <a href="">
+                <img src="plus.png" alt="" width="100" id="iconAddProject" class="mt-2 mb-2 float-left">
+            </a>
+
+            <div class="container">
+                <div id="contentProjectPage" class="row">
+                    <!--  -->
+                </div>
+            </div>
 
         </div>
         <!-- end of project page -->
+        <!-- add project page -->
+        <div id="addProjectPage">
+            <form class="container" id="addProjectForm">
+                <h3>Add Project</h3>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <input type="text" class="form-control mb-2" placeholder="Project Name" id="addName">
+                  </div>
+                </div>
+                <button type="button" name="addProject" id="addProject" class="btn btn-warning btn-md">Save</button>
+            </form>
+        </div>
+        <!-- end of add project page -->
+        <!-- add project page -->
+        <div id="editProjectPage">
+            <form class="container" id="editProjectForm">
+                <h3>Edit Project</h3>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <input type="hidden" class="form-control mb-2" placeholder="ID" id="editProjectId">
+                    <input type="text" class="form-control mb-2" placeholder="Project Name" id="editName">
+                  </div>
+                </div>
+                <button type="button" name="editProject" id="editProject" class="btn btn-warning btn-md">Save</button>
+            </form>
+        </div>
+        <!-- end of add project page -->
+        <!-- detail project -->
+        <div id="detailProject" class="container-fluid row ml-2">
+            <div id="detailProjectID" class="row">
+                <input type="text" class="form-control-plaintext col-3 mb-2 border-0" id="detailProjectID-id" readonly>
+                <input type="text" class="form-control-plaintext col-9 mb-2 border-0" id="detailProjectID-name" readonly>
+            </div>
+            <div class="row">
+                <div id="detailProjectUser" class="col-3 text-center">
+                    <div id="detailProjectUser-header">
+                        <h3 class="mt-2"><kbd>list member/user</kbd></h3>
+                        <!-- Button trigger modal -->
+                        <a href="" class="btn" data-toggle="modal" data-target="#addUserProjectModal" style="text-decoration: none" id=""><span style="font-weight: bolder;font-size: x-large; color:coral">add </span><img src="plus.png" width="25"></a>
+                        <br>
+                    </div>
+                    <div id="detailProjectUser-body">
+                        <!--  -->
+                    </div>
+
+                </div>
+                <div id="detailProjectTodo" class="col-9">
+                    <!-- list todo project -->
+                    <div id="listTodoProject">
+                        <div id="listTodoProject-header" class="row">
+                            <h3 class="mt-2 ml-2"><kbd>list todo</kbd></h3>
+                            <a href="" class="btn mt-2 ml-2" style="text-decoration: none" id="listTodoProject-add"><span style="font-weight: bolder; font-size: large; color:hotpink">add todo(+)</span></a>
+                        </div>
+                        <div id="listTodoProject-body" class="row">
+                            <!--  -->
+                        </div>
+                    </div>
+                    <!-- end of list todo project -->
+    
+                </div>
+            </div>
+        </div>
+        <!-- end of detail project -->
+        <!-- add user/member project modal -->
+        <div id="addUserProjectModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">add user to project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="addUserToProject-email" placeholder="Email">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="addUserToProject-save">Save</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of add user/member project modal -->
 
         <!-- todo page -->
-        <div id="todoPage" class="">
+        <div id="todoPage">
             <a href="">
                 <img src="add.png" alt="" width="100" id="iconAddTodo" class="mt-2 mb-2 float-left">
             </a>
 
-            <div id="addTodoPage">
-                <form class="container" id="addTodoForm">
-                    <h3>Add Todo</h3>
-                    <br>
-                    <div class="row">
-                      <div class="col-4">
-                        <input type="text" class="form-control mb-2" placeholder="Title" id="addTitle">
-                        <textarea class="form-control mb-2" name="addDescription" id="addDescription" rows="3" placeholder="Description"></textarea>
-                        <input type="date" class="form-control mb-2" placeholder="Due Date" id="addDueDate">
-                      </div>
-                    </div>
-                    <button type="button" name="addTodo" id="addTodo" class="btn btn-warning btn-md">Save</button>
-                    <button type="button" name="cancelTodo" id="cancelTodo" class="btn btn-info btn-md">Cancel</button>
-                </form>
-            </div>
-
-            <div id="contentTodoPage" class="container">
-
+            <div class="container">
+                <div id="contentTodoPage" class="row">
+                    <!--  -->
+                </div>
             </div>
 
         </div>
         <!-- end of todo page -->
+        <!-- add todo page -->
+        <div id="addTodoPage">
+            <form class="container" id="addTodoForm">
+                <h3>Add Todo</h3>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <input type="text" class="form-control mb-2" placeholder="Title" id="addTitle">
+                    <textarea class="form-control mb-2" name="addDescription" id="addDescription" rows="3" placeholder="Description"></textarea>
+                    <input type="date" class="form-control mb-2" placeholder="Due Date" id="addDueDate">
+                  </div>
+                </div>
+                <button type="button" name="addTodo" id="addTodo" class="btn btn-warning btn-md">Save</button>
+            </form>
+        </div>
+        <!-- end of add todo page -->
+        <!-- edit todo page -->
+        <div id="editTodoPage">
+            <form class="container" id="editTodoForm">
+                <h3>Edit Todo</h3>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <input type="hidden" class="form-control mb-2" placeholder="ID" id="editID">
+                    <input type="text" class="form-control mb-2" placeholder="Title" id="editTitle">
+                    <textarea class="form-control mb-2" name="addDescription" id="editDescription" rows="3" placeholder="Description"></textarea>
+                    <input type="text" class="form-control mb-2" placeholder="Status" id="editStatus">
+                    <input type="date" class="form-control mb-2" placeholder="Due Date" id="editDueDate">
+                  </div>
+                </div>
+                <button type="button" name="saveTodo" id="saveTodo" class="btn btn-warning btn-md">Save</button>
+                <button type="button" name="cancelTodo" id="cancelTodo" class="btn btn-info btn-md">Cancel</button>
+            </form>
+        </div>
+        <!-- end of edit todo -->
 
     </div>
     <!-- end of landing page -->
@@ -124,6 +243,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="main.js"></script>
   </body>
 </html>

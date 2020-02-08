@@ -16,3 +16,29 @@
 #landingPage {
     margin-top: 75px;
 }
+
+#detailProject {
+    width: 1400px;
+    height: 700px;
+    border: 1px solid rgb(245, 239, 239);
+}
+
+#detailProjectID {
+    width: 1400px;
+    height: 70px;
+    border: 1px solid rgb(245, 239, 239);
+}
+
+#detailProjectUser {
+    width: 400px;
+    height: 630px;
+    border: 1px solid rgb(245, 239, 239);
+    overflow: scroll;
+}
+
+#detailProjectTodo {
+    width: 1000px;
+    height: 630px;
+    border: 1px solid rgb(245, 239, 239);
+    overflow: scroll;
+}

@@ -34,6 +34,21 @@ class TodoController {
         })
         .catch(next)
     }
+    static readOne(req, res, next) {
+        const id = req.params.id;
+        Todo.findOne(
+            {
+                where: {
+                    id
+                },
+                include:  User,
+            }
+        )
+        .then(todo => {
+            res.status(200).json(todo);
+        })
+        .catch(next)
+    }
 
     static update(req, res, next) {
         const { title, description, status, dueDate } = req.body;

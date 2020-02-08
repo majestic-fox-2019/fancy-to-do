@@ -6,13 +6,23 @@ class ProjectController {
     static create(req, res, next) {
         const { name } = req.body;
         const UserId = req.userLoggedIn.id;
-        
+        let ProjectId = null;
+        let projectCreated = null;
+
         Project.create({
             name,
             UserId
         })
         .then(project => {
-            res.status(201).json(project)
+            projectCreated = project;
+            ProjectId = project.id;
+            return UserProject.create({
+                UserId,
+                ProjectId
+            })
+        })
+        .then(userproject => {
+            res.status(201).json(projectCreated)
         })
         .catch(next)
     }
@@ -59,15 +69,15 @@ class ProjectController {
                 id
             }
         })
-        .then(result => {
+        .then(resultproject => {
             return UserProject.destroy({
                 where: {
                     ProjectId: id
                 }
             })
         })
-        .then(result => {
-            res.status(200).json(result);
+        .then(resultuserproject => {
+            res.status(200).json(resultuserproject);
         })
         .catch(next)
     }
@@ -122,7 +132,7 @@ class ProjectController {
     }
 
     static delTodoProject(req, res, next) {
-        const id = req.params.id;
+        const id = req.params.idtodo;
 
         TodoProject.destroy({
             where: {
@@ -136,7 +146,7 @@ class ProjectController {
     }
 
     static updateTodoProject(req, res, next) {
-        const id = req.params.id;
+        const id = req.params.idtodo;
         const { title, description, dueDate, status } = req.body;
 
         TodoProject.update(
@@ -173,6 +183,35 @@ class ProjectController {
         })
         .catch(next)
     }
+
+    static getUserTodoProject(req, res, next) {
+        const id = req.params.id;
+        UserProject.findAll({
+            where: {
+                ProjectId: id
+            },
+            include: User
+        })
+        .then(results => {
+            res.status(200).json(results)
+        })
+        .catch(next)
+    }
+
+    static readOneTodoProject(req, res, next) {
+        const id = req.params.idtodo;
+
+        TodoProject.findOne({
+            where: {
+                id
+            }
+        })
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(next)
+    }
+
 }
 
 module.exports = ProjectController;
