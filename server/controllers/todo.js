@@ -5,7 +5,6 @@ const createError = require("http-errors")
 
 class TodoController {
     static createTodo(req, res, next) {
-        console.log(req.body);
         const { title, description, due_date } = req.body
         Todo.create({
             title,

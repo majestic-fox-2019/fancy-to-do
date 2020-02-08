@@ -67,10 +67,6 @@ $(document).ready(function () {
         const projectIdTodo = $('#projectIdTodo').val()
         createTodoProject(projectIdTodo, title, dueDate, description)
     })
-
-    // FB.getLoginStatus(function (response) {
-    //     statusChangeCallback(response);
-    // });
 })
 
 function onSignIn(googleUser) {
@@ -187,17 +183,68 @@ function checkLogin() {
         $("#mainPage").hide()
         $("#myTodoPrivate").hide()
         $("#myTodoProject").hide()
+        $("#tampilanDalem").hide()
         $('#completed').empty()
         $('#todo').empty()
+        $('#shipcanvas').fadeIn('slow')
+
     } else {
         $("#loginRegister").hide()
         $("#navbarApp").fadeIn('slow')
         $('#mainPage').show()
+        $('#tampilanDalem').fadeIn('slow')
+        $('#shipcanvas').fadeOut('slow')
     }
 }
 
-// function checkLoginState() {
-//     FB.getLoginStatus(function (response) {
-//         statusChangeCallback(response);
-//     });
-// }
+(function myAnimate() {
+    var myCanvas = document.createElement('canvas');
+    var canvas = document.querySelector('body').appendChild(myCanvas);
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.id = 'shipcanvas';
+
+    var stage = new createjs.Stage(canvas);
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    ss = new createjs.SpriteSheet({
+        animations: {
+            fly: [0, 14, "fly", 4]
+        },
+        images: ["http://planetoftheweb.com/_/images/powship_sprites.png"],
+        frames: {
+            regX: 158,
+            regY: 113,
+            width: 316,
+            height: 226
+        }
+    });
+
+    var ship = new createjs.BitmapAnimation(ss);
+    ship.gotoAndPlay("fly");
+    stage.addChild(ship);
+    createjs.Ticker.setFPS(60);
+    ship.x = centerX;
+    ship.y = 65;
+    ship.scaleX = .4;
+    ship.scaleY = .4;
+
+
+    createjs.Ticker.addListener(function () {
+        var difX = stage.mouseX - ship.x;
+        var difY = stage.mouseY - ship.y;
+
+        ship.x += difX / 100;
+        ship.y += difY / 100;
+
+        stage.update();
+    });
+})();
+
+FB.getLoginStatus(function (response) {
+    if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
+        console.log(accessToken);
+    }
+});

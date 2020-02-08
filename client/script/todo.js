@@ -17,22 +17,44 @@ $(document).ready(function () {
 })
 
 function createTodo(title, due_date, description) {
+    console.log(description);
     $.ajax({
-        url: `${baseUrl}/todos`,
-        method: "POST",
-        data: {
-            title,
-            description,
-            due_date
-        },
-        headers: {
-            token: localStorage.getItem('token')
-        }
+        url: `${baseUrl}/purgomalum/${description}`,
+        method: "GET"
     })
-        .done(() => {
-            checkLogin()
-            allTodo()
-            document.getElementById("addTodo").reset()
+        .done((res) => {
+            if (res) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Keep Your Language'
+                })
+            } else {
+                $.ajax({
+                    url: `${baseUrl}/todos`,
+                    method: "POST",
+                    data: {
+                        title,
+                        description,
+                        due_date
+                    },
+                    headers: {
+                        token: localStorage.getItem('token')
+                    }
+                })
+                    .done(() => {
+                        checkLogin()
+                        allTodo()
+                        document.getElementById("addTodo").reset()
+                    })
+                    .fail(err => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: err.responseJSON
+                        })
+                    })
+            }
         })
         .fail(err => {
             Swal.fire({

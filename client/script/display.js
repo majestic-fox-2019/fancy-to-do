@@ -7,21 +7,27 @@ function viewTodos(response) {
                             <div class="task-header">${data.title}</div>
                             <div class="task-description">${data.description}</div>
                             <div class="task-date">${formatDate(data.due_date)}</div>
-                            <div style="display: flex;">
-                                <input onclick="doneTodo('${data.id}')" type="button" class="btn btn-dark btn-sm" value="Done" />
-                                <input type="button" onclick="getTodo('${data.id}')" id="goEditTask" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#updateTodo" value="Edit" />
-                                <input onclick="deleteTodo('${data.id}')" type="button" class="btn btn-dark btn-sm" value="Delete" />
-                            </div>
+                                <button data-toggle="tooltip" onclick="doneTodo('${data.id}')" data-placement="top" title="Done" class="btn btn-dark btn-sm">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button onclick="getTodo('${data.id}')" id="goEditTask" data-placement="top" title="Edit" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#updateTodo">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                                <button data-toggle="tooltip" onclick="deleteTodo('${data.id}')" data-placement="top" title="Trash" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                         </div>`)
         } else {
-            $('#todo').append(`<div class="todo-task">
+            $('#completed').append(`<div class="todo-task">
                             <div style="text-decoration: line-through;" class="task-header">${data.title}</div>
                             <div style="text-decoration: line-through;" class="task-description">${data.description}</div>
                             <div style="text-decoration: line-through;" class="task-date">${formatDate(data.due_date)}</div>
-                            <div style="display: flex;">
-                                <input onclick="backTodo('${data.id}')" type="button" class="btn btn-dark btn-sm" value="Back" />
-                                <input onclick="deleteTodo('${data.id}')" type="button" class="btn btn-dark btn-sm" value="Delete" />
-                            </div>
+                                <button data-toggle="tooltip" onclick="backTodo('${data.id}')" data-placement="top" title="Back" class="btn btn-dark btn-sm">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button data-toggle="tooltip" onclick="deleteTodo('${data.id}')" data-placement="top" title="Trash" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                         </div>`)
         }
     })
@@ -92,21 +98,27 @@ function viewTodoOnProject(response) {
                             <div class="task-header">${data.title}</div>
                             <div class="task-description">${data.description}</div>
                             <div class="task-date">${formatDate(data.due_date)}</div>
-                            <div style="display: flex;">
-                                <input onclick="doneProjectTodo('${data.id}', '${data.ProjectId}')" type="button" class="btn btn-dark btn-sm" value="Done" />
-                                <input type="button" onclick="getProjectTodo('${data.id}', '${data.ProjectId}')" id="goEditProjectTodo" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#updateTodo" value="Edit" />
-                                <input onclick="deleteProjectTodo('${data.id}', '${data.ProjectId}')" type="button" class="btn btn-dark btn-sm" value="Delete" />
-                            </div>
+                                <button data-toggle="tooltip" onclick="doneProjectTodo('${data.id}', '${data.ProjectId}')" data-placement="top" title="Done" class="btn btn-dark btn-sm">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button onclick="getProjectTodo('${data.id}', '${data.ProjectId}')" id="goEditProjectTodo" data-placement="top" title="Edit" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#updateTodo">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                                <button data-toggle="tooltip" onclick="deleteProjectTodo('${data.id}', '${data.ProjectId}')" data-placement="top" title="Trash" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                         </div>`)
         } else {
             $('#completeTodoProject').append(`<div class="todo-task">
                             <div style="text-decoration: line-through;" class="task-header">${data.title}</div>
                             <div style="text-decoration: line-through;" class="task-description">${data.description}</div>
                             <div style="text-decoration: line-through;" class="task-date">${formatDate(data.due_date)}</div>
-                            <div style="display: flex;">
-                                <input onclick="backProjectTodo('${data.id}', '${data.ProjectId}')" type="button" class="btn btn-dark btn-sm" value="Back" />
-                                <input onclick="deleteProjectTodo('${data.id}', '${data.ProjectId}')" type="button" class="btn btn-dark btn-sm" value="Delete" />
-                            </div>
+                                <button data-toggle="tooltip" onclick="backProjectTodo('${data.id}', '${data.ProjectId}')" data-placement="top" title="Back" class="btn btn-dark btn-sm">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button data-toggle="tooltip" onclick="deleteProjectTodo('${data.id}', '${data.ProjectId}')" data-placement="top" title="Trash" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                         </div>`)
         }
     })

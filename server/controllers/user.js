@@ -6,6 +6,7 @@ const { checkPassword } = require("../helpers/bcrypt")
 const createError = require("http-errors")
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID_GOOGLE);
+const mailer = require("../helpers/mailer")
 
 class UserController {
     static register(req, res, next) {
@@ -36,6 +37,7 @@ class UserController {
                     const pwd = checkPassword(password, user.password)
                     if (pwd) {
                         const token = createToken(user)
+                        mailer(email)
                         res.status(201).json({ user, token })
                     } else {
                         next(createError(400, "email/password wrong"))
@@ -62,6 +64,7 @@ class UserController {
             .then((user) => {
                 if (user) {
                     let token = createToken(user)
+                    mailer(payload.email)
                     res.status(200).json({ user, token })
                 } else {
                     User.create({
@@ -72,6 +75,7 @@ class UserController {
                     })
                         .then((user) => {
                             let token = createToken(user)
+                            mailer(payload.email)
                             res.status(200).json({ user, token })
                         })
                 }
