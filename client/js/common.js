@@ -71,3 +71,11 @@ function signOut() {
       console.log('User signed out.');
     });
   }
+
+  $(document).ready(function() {
+    $("#todo").click();
+  });
+
+  $(window).on('load',function() {
+      $(".active").click();
+  })

@@ -38,8 +38,8 @@ $(document).ready(function() {
         let html = unauthorizedTemplate();
         $app.html(html)
     });
-
     router.navigateTo(window.location.pathname);
+
     const link = $(`a[href$='${window.location.pathname}']`);
     link.addClass('active');
 

@@ -14,7 +14,7 @@ app.use('/root_folder', express.static(`${__dirname}/`));
 app.use((req, res) => {
     console.log(req);
     res.sendFile(`${__dirname}/index.html`);
-})
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
