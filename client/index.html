@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id"
+    content="577877803641-qaghehnce30lp5farn1csdv7ihtmdpp2.apps.googleusercontent.com">
+
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <title>Fancy Todo</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="./css/login-register.css">
+
+</head>
+
+<body>
+
+  <!-- Login Register -->
+  <div id="carousel" class="body text-center carousel slide">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <form id="login" class="form-sign">
+          <img class="mb-4" src="./img/bootstrap-solid.svg" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+          <div class="form-group">
+            <label for="loginEmail" class="sr-only">Email address</label>
+            <input type="email" id="loginEmail" class="form-control" placeholder="Email address" required autofocus>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword" class="sr-only">Password</label>
+            <input type="password" id="loginPassword" class="form-control" placeholder="Password" required>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+        <div class="form-sign d-flex justify-content-center">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+        <br>
+        <a href="#carousel" data-target="#carousel" data-slide-to="1">
+          Sign Up
+        </a>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+      </div>
+      <div class="carousel-item">
+        <form id="register" class="form-sign">
+          <img class="mb-4" src="./img/bootstrap-solid.svg" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+          <div class="form-group">
+            <label for="registerName" class="sr-only">Name</label>
+            <input type="text" id="registerName" class="form-control" placeholder="Name" required autofocus>
+          </div>
+          <div class="form-group">
+            <label for="registerEmail" class="sr-only">Email address</label>
+            <input type="email" id="registerEmail" class="form-control" placeholder="Email address" required autofocus>
+          </div>
+          <div class="form-group">
+            <label for="registerPassword" class="sr-only">Password</label>
+            <input type="password" id="registerPassword" class="form-control" placeholder="Password" required>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+        </form>
+        <a href="#carousel" data-target="#carousel" data-slide-to="0">
+          Sign In
+        </a>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="app">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <a class="navbar-brand" href="">
+        <img src="./img/fate.png" height="50" alt="">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a id="todo-link" class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a id="project-link" class="nav-link" href="#">Project</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <a href="#" class="btn btn-outline-success my-2 my-sm-0" onclick="return signOut()">Sign out</a>
+        </form>
+      </div>
+    </nav>
+
+    <!-- todo list -->
+    <div id="todo" class="container">
+      <div class="jumbotron">
+        <h1>Todo List</h1>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTodoModal">
+          Add Todo
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addTodoModal" tabindex="-1" role="dialog" aria-labelledby="addTodoModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addTodoModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="addTodo">
+                  <div class="form-group">
+                    <label for="addTodoTitle">Title</label>
+                    <input id="addTodoTitle" type="text" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="addTodoDescription">Description</label>
+                    <input id="addTodoDescription" type="text" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="addTodoDueDate">Due Date</label>
+                    <input id="addTodoDueDate" type="date" class="form-control">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Add Todo</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="todo-list" class="row">
+      </div>
+    </div>
+
+    <!-- project -->
+    <div id="project" class="container">
+      <div class="jumbotron">
+        <h1>Project</h1>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/project.js"></script>
+</body>
+
+</html>
