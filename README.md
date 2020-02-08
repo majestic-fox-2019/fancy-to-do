@@ -15,14 +15,15 @@ http://localhost:3000/todos
 
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "token": "<<jwt_token>>"
 }
 ```
 
 * **RESPONSE**
 
 If request success and data available on server:
-* 200
+
+* Status Code: 200
 
 ```javascript
   [
@@ -49,11 +50,17 @@ If request success and data available on server:
 
 If request success but there is no data on server:
 
+* Status Code: 200
+
 ```javascript
-"Data is empty."
+{
+    "message": "Data is empty."
+}
 ```
 
 If request failed caused by server:
+
+* Status Code: 500
 
 ```javascript
 Internal Server Error
@@ -72,13 +79,15 @@ http://localhost:3000/todos/1
 
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "token": "<<jwt_token>>"
 }
 ```
 
 * **RESPONSE**
 
 If request success:
+
+* Status Code: 200
 
 ```javascript
 {
@@ -94,9 +103,11 @@ If request success:
 
 If request failed because id todo not found:
 
+* Status Code: 404
+
 ```javascript
 {
-    "error": "error not found"
+    "message": "Not Found"
 }
 ```
 
@@ -112,7 +123,8 @@ http://localhost:3000/todos/1
 
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "Content-Type": "application/json; charset=utf-8",
+    "token": "<<jwt_token>>"
 }
 ```
 
@@ -131,6 +143,8 @@ http://localhost:3000/todos/1
 
 If request success:
 
+* Status Code: 200
+
 ```javascript
 {
     "id": 1,
@@ -145,13 +159,20 @@ If request success:
 
 If request failed because validation is not complete:
 
+* Status Code: 400
+
 ```javascript
-{
-    "error": "Validation Errors"
-}
+[
+    {
+        "status": 400,
+        "msg": "<<params_is_empty>>"
+    }
+]
 ```
 
 If request failed caused by server:
+
+* Status Code: 500
 
 ```javascript
 Internal Server Error
@@ -168,7 +189,8 @@ http://localhost:3000/todos/1
 * **REQUEST HEADER**
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "Content-Type": "application/json; charset=utf-8",
+    "token": "<<jwt_token>>"
 }
 ```
 
@@ -186,6 +208,8 @@ http://localhost:3000/todos/1
 
 If request success:
 
+* Status Code: 200
+
 ```javascript
 {
     "title": "Coding",
@@ -197,21 +221,30 @@ If request success:
 
 If request failed because id todo not found:
 
+* Status Code: 404
+
 ```javascript
 {
-    "error": "error not found"
+    "message": "Not Found"
 }
 ```
 
 If request failed because validation is not complete:
 
+* Status Code: 400
+
 ```javascript
-{
-    "error": "Validation Errors"
-}
+[
+    {
+        "status": 400,
+        "msg": "<<params_that_empty"
+    }
+]
 ```
 
 If request failed caused by server:
+
+* Status Code: 500
 
 ```javascript
 Internal Server Error
@@ -229,13 +262,15 @@ http://localhost:3000/todos/1
 
 ```javascript
 {
-    "Content-Type": "application/json; charset=utf-8"
+    "token": "<<jwt_token>>"
 }
 ```
 
 * **RESPONSE**
 
 If request success:
+
+* Status Code: 200
 
 ```javascript
 {
@@ -249,12 +284,132 @@ If request success:
 }
 ```
 If request failed because id todo not found:
+
+* Status Code: 404
+
 ```javascript
 {
-    "error": "error not found"
+    "message": "Not Found"
 }
 ```
+
 If request failed caused by server:
+
+* Status Code: 500
+
+```javascript
+Internal Server Error
+```
+
+## 6. POST   /user 
+    Register to be member Fancy ToDo
+
+* **EXAMPLE URL:**
+
+http://localhost:3000/user
+
+* **REQUEST HEADER**
+
+```javascript
+{
+    "Content-Type": "application/json; charset=utf-8"
+}
+```
+
+* **REQUEST BODY**
+```javascript
+{
+    "email": "<<your_email>>",
+    "password": "<<your_password>>"
+}
+```
+
+* **RESPONSE**
+
+If request success:
+
+* Status Code: 200
+
+```javascript
+{
+    "id": 1,
+    "email": "fajrin@oke.com",
+    "password": "$2b$10$YOA.1DTgLgpxlQyg0pEImevUpw3BcRxmjdALJB0BZdZj.voB046Ti",
+    "updatedAt": "2020-02-08T09:50:25.644Z",
+    "createdAt": "2020-02-08T09:50:25.644Z"
+}
+```
+
+If request failed because validations error:
+
+* Status Code: 400
+
+```javascript
+[
+    {
+        "status": 400,
+        "msg": "<<params_that_empty>>"
+    }
+]
+```
+
+If request failed caused by server:
+
+* Status Code: 500
+
+```javascript
+Internal Server Error
+```
+
+## 7. POST   /login
+    Login to Fancy ToDo
+
+* **EXAMPLE URL:**
+
+http://localhost:3000/login
+
+* **REQUEST HEADER**
+
+```javascript
+{
+    "Content-Type": "application/json; charset=utf-8"
+}
+```
+
+* **REQUEST BODY**
+```javascript
+{
+    "email": "<<your_email>>",
+    "password": "<<your_password>>"
+}
+```
+
+* **RESPONSE**
+
+If request success:
+
+* Status Code: 200
+
+```javascript
+{
+    "token": "<<jwt_token>>"
+}
+```
+
+If request failed because id todo not found:
+
+* Status Code: 404
+
+```javascript
+{
+    "error": "Not Found"
+}
+```
+
+If request failed caused by server:
+
+* Status Code: 500
+
 ```javascript
 Internal Server Error
 ```
