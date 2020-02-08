@@ -18,7 +18,7 @@ function addProject(name,due_date){
     }
   })
   .done(function(data){
-    loadTodos()
+    loadProjects()
     hideModal()
     makeMessage('Success Add Project')
   })
