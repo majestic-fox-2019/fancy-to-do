@@ -14,17 +14,18 @@ const { User } = require("../models");
 class UserController {
   static googleSignIn(req, res, next) {
     let payload = null;
-    client.verifyIdToken({
-      idToken: req.body.google_token,
-      audience: process.env.CLIENT_ID
-    })
+    client
+      .verifyIdToken({
+        idToken: req.body.google_token,
+        audience: process.env.CLIENT_ID
+      })
       .then(response => {
         payload = response.getPayload();
-        return User.findOne({ where: { email: payload.email } })
+        return User.findOne({ where: { email: payload.email } });
       })
       .then(user => {
         if (!user) {
-          return User.create({email: payload.email});
+          return User.create({ email: payload.email });
         } else {
           const userData = {
             id: user.id,
@@ -47,7 +48,9 @@ class UserController {
         next();
       })
       .catch(err => {
-        console.log(err);
+        if (err.status != 500) {
+          next(err);
+        }
         next(createError(500));
       });
   }
@@ -86,13 +89,30 @@ class UserController {
       email: req.body.email,
       password: req.body.password
     };
+
     User.create(userData)
       .then(user => {
-        res.status(201).json({ email: userData.email });
+        const emailText = `Welcome to Fancy Todo!`;
+        const emailHTML = `<h3>Welcome to Fancy Todo!</h3>`;
+        sendGrid(
+          req.user.email,
+          `Welcome to Fancy Todo!`,
+          emailText,
+          emailHTML
+        );
+        res.status(201).json({
+          email: userData.email,
+          message: "Please login to continue!"
+        });
       })
       .catch(err => {
-        if (err.status != 500) {
-          next(createError(err.status, err.message));
+        if (
+          typeof err.message != "undefined" &&
+          err.message.includes("Validation error:")
+        ) {
+          next(createError(400, err.message));
+        } else if (err.status != 500) {
+          next(err);
         } else {
           next(createError(500));
         }

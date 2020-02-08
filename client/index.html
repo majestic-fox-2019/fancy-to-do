@@ -208,6 +208,33 @@
   </div>
   <!-- DELETE MODAL END -->
 
+    <!-- DONE MODAL START -->
+    <div class="userComponent modal fade" id="doneModal" tabindex="-1" role="dialog"
+      aria-labelledby="Task Complete Modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="taskDoneModal">Task Completion</h5>
+            <button type="button" id="modalCancelButton" class="close" data-dismiss="modal" aria-label="Cancel">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6>Yeay! It's DONE !</h6>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="modalCancelButton" class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+            <button id="taskDoneButton" type="button" class="btn btn-primary">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DONE MODAL END -->
+
 </body>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

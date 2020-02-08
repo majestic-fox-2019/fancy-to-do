@@ -23,4 +23,5 @@ $(document).ready(() => {
   $(document).on("click", "#taskEditButton", Todo.editTask);
   $(document).on("click", "#taskDeleteButton", Todo.deleteTask);
   $(document).on("click", "#modalCancelButton", Todo.buttonCancel);
+  $(document).on("click", "#taskDoneButton", Todo.doneTask);
 });

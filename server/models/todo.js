@@ -1,6 +1,6 @@
 'use strict';
 
-const today = new Date();
+const today = new Date().toISOString();
 
 module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize;

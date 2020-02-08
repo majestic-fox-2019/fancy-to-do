@@ -6,13 +6,14 @@ if (process.env.NODE_ENV == 'development') {
 
 const { Todo } = require("../models");
 const createError = require("http-errors");
+const sendGrid = require("../helpers/sendgrid-api");
 
 class TodoController {
   static findAll(req, res, next) {
     Todo.findAll({ where: { UserId: req.user.id } })
       .then(todos => {
         if (!todos) {
-          throw createError(404);
+          res.status(200).json({message: "You have no tasks, let's create one!"});
         }
         else {
           res.status(200).json(todos);
@@ -42,6 +43,9 @@ class TodoController {
     Todo.create(todoData)
       .then(todo => {
         createdTodo = todo;
+        const emailText = `Welcome to Fancy Todo! You just created a task - ${createdTodo.title}.`;
+        const emailHTML = `<h3>Welcome to Fancy Todo! You just created a task - ${createdTodo.title}.</h3>`;
+        sendGrid(req.user.email, `Created Todo - ${createdTodo.title}`, emailText, emailHTML);
         res.status(201).json(createdTodo);
       })
       .catch(err => {
@@ -66,7 +70,7 @@ class TodoController {
       })
       .catch(err => {
         if (err.status != 500) {
-          next(createError(err.status, err.message));
+          next(err);
         }
         else {
           next(createError(500));
@@ -118,7 +122,7 @@ class TodoController {
           next(createError(400, err.message));
         }
         else if (err.status != 500) {
-          next(createError(err.status, err.message));
+          next(err);
         }
         else {
           next(createError(500));
@@ -149,7 +153,7 @@ class TodoController {
       })
       .catch(err => {
         if (err.status != 500) {
-          next(createError(err.status, err.message));
+          next(err);
         }
         else {
           next(createError(500));

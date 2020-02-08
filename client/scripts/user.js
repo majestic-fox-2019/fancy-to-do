@@ -49,6 +49,7 @@ class User {
         localStorage.setItem("token", response.token);
         localStorage.setItem("login_way", "google");
         $("#loginAndRegister").hide(1000);
+        $("#logoutButton").show(1000);
         Todo.getTasks();
       })
       .fail(err => {

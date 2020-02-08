@@ -17,12 +17,25 @@ class Todo {
           taskData += `<td>${task.id}</td>`;
           taskData += `<td>${task.title}</td>`;
           taskData += `<td>${task.description}</td>`;
-          taskData += `<td>${task.status}</td>`;
+
+          if (task.status) {
+            taskData += `<td>Done</td>`;
+          } else {
+            taskData += `<td>Undone</td>`;
+          }
+
           taskData += `<td>${Date(task.due_date)}</td>`;
-          taskData += `<td>
-        <button onclick="Todo.beforeEditTask(${task.id})" type="button" class="taskEditButton btn btn-warning" data-toggle="modal" data-target="#editModal">Edit</button>
+
+          if (task.status) {
+            taskData += `<td>
         <button onclick="Todo.beforeDeleteTask(${task.id})" type="button" class="taskDeleteButton btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
         </td>`;
+          } else {
+            taskData += `<td>
+        <button onclick="Todo.beforeEditTask(${task.id})" type="button" class="taskEditButton btn btn-warning" data-toggle="modal" data-target="#editModal">Edit</button>
+        <button onclick="Todo.beforeDoneTask(${task.id})" type="button" class="taskDoneButton btn btn-primary" data-toggle="modal" data-target="#doneModal">Done</button>
+        </td>`;
+          }
           taskData += "</tr>";
           $("#taskListTableBody").append(taskData);
         });
@@ -141,5 +154,42 @@ class Todo {
   static buttonCancel(e) {
     e.preventDefault();
     localStorage.removeItem("task_id");
+  }
+
+  static beforeDoneTask(taskId) {
+    $("#doneModal").modal("show");
+    localStorage.task_id = taskId;
+  }
+
+  static doneTask(e) {
+    e.preventDefault();
+    let task = null;
+    $.ajax({
+      type: "GET",
+      headers: {
+        token: localStorage.token
+      },
+      url: `${baseURL}/todos/${localStorage.task_id}`
+    })
+      .done(foundTask => {
+        task = foundTask;
+        task.status = true;
+        return $.ajax({
+          type: "PUT",
+          headers: {
+            token: localStorage.token
+          },
+          url: `${baseURL}/todos/${localStorage.task_id}`,
+          data: task
+        });
+      })
+      .done(doneTaskResult => {
+        Todo.getTasks();
+        $("#doneModal").modal("toggle");
+        localStorage.removeItem("task_id");
+      })
+      .fail(err => {
+        console.log(err);
+      });
   }
 }
