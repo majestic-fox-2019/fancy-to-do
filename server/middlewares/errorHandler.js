@@ -16,7 +16,7 @@ exports.client = function(err, req, res, next){
         })
         throw newError
       case 'JsonWebTokenError':
-        newError.statusCode = 401
+        newError.statusCode = 402
         newError.message = {
           message : err.message
         }
