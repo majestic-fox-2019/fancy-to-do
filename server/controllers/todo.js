@@ -44,12 +44,12 @@ class TodoController {
             }).catch(next);
     }
     static update(req, res, next) {
-        const { title, description, status } = req.body
-        console.log(req.body);
+        const { title, description, status, due_date } = req.body
         Todo.update({
             title,
             description,
             status,
+            due_date,
             updatedAt: new Date()
         }, {
             where: {

@@ -29,31 +29,9 @@ body {
     float: left;
     margin: 0 5px;
     background-color: #e3e3e3;
-    min-height: 240px;
+    min-height: 10%;
     border-radius: 10px;
     padding-bottom: 15px;
-}
-
-#listProject {
-    width: 45%;
-    float: left;
-    margin: 0 5px;
-    background-color: #e3e3e3;
-    min-height: 100%;
-    border-radius: 10px;
-    padding-bottom: 15px;
-}
-
-#colProject{
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 9%;
-}
-
-#addProject input{
-    width: 400px;
-    margin: 1px 50px;
 }
 
 .task-list input, .task-list textarea{
@@ -66,6 +44,17 @@ body {
 }
 
 .todo-task{
+    border-radius: 5px;
+    background-color: #fff;
+    width: 340px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.project-task{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border-radius: 5px;
     background-color: #fff;
     width: 340px;

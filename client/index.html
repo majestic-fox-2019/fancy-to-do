@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <div id="fb-root"></div>
     <div id="loginRegister">
         <div class="container">
             <!-- LOGIN -->
@@ -41,6 +42,10 @@
                             </div>
                         </form>
                     </div>
+                    <!-- <div class="fb-login-button" data-width="" data-size="small" data-button-type="login_with"
+                        data-auto-logout-link="false" data-use-continue-as="false"></div>
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                    </fb:login-button> -->
                 </div>
             </div>
             <!-- REGISTER -->
@@ -80,7 +85,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <div class="nav-link" id="myProject">Project</div>
+                    <div class="nav-link" onclick="allProject()" id="myProject">Project</div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" onclick="allTodo()" id="myTodo">My Todo</div>
@@ -93,106 +98,193 @@
 
 
     <div class="container-fluid mt-4" id="mainPage">
-        <div class="row">
-            <div id="colProject" class="col" style="display: none;">
-                <div id="listProject" class="task-list task-container">
+        <div class="row ml-5">
+            <div id="colProject" class="col ml-5" style="display: none;">
+                <div class="task-list">
                     <h3>Project</h3>
                     <div id="project">
 
                     </div>
                 </div>
-                <div id="listProject" class="task-list">
-                    <div id="addProject">
+                <div class="task-list task-container">
+                    <h3>Member</h3>
+                    <div id="member">
+
+                    </div>
+                </div>
+                <div class="task-list">
+                    <h3>Add a Project</h3>
+                    <form id="addProject" method="POST">
+                        <input id="nameProject" type="text" placeholder="Name Project" />
+                        <input type="submit" class="btn btn-dark btn-sm" value="Add Project" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- TODO PRIBADI -->
+        <div class="row ml-5 mt-4" id="myTodoPrivate" style="display: none;">
+            <div class="col ml-5">
+                <div class="task-list">
+                    <h3>Todo List</h3>
+                    <div id="todo">
+
+                    </div>
+                </div>
+                <div class="task-list task-container">
+                    <h3>Completed</h3>
+                    <div id="completed">
+
+                    </div>
+                </div>
+                <div class="task-list">
+                    <div id="addTask">
+                        <h3>Add a task</h3>
+                        <form id="addTodo">
+                            <input id="title" type="text" placeholder="Title" />
+                            <textarea id="description" placeholder="Descrtipion"></textarea>
+                            <input id="dueDate" type="date" />
+                            <input type="submit" class="btn btn-dark btn-sm" value="Add Task" />
+                        </form>
+                    </div>
+                    <div id="editTask" style="display: none;">
+                        <h3>Edit a task</h3>
+                        <form id="editTodo">
+                            <input id="title" type="text" placeholder="Title" />
+                            <textarea id="description" placeholder="Descrtipion"></textarea>
+                            <input type="submit" class="btn btn-dark btn-sm" value="Add Task" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TODO PROJECT -->
+        <div class="row ml-5 mt-4" id="myTodoProject" style="display: none;">
+            <div class="col ml-5">
+                <div class="task-list">
+                    <h3>Project Todo List</h3>
+                    <div id="todoProject">
+
+                    </div>
+                </div>
+                <div class="task-list task-container">
+                    <h3>Completed</h3>
+                    <div id="completeTodoProject">
+
+                    </div>
+                </div>
+                <div class="task-list">
+                    <div id="addTask">
                         <h3>Add a Project</h3>
-                        <form id="addProject">
-                            <input id="nameProject" type="text" placeholder="Name Project" />
+                        <form id="addTodoProject">
+                            <input type='hidden' id='projectIdTodo' />
+                            <input id="titleTodoProject" type="text" placeholder="Title" />
+                            <textarea id="descriptionTodoProject" placeholder="Descrtipion"></textarea>
+                            <input id="dueDateTodoProject" type="date" />
                             <input type="submit" class="btn btn-dark btn-sm" value="Add Project" />
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="row ml-5 mt-4">
-                <div class="col ml-5">
-                    <div class="task-list">
-                        <h3>Todo List</h3>
-                        <div id="todo">
+        </div>
+    </div>
 
-                        </div>
+    <div class="modal fade" id="updateTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div id="idTodo"></div>
+                    <div id="idProjectUpdate"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3" id="exampleModalCenterTitle">
+                        <label for="validationServer03">Title :</label>
+                        <input type="text" class="form-control" id="titleUpdate" required>
                     </div>
-                    <div class="task-list task-container">
-                        <h3>Completed</h3>
-                        <div id="completed">
-
-                        </div>
+                    <div class="mb-3">
+                        <label for="validationTextarea">Description : </label>
+                        <textarea class="form-control" id="descriptionUpdate"></textarea>
                     </div>
-                    <div class="task-list">
-                        <div id="addTask">
-                            <h3>Add a task</h3>
-                            <form id="addTodo">
-                                <input id="title" type="text" placeholder="Title" />
-                                <textarea id="description" placeholder="Descrtipion"></textarea>
-                                <input id="dueDate" type="date" />
-                                <input type="submit" class="btn btn-dark btn-sm" value="Add Task" />
-                            </form>
-                        </div>
-                        <div id="editTask" style="display: none;">
-                            <h3>Edit a task</h3>
-                            <form id="editTodo">
-                                <input id="title" type="text" placeholder="Title" />
-                                <textarea id="description" placeholder="Descrtipion"></textarea>
-                                <input type="submit" class="btn btn-dark btn-sm" value="Add Task" />
-                            </form>
-                        </div>
-                    </div>
+                    <label for="validationTextarea">Due Date : </label>
+                    <input type="date" id="dueDateUpdate">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal"
+                        onclick="updateTodo()">Update</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="updateTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <div id="idTodo"></div>
+    <div class="modal fade" id="addMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Add New Member</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div id="idProject"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3" id="exampleModalCenterTitle">
+                        <label for="validationServer03">Email :</label>
+                        <input type="text" class="form-control" id="emailMember" required>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3" id="exampleModalCenterTitle">
-                            <label for="validationServer03">Title :</label>
-                            <input type="text" class="form-control" id="titleUpdate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="validationTextarea">Description : </label>
-                            <textarea class="form-control" id="descriptionUpdate"></textarea>
-                        </div>
-                        <label for="validationTextarea">Due Date : </label>
-                        <input type="date" id="dueDateUpdate">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            onclick="updateTodo()">Update</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" onclick="addMember()">Add
+                        Member</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-        <script src="https://kit.fontawesome.com/9c97b4f45c.js" crossorigin="anonymous"></script>
-        <script src="./script/mainPage.js"></script>
-        <script src="./script/display.js"></script>
-        <script src="./script/loginRegister.js"></script>
-        <script src="./script/myProject.js"></script>
+
+    <!-- <script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0&appId=592402587974937&autoLogAppEvents=1"></script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '{your-app-id}',
+                cookie: true,
+                xfbml: true,
+                version: '{api-version}'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://kit.fontawesome.com/9c97b4f45c.js" crossorigin="anonymous"></script>
+    <script src="./script/todo.js"></script>
+    <script src="./script/display.js"></script>
+    <script src="./script/loginRegister.js"></script>
+    <script src="./script/myProject.js"></script>
+    <script src="./script/todoProject.js"></script>
 </body>
 
 </html>

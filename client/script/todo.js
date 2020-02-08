@@ -13,6 +13,7 @@ $(document).ready(function () {
         e.preventDefault()
         allTodo()
     })
+
 })
 
 function createTodo(title, due_date, description) {
@@ -31,6 +32,7 @@ function createTodo(title, due_date, description) {
         .done(() => {
             checkLogin()
             allTodo()
+            document.getElementById("addTodo").reset()
         })
         .fail(err => {
             Swal.fire({
@@ -45,32 +47,6 @@ function allTodo() {
     $.ajax({
         url: `${baseUrl}/todos`,
         method: "GET",
-        headers: {
-            token: localStorage.getItem('token')
-        }
-    })
-        .done((response) => {
-            checkLogin()
-            viewTodos(response)
-        })
-        .fail(err => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: err.responseJSON
-            })
-        })
-}
-
-function editedTodo(id) {
-    $.ajax({
-        url: `${baseUrl}/todos/${id}`,
-        method: "PUT",
-        data: {
-            title,
-            description,
-            due_date
-        },
         headers: {
             token: localStorage.getItem('token')
         }
@@ -184,14 +160,14 @@ function updateTodo() {
     const idTodo = $("#idTodo").val()
     const title = $('#titleUpdate').val()
     const description = $('#descriptionUpdate').val()
-    const dueDate = $('#dueDateUpdate').val()
+    const due_date = $('#dueDateUpdate').val()
     $.ajax({
         url: `${baseUrl}/todos/${idTodo}`,
         method: "PUT",
         data: {
             title,
             description,
-            dueDate
+            due_date
         },
         headers: {
             token: localStorage.getItem('token')

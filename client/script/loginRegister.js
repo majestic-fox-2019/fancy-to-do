@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     checkLogin()
     $("#goRegister").on("click", function (e) {
@@ -32,12 +33,44 @@ $(document).ready(function () {
         $('#completed').empty()
         $('#todo').empty()
         $("#colProject").fadeIn('slow')
+        $("#myTodoProject").fadeIn('slow')
+        $("#myTodoPrivate").fadeOut('slow')
+        allProject()
     })
 
     $("#myTodo").on("click", function (e) {
         e.preventDefault()
         $("#colProject").fadeOut('slow')
+        $("#myTodoPrivate").fadeIn('slow')
+        $("#myTodoProject").fadeOut('slow')
+        $('#todoProject').empty()
+        $('#completeTodoProject').empty()
+        $('#member').empty()
     })
+
+    $("#addProject").on("submit", function (e) {
+        e.preventDefault()
+        const nameProject = $("#nameProject").val()
+        addedProject(nameProject)
+    })
+
+    $("#getingMember").on("click", function (e) {
+        e.preventDefault()
+        $("#colProject").fadeOut('slow')
+    })
+
+    $("#addTodoProject").submit(function (e) {
+        e.preventDefault()
+        const title = $('#titleTodoProject').val()
+        const description = $('#descriptionTodoProject').val()
+        const dueDate = $('#dueDateTodoProject').val()
+        const projectIdTodo = $('#projectIdTodo').val()
+        createTodoProject(projectIdTodo, title, dueDate, description)
+    })
+
+    // FB.getLoginStatus(function (response) {
+    //     statusChangeCallback(response);
+    // });
 })
 
 function onSignIn(googleUser) {
@@ -152,6 +185,8 @@ function checkLogin() {
         $("#loginPage").show()
         $("#navbarApp").hide()
         $("#mainPage").hide()
+        $("#myTodoPrivate").hide()
+        $("#myTodoProject").hide()
         $('#completed').empty()
         $('#todo').empty()
     } else {
@@ -160,3 +195,9 @@ function checkLogin() {
         $('#mainPage').show()
     }
 }
+
+// function checkLoginState() {
+//     FB.getLoginStatus(function (response) {
+//         statusChangeCallback(response);
+//     });
+// }

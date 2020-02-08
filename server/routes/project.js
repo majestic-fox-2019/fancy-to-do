@@ -7,7 +7,7 @@ const authorizeAdmin = require("../middleware/authorizeAdmin")
 
 router.use(authentication)
 router.post("/", ProjectController.createProject)
-router.get("/myProject/:projectId", ProjectController.findAll)
+router.get("/", ProjectController.findAll)
 router.get("/:projectId", ProjectController.findOne)
 router.put("/:projectId", authorizeAdmin, ProjectController.update)
 router.delete("/:projectId", authorizeAdmin, ProjectController.remove)

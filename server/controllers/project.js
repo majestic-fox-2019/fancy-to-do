@@ -1,7 +1,6 @@
 "use strict"
 
 const { Project } = require("../models")
-const { ProjectTodo } = require("../models")
 const { MemberProject } = require("../models")
 const { User } = require("../models")
 const createError = require("http-errors")
@@ -14,10 +13,19 @@ class ProjectController {
             Admin: req.user.id
         })
             .then((result) => {
-                res.status(201).json(result)
+                console.log(result);
+                const idUser = Number(result.Admin);
+                MemberProject.create({
+                    UserId: idUser,
+                    ProjectId: result.id
+                })
+                    .then((result) => {
+                        res.status(201).json(result)
+                    })
             }).catch(next);
     }
     static findAll(req, res, next) {
+        let project = null
         Project.findAll({
             include: [
                 {
@@ -29,10 +37,11 @@ class ProjectController {
             ]
         })
             .then((result) => {
-                if (!result) {
+                project = result
+                if (!project) {
                     next(createError(404, "not found Project"))
                 } else {
-                    res.status(200).json(result)
+                    res.status(200).json(project)
                 }
             }).catch(next);
     }
@@ -89,9 +98,9 @@ class ProjectController {
                 if (result === 0) {
                     next(createError(404, "not found Project"))
                 } else {
-                    return Project.findOne({
+                    return MemberProject.destroy({
                         where: {
-                            id: req.params.projectId
+                            ProjectId: req.params.projectId
                         }
                     })
                         .then((hasil) => {
@@ -104,13 +113,24 @@ class ProjectController {
             }).catch(next);
     }
     static addMember(req, res, next) {
-        const idUser = Number(req.body.userId);
-        MemberProject.create({
-            UserId: idUser,
-            ProjectId: req.params.projectId
+        User.findOne({
+            where: {
+                email: req.body.email
+            }
         })
             .then((result) => {
-                res.status(201).json(result)
+                if (!result) {
+                    next(createError(404, "not found User"))
+                } else {
+                    const idUser = Number(result.id);
+                    MemberProject.create({
+                        UserId: idUser,
+                        ProjectId: req.params.projectId
+                    })
+                        .then((result) => {
+                            res.status(201).json(result)
+                        })
+                }
             }).catch(next);
     }
     static deleteMember(req, res, next) {
