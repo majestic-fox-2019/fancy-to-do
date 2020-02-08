@@ -22,6 +22,7 @@ http://localhost:3000/todos
 * **RESPONSE**
 
 If request success and data available on server:
+* 200
 
 ```javascript
   [

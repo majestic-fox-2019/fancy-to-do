@@ -1,6 +1,6 @@
 const UserRoute = require('express').Router()
 const UserController = require('../controllers/userController')
 
-UserRoute.post('/register', UserController.register)
+UserRoute.post('/', UserController.register)
 
 module.exports = UserRoute

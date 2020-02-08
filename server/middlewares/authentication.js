@@ -1,19 +1,18 @@
 if (process.env.NODE_ENV == 'development'){
   require('dotenv').config()
 }
-const jwt = require('jsonwebtoken')
-const createError = require('http-errors')
 
-const User = require('../models/user')
+const createError = require('http-errors')
+const {verifyToken} = require('../helpers/jwt')
 
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.token
-    const user = jwt.verify(token, process.env.SECRET_CODE)
-    req.user = user 
-    // user ini beneran ada di db kita atau ngk?
+    const user = verifyToken(token)
+    req.user = user
+    console.log(req.user)
     next()
   } catch (error) {
-    next(createError(404, {message: { error: 'Invalid Token'}}))
+    next(createError(404, {message: { message: 'Not Found Token'}}))
   }
 }

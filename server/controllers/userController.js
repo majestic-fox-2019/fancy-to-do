@@ -5,8 +5,9 @@ if (process.env.NODE_ENV == 'development'){
 const {OAuth2Client} = require('google-auth-library');
 const {User} = require('../models')
 const createError = require('http-errors')
-const bcrypt = require('bcrypt')
+const {checkPassword} = require('../helpers/bcrypt')
 const jwt = require('jsonwebtoken')
+const {createToken} = require('../helpers/jwt')
 
 
 class UserController {
@@ -16,20 +17,21 @@ class UserController {
       email: req.body.email,
       password: req.body.password
     }
+      
 
     User.create(userData)
     .then((result) => {
       res.status(200).json(result)
     })
     .catch((err) => {
-      next(createError(400, {message: {error:"Validation Errors"}}))
+      next(err)
     });
   }
 
   static onSignIn(req, res, next){
     const client = new OAuth2Client(process.env.CLIENT_ID);
     let payload = null
-    
+
     client.verifyIdToken({
       idToken: req.body.googleToken,
       audience: process.env.CLIENT_ID
@@ -42,22 +44,27 @@ class UserController {
       if (user){
         let obj = {
           id: user.id,
-          user: user.email
+          email: user.email
         }
-        res.status(200).json({token: jwt.sign(obj, process.env.SECRET_CODE)})
+        console.log('masuk if')
+        res.status(200).json({token: createToken(obj)})
       } else {
         let data = {
           email: payload.email
         }
-        return User.create(data, {hooks: false})
+        console.log(data, 'masuk else')
+        return User.create(data)
       }
+    })
+    .then(result => {
+      return User.findOne({where: {email: result.email}})
     })
     .then(result => {
       let obj = {
         id: result.id,
-        user: result.email
+        email: result.email
       }
-      res.status(200).json({token: jwt.sign(obj, process.env.SECRET_CODE)})
+      res.status(200).json({token: createToken(obj)})
     })
     .catch(error => {
       next(error)
@@ -65,6 +72,7 @@ class UserController {
   }
 
   static login(req, res, next){
+    console.log(req.body)
     const data = {
       where: {
         email: req.body.email
@@ -72,23 +80,23 @@ class UserController {
     }
     User.findOne(data)
     .then(user => {
-      console.log(user, 'HALO')
+      console.log(user)
       if (!user){
         throw createError(404, {message: { error: 'Not Found'}})
       } else {
-        if (bcrypt.compareSync(req.body.password, user.password)){
+        if (checkPassword(req.body.password, user.password)){
           let obj = {
             id: user.id,
-            user: user.email
+            email: user.email
           }
-          res.status(200).json({token: jwt.sign(obj, process.env.SECRET_CODE)})
+          res.status(200).json({token: createToken(obj)})
         } else {
-          throw createError(401, {message: { error: 'Not Authorized'}})
+          throw createError(401, {message: { error: 'Username / Password wrong.'}})
         }
       }
     })
     .catch(err => {
-      next()
+      next(err)
     })
   }
 

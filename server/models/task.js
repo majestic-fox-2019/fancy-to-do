@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          args: true,
+          msg: 'Title is empty.'
+        },
         notNull: true
       }
     },
@@ -25,44 +28,35 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          args: true,
+          msg: 'Description is empty.'
+        },
         notNull: true
       }
     },
     status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        notNull: true
-      }
+      type: DataTypes.BOOLEAN
     },
     due_date: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          args: true,
+          msg: 'Due Date is empty.'
+        },
         notNull: true
       }
     },
     UserId: DataTypes.INTEGER
-  }, { 
+  }, {
     hooks: {
-      afterCreate(instance, options){
-        // console.log(instance)
-        // console.log({options})
-        console.log(User)
-        // User.findByPk(instance.id)
-        // .then(result => {
-        //   console.log(result, '<<< THEN')
-        // })
-        // .catch(err => {
-        //   throw new Error('gagal')
-        // })
-        // sentEmail('fajrin.noorrachman11@gmail.com', instance.title, instance.description, instance.due_date)
+      beforeCreate(instance, options){
+        instance.status = false
       }
-    }
-    ,sequelize});
+    },
+  sequelize});
 
   Task.associate = function(models) {
     Task.belongsTo(models.User)

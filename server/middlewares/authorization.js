@@ -4,10 +4,13 @@ const createError = require('http-errors')
 module.exports = function(req, res, next){
   Task.findByPk(req.params.id)
   .then(result => {
-    if (result.UserId !== req.user.id || !req.user) {
-      throw createError(401, { message: { error: 'Not Authorized' } })
+    if (!result) {
+      throw createError(404, { message: { message: 'Not Found' } })
+    } else if (result.UserId !== req.user.id || !req.user) {
+      throw createError(401, { message: { message: 'Not Authorized' } })
+    } else {
+      next()
     }
-    next()
   })
   .catch(error => {
     next(error)

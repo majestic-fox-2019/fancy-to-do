@@ -28,6 +28,7 @@
   flex-wrap: wrap;
 }
 
+
 .row .col-2:last-child .input-group-desc {
   margin-bottom: 0;
 }
@@ -616,7 +617,11 @@ textarea {
   font-weight: 700;
   text-align: left;
   color: #fff;
-  margin-bottom: 24px;
+  margin: 24px;
+}
+
+.tengah {
+  margin-left: 110px;
 }
 
 @media (max-width: 767px) {
