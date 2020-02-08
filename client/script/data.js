@@ -1,7 +1,7 @@
 function getUserProjects() {
     // alert('ATAS')
     $.ajax({
-        url: 'http://localhost:3000/projects',
+        url: 'http://fancy-todo-v2.herokuapp.com/projects',
         type: 'get',
         headers: {
             token: localStorage.getItem('token')
@@ -21,10 +21,11 @@ function getUserProjects() {
 }
 
 function getUserTodos() {
+    $('#forTodos').hide()
     // alert('test')
     $('#content-spinner').show()
     $.ajax({
-        url: 'http://localhost:3000/todos',
+        url: 'http://fancy-todo-v2.herokuapp.com/todos',
         type: 'get',
         headers: {
             token: localStorage.getItem('token')
@@ -36,10 +37,11 @@ function getUserTodos() {
 }
 
 function getProjectTodo(id, title){
+    $('#forTodos').hide()
     $('#content-spinner').show()
     // alert(id, title)
     $.ajax({
-        url: 'http://localhost:3000/todos/project/' + id,
+        url: 'http://fancy-todo-v2.herokuapp.com/todos/project/' + id,
         method: 'get',
         headers: {
             token: localStorage.getItem('token')
@@ -52,7 +54,7 @@ function getProjectTodo(id, title){
 
 function getProjectMembers(id) {
     $.ajax({
-        url: 'http://localhost:3000/projects/' + id,
+        url: 'http://fancy-todo-v2.herokuapp.com/projects/' + id,
         method: 'get',
         headers: {
             token: localStorage.getItem('token')
@@ -81,7 +83,7 @@ function changeStatus(id, status){
       }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: 'http://localhost:3000/todos/' + id,
+                url: 'http://fancy-todo-v2.herokuapp.com/todos/' + id,
                 method: 'patch',
                 data: {
                     status: status
@@ -123,7 +125,7 @@ function deleteTodo(id) {
       }).then((result) => {
         if (result.value) {
           $.ajax({
-            url: 'http://localhost:3000/todos/' + id,
+            url: 'http://fancy-todo-v2.herokuapp.com/todos/' + id,
             method: 'delete',
             headers: {
                 token: localStorage.getItem('token')
@@ -164,9 +166,10 @@ $(document).on('click', '#yourActiveTodo', function(e){
 })
 
 function getAllHistory(status) {
+    $('#forTodos').hide()
     $('#content-spinner').show()
     $.ajax({
-        url: 'http://localhost:3000/todos/status/' + status,
+        url: 'http://fancy-todo-v2.herokuapp.com/todos/status/' + status,
         method: 'get',
         headers: {
             token : localStorage.getItem('token')
@@ -197,7 +200,7 @@ $(document).on('click', '#submitNewTodo', function(e) {
 function addTodo(data) {
     // alert(JSON.stringify(data.description))
     $.ajax({
-        url: 'http://localhost:3000/todos',
+        url: 'http://fancy-todo-v2.herokuapp.com/todos',
         method: 'post',
         data: data
         ,
@@ -243,7 +246,7 @@ $(document).on('click', '#submitAddMember', function (){
 
 function emailInvitedMember(email, projectId) {
     $.ajax({
-        url: 'http://localhost:3000/sendMail/member',
+        url: 'http://fancy-todo-v2.herokuapp.com/sendMail/member',
         method: 'post',
         headers: {
             token: localStorage.getItem('token')
@@ -264,7 +267,7 @@ function emailInvitedMember(email, projectId) {
 function addProjectMember(array, projectId) {
     // console.log(array)
     $.ajax({
-        url: 'http://localhost:3000/projects/addMember',
+        url: 'http://fancy-todo-v2.herokuapp.com/projects/addMember',
         method: 'post',
         data: {
             userEmail: array,
@@ -295,7 +298,7 @@ function addProjectMember(array, projectId) {
 
 function addProject(title) {
     $.ajax({
-        url:'http://localhost:3000/projects',
+        url:'http://fancy-todo-v2.herokuapp.com/projects',
         method: 'post',
         data: {
             name: title
@@ -330,7 +333,7 @@ $(document).on('click', '#submitAddProjectTodo', function(e){
 function createProjectTodo(data) {
     // console.log(data)
     $.ajax({
-        url: 'http://localhost:3000/todos/project/' + $('#newProjectTodoId').val(),
+        url: 'http://fancy-todo-v2.herokuapp.com/todos/project/' + $('#newProjectTodoId').val(),
         method: 'post',
         data: data,
         headers: {
@@ -361,7 +364,7 @@ function changeProjectTodoStatus(id, status) {
       }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: 'http://localhost:3000/todos/project/' + id,
+                url: 'http://fancy-todo-v2.herokuapp.com/todos/project/' + id,
                 method: 'patch',
                 headers: {
                     token: localStorage.getItem('token')
@@ -403,7 +406,7 @@ function deleteProjectTodo(id) {
       }).then((result) => {
         if (result.value) {
           $.ajax({
-            url: 'http://localhost:3000/todos/project/' + id,
+            url: 'http://fancy-todo-v2.herokuapp.com/todos/project/' + id,
             method: 'delete',
             headers: {
                 token: localStorage.getItem('token')
@@ -453,7 +456,7 @@ function editTodo(id ,data) {
       }).then((result) => {
         if (result.value) {
           $.ajax({
-              url: 'http://localhost:3000/todos/' + id,
+              url: 'http://fancy-todo-v2.herokuapp.com/todos/' + id,
               method: 'put',
               headers: {
                   token: localStorage.getItem('token')
@@ -502,7 +505,7 @@ function editProjectTodo(id ,data) {
       }).then((result) => {
         if (result.value) {
           $.ajax({
-              url: 'http://localhost:3000/todos/project/' + id,
+              url: 'http://fancy-todo-v2.herokuapp.com/todos/project/' + id,
               method: 'put',
               headers: {
                   token: localStorage.getItem('token')
@@ -540,7 +543,7 @@ function leaveGroup(projectId) {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: 'http://localhost:3000/projects/member/' + projectId,
+                url: 'http://fancy-todo-v2.herokuapp.com/projects/member/' + projectId,
                 method: 'delete',
                 headers: {
                     token: localStorage.getItem('token')
@@ -579,7 +582,7 @@ function deleteGroup(projectId) {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: 'http://localhost:3000/projects/' + projectId,
+                url: 'http://fancy-todo-v2.herokuapp.com/projects/' + projectId,
                 method: 'delete',
                 headers: {
                     token: localStorage.getItem('token')

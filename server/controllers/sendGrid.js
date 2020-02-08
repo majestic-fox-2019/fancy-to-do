@@ -13,7 +13,7 @@ class SendGridController {
         <p><a href="#">Click here</a> to check the project</p>
         `,
         };
-        sgMail.send(msg);
+        sgMail.send(msg)
         res.status(200).json('Mail Sent')
     }
 }
