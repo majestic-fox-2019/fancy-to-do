@@ -14,6 +14,7 @@ const setSuccessAlert = () => {
 }
 
 const setErrorAlert = (err) => {
+    console.log(err);
     $(".messageClass").prop('class', 'ui negative message messageClass');
     const {Error, msg, Validations} = err.responseJSON;
     let allAlerts = $(".messageClass > .header");
@@ -25,7 +26,7 @@ const setErrorAlert = (err) => {
     }else if(msg){
         allAlerts.text(msg);
     }else{
-        allAlerts.text(Error.messageClass);
+        allAlerts.text(Error.msg);
     }
     
 }

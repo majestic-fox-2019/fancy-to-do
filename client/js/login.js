@@ -1,23 +1,17 @@
-$(document).ready(() => {
-    checkLogin();
+const clearLoginForm = () => {
+    $("#email").val("");
+    $("#password").val("");
+}
 
-    const clearLoginForm = () => {
-        $("#email").val("");
-        $("#password").val("");
-    }
-
-    const hideLoginModal = () => {
+if(typeof hideLoginModal != "function") {
+    function hideLoginModal(){
         $(".modalLogin > .close").click();
+        $(".modalRegister > .close").click();
     }
+}
 
-    $("#btnLogin").on('click', () => {
-        $('.ui.modal.modalLogin').modal({closable: false}).modal('show');
-    });
-
-    $("#btnSubmitLogin").on('click', () => {
-        let email       = $("#email").val();
-        let password    = $("#password").val();
-
+if (typeof login != "function") {
+    function login(email, password) {
         $.ajax({
             method: "POST",
             url: `${BACKEND_URL}/users/login`,
@@ -36,6 +30,7 @@ $(document).ready(() => {
             }, 1000);
             checkLogin();
             $("#todo").click();
+
         })
         .catch(err => {
             setErrorAlert(err);
@@ -44,6 +39,21 @@ $(document).ready(() => {
                 hideAlert();
             }, 3000);
         })
+    }
+}
+
+$(document).ready(() => {
+    checkLogin();
+
+    $("#btnLogin").on('click', () => {
+        $('.ui.modal.modalLogin').modal({closable: false}).modal('show');
+    });
+
+    $("#btnSubmitLogin").on('click', () => {
+        let email       = $("#email").val();
+        let password    = $("#password").val();
+
+        login(email, password);
     });
 
     $("#alert > .close").on('click', () => {

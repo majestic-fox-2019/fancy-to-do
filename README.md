@@ -1,6 +1,10 @@
 # fancy-to-do
 Fancy To-Do List API Project: Client & Server Documentation, API Documentation
 
+# Third Party
+    Google OAUTH
+    Google Calendar
+
 # Client & Server Documentation
 
 ## Client

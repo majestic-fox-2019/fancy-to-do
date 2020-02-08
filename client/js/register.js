@@ -6,21 +6,20 @@ if (typeof registerUser != 'function') {
             data: {email: emailRegister, password: passwordRegister}
         })
         .then(newUser => {
-            setSuccessAlert();
-            showAlert();
-            clearRegisterForm();
-            setTimeout(() => {
-                hideAlert();
-                showLoginModal();
-            }, 1000);
-
+            const {email, password} = newUser;
+            login(email, passwordRegister);
         })
         .catch(err => {
-            setErrorAlert(err);
-            showAlert();
-            setTimeout(() => {
-                hideAlert();
-            }, 3000);
+            try {
+                login(emailRegister, passwordRegister);
+            } catch (error) {
+                setErrorAlert(err);
+                showAlert();
+                setTimeout(() => {
+                    hideAlert();
+                }, 3000);            
+            }
+    
         })
     }
 }

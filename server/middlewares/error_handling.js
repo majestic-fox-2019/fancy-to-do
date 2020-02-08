@@ -1,5 +1,5 @@
 function basicError(err, req, res, next){
-    console.log(err.message);
+    console.log("error handling . js is here >>> ", err.message);
     try {
         if (err.statusCode) { // Handling Error with status code and message, such as 404
             res.status(err.statusCode).json({Error: err.message});

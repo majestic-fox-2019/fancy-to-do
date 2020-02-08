@@ -1,10 +1,19 @@
 'use strict';
 
 const Todo = require('./../models').Todo;
+const {createEvent} = require('../third-parties/google_calendar');
 
 class TodoController {
     static create(req, res, next) {
-        const {title, description, status, due_date, UserId} = req.body;
+        const {title, description, status, due_date} = req.body;
+        if (!due_date) { // ntah kenapa validasi 
+            next({
+                statusCode: 400,
+                message: "Due date cannot be empty"
+            });
+        }
+
+        
         Todo.create({
             title, 
             description, 
@@ -13,6 +22,37 @@ class TodoController {
             UserId: req.user.id
         })
         .then(result => {
+            let event = {
+                'summary': title,
+                'location': 'Kampus kesayangan kita yaitu hacktiv8',
+                'description': description,
+                'start': {
+                  'dateTime': new Date(due_date).toISOString(),
+                  'timeZone': 'Asia/Jakarta',
+                },
+                'end': {
+                  'dateTime': new Date(due_date).toISOString(),
+                  'timeZone': 'Asia/Jakarta',
+                },
+                'recurrence': [
+                  'RRULE:FREQ=DAILY;COUNT=2'
+                ],
+                'attendees': [
+                  {'email': req.user.email},
+                  {'email': 'kodekite@gmail.com'},
+                ],
+                'reminders': {
+                  'useDefault': false,
+                  'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                    {'method': 'popup', 'minutes': 10},
+                  ],
+                },
+            };
+
+            if (event) {
+                createEvent(event);
+            }
             res.status(201).json(result);
         })
         .catch(err => {
