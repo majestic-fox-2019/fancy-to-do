@@ -37,7 +37,11 @@ class ControllerTodos {
 
     static read (req, res, next){
                 
-        TodoModel.findAll()
+        TodoModel.findAll({
+            where:{
+                UserId: req.user.id
+            }
+        })
         .then(result =>{
             res.status(200).json(result)
         })

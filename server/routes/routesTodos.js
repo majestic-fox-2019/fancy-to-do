@@ -3,6 +3,7 @@ var router = express.Router()
 const ControllerTodos = require('../controllers/ControllerTodos')
 const authorization = require("../middleware/authorization")
 
+// >>>>  todos/
 
 router.post('/', ControllerTodos.create)
 router.get('/', ControllerTodos.read)

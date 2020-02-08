@@ -5,9 +5,10 @@ const Login = require('../helpers/login')
 
 class ControllerUser {
 
-    static register (req, res, next){
-        
+    static register (req, res, next, gmail){
         let { username, email, password } = req.body
+        console.log(email, username, password, "blakblakblak")
+        console.log(gmail, "kuntullllll");
         
         // res.status(200).json(req.body)
         UserModel.create(
@@ -27,14 +28,30 @@ class ControllerUser {
 
     static login (req, res, next){
         const {email, password} = req.body
-        
+        console.log(email, password, "jagungggg");        
         UserModel.findOne({
             where : {
                 email: email,
             }
         })
         .then(result =>{
-            if (result && Login.compare(password, result.password)) {
+            // console.log(result, "cimbeeee");
+            if (!result.email) {
+                // console.log("aselole");
+                UserModel.create(
+                    {
+                        username:"123", 
+                        email,
+                        password:"123"
+                    }
+                        )
+            .then(ress =>{
+                    res.status(201).json(ress)
+            })
+            .catch (err=>{
+                next(err)
+            })
+            } else if (result && Login.compare(password, result.password)) {
                 var token = jwt.sign({
                     id: result.id,
                     email:  result.email
@@ -48,6 +65,8 @@ class ControllerUser {
             }
         })
         .catch (err =>{
+            // console.log(err);
+            
             next(err)
         })
         
