@@ -16,6 +16,7 @@
       crossorigin="anonymous"
     />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="jumbotron">
@@ -33,7 +34,7 @@
     </div>
     <div class="container" id="loginContainer">
       <div class="row">
-        <div class="col-lg-12 offset-lg-2">
+        <div class="col-lg-12">
           <div class="card" style=" max-width: 200rem;">
             <h5 class="card-header text-center">Login</h5>
             <div class="card-body">
@@ -88,7 +89,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -125,18 +126,16 @@
 
 
     <div class="container" id="showtableContainer">
-      <div class="row">
-        <div class="col-lg-12 ">
-          <div class="card">
             <div class="table">
               <table class="table  table-condensed text-center">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Number</th>
                     <th scope="col">Todo</th>
                     <th scope="col">Description</th>
                     <th scope="col">Status</th>
                     <th scope="col">Deadline</th>
+                    <th scope="col">Forecast</th>
                     <th scope="col" colspan=2>Action</th>
                   </tr>
                 </thead>
@@ -144,9 +143,6 @@
               </table>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
     <!-- <div
       class="modal fade"
@@ -279,7 +275,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="addButton">
+            <form id="addTask">
               <div class="form-group">
                 <label for="exampleInputPassword1">Title</label>
                 <input type="text" class="form-control" id="AddTitle" />

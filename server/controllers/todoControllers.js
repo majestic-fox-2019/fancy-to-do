@@ -19,14 +19,12 @@ class todoController {
       });
   }
   static createOne(req, res, next) {
-    let user = req.user;
-    console.log(req.user);
     const objInput = {
       Title: req.body.title,
       Description: req.body.description,
       Status: req.body.status,
       Due_date: req.body.due_date,
-      UserId: user.id
+      UserId: req.user.id
     };
     Todo.create(objInput)
       .then(result => {
@@ -36,9 +34,10 @@ class todoController {
         });
       })
       .catch(err => {
+        console.log(err);
         let objError = {
-          statusError: 400,
-          message: errorMaker(err)
+          // statusError: 400,
+          // message: errorMaker(err)
         };
         next(objError);
       });

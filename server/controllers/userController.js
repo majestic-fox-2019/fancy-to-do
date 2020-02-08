@@ -16,25 +16,42 @@ class userController {
     });
   }
   static login(req, res, next) {
-    let password = req.body.password;
-    let email = req.body.email;
+    const email = req.body.email;
+    const password = req.body.password;
+    const error = [];
+    if (email == "") {
+      error.push({ message: "Email must be filled" });
+    }
+    if (password == "") {
+      error.push({ message: "Password must be filled" });
+    }
+    if (error.length > 0) {
+      next({ errors: error });
+    }
     User.findOne({
       where: {
         email: email
       }
     })
       .then(result => {
-        let compare = bcrypt.compareSync(password, result.password);
-        if (compare) {
-          let token = jwt.sign(
-            { email: result.email, id: result.id },
-            process.env.secretCode
-          );
-          res.status(201).json(token);
+        if (result) {
+          let compare = bcrypt.compareSync(password, result.password);
+          if (compare) {
+            let token = jwt.sign(
+              { email: result.email, id: result.id },
+              process.env.secretCode
+            );
+            res.status(201).json(token);
+          } else {
+            throw {
+              statusError: 400,
+              message: "password is false"
+            };
+          }
         } else {
           throw {
             statusError: 400,
-            message: "email or password is false"
+            message: "email is false"
           };
         }
       })

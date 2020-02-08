@@ -7,14 +7,13 @@ module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.Sequelize.Model;
   class Todo extends Model {
     updateTemperature() {
-      let date = Math.floor(new Date(this.Due_date).getTime() / 1000.0);
-      let lattitude = 6.2655;
-      let longtitude = 106.7843;
+      let d = new Date(this.Due_date);
+      let date = (d.getFullYear() - 1970 + d.getMonth() + d.getDate()) * 86400;
       return axios({
         method: "get",
-        url: `https://api.darksky.net/forecast/086acaba959b5909474a6ea4e34942ed/${lattitude},${longtitude},${date}?exclude=[minutely,hourly,alerts,flags]&units=si`
+        url: `https://api.darksky.net/forecast/086acaba959b5909474a6ea4e34942ed/42.3601,-71.0589,${date}?exclude=[minutely,hourly,alerts,flags]&units=si`
       }).then(result => {
-        this.Temperature = result.data;
+        this.Temperature = result.data.currently.temperature;
       });
     }
   }
@@ -60,22 +59,23 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       hooks: {
         beforeCreate(instance, option) {
-          let lattitude = 6.2655;
-          let longtitude = 106.7843;
-          let date = Math.floor(new Date(instance.Due_date).getTime() / 1000.0);
+          let d = new Date(instance.Due_date);
+          let date =
+            (d.getFullYear() - 1970 + d.getMonth() + d.getDate()) * 86400;
           return axios({
             method: "get",
-            url: `https://api.darksky.net/forecast/086acaba959b5909474a6ea4e34942ed/${lattitude},${longtitude},${date}?exclude=[minutely,hourly,alerts,flags]&units=si`
+            url: `https://api.darksky.net/forecast/086acaba959b5909474a6ea4e34942ed/42.3601,-71.0589,${date}?exclude=[minutely,hourly,alerts,flags]&units=si`
           })
             .then(result => {
               instance.Temperature = result.data.currently.temperature;
             })
             .catch(err => {
-              console.log(12);
+              throw err;
             });
         },
         afterFind(instance, option) {
           let arr = [];
+          console.log(instance);
           instance.forEach(element => {
             arr.push(element.updateTemperature());
           });

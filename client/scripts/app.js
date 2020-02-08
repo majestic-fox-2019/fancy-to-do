@@ -2,14 +2,13 @@ const localhost = "http://localhost:3000";
 var $submit = $("#LoginSubmit");
 var $login = $("#loginContainer");
 var $edit = $("#edittodoContainer");
-var $add = $("#addtodoConatiner");
+var $add = $("#addtodoContainer");
 var $editForm = $("#editForm");
 var $registerForm = $("#RegisterForm");
 var $table = $("#showtableContainer");
 var $logOutButton = $("#logoutButton");
 var $addButton = $("#addButton");
 
-$("#addModal").hide();
 let $formbody = $("#formbody");
 start();
 function start() {
@@ -32,7 +31,6 @@ function start() {
 }
 $registerForm.on("submit", function(e) {
   e.preventDefault();
-  console.log(1234);
   $.ajax({
     method: "POST",
     url: `${localhost}/user/register`,
@@ -45,7 +43,7 @@ $registerForm.on("submit", function(e) {
       $("#registerModal").modal("hide");
     })
     .fail(err => {
-      console.log(err, "nnnnnnn");
+      console.log(err);
     });
 });
 
@@ -79,6 +77,7 @@ var $template = `  <tr>
                       <td class = "description"></td>
                       <td class = "status"></td>
                       <td class = "due_date"></td>
+                      <td class = "temperature"></td>
                       <td class = "delete" ><a class="btn btn-primary" role="button" id="deleteButton">DELETE</a></td>
                       <td class = "edit" ><a class="btn btn-primary" role="button" id="editButton"    data-toggle="modal"
                       data-target="#updateModal">EDIT</a></td>
@@ -91,7 +90,6 @@ function showTodo() {
       token: localStorage.token
     }
   }).done(data => {
-    console.log(data);
     showAllTodo(data.result);
   });
 }
@@ -105,16 +103,15 @@ function showAllTodo(data) {
     $item.find(".description").text(data[i].Description);
     $item.find(".status").text(data[i].Status);
     $item.find(".due_date").text(formatDate(data[i].Due_date));
-    $item
-      .find("#deleteButton")
-      .prop("href", `${localhost}/todo/${data[i].id}`)
-      .attr("onClick", "return confirm('y')");
+    $item.find(".temperature").text(data[i].Temperature);
+    $item.find("#deleteButton").prop("href", `${localhost}/todo/${data[i].id}`);
     $item.find("#editButton").prop("href", `${localhost}/todo/${data[i].id}`);
     $formbody.append($item);
   }
 }
 
-var Todo = $("#addButton");
+var Todo = $("#addTask");
+
 Todo.on("submit", function(e) {
   e.preventDefault();
   let title = $("#AddTitle").val();
@@ -132,9 +129,14 @@ function addTodo(alldata) {
       token: localStorage.token
     },
     data: alldata
-  }).done(data => {
-    start();
-  });
+  })
+    .done(data => {
+      $("#addModal").modal("hide");
+      start();
+    })
+    .fail(err => {
+      $(".alert").alert();
+    });
 }
 
 $(this).click(function(e) {
@@ -184,7 +186,7 @@ $editForm.on("submit", function(e) {
 });
 
 function deleteTodo(url) {
-  return $.ajax({
+  $.ajax({
     method: "DELETE",
     url: url,
     headers: {
@@ -194,8 +196,8 @@ function deleteTodo(url) {
     .done(data => {
       start();
     })
-    .fail(data => {
-      console.log(data);
+    .fail(err => {
+      console.log(err);
     });
 }
 
@@ -242,6 +244,7 @@ function onSignIn(googleUser) {
   })
     .done(data => {
       localStorage.setItem("token", data);
+      start();
     })
     .fail(err => {
       console.log(err);
@@ -251,6 +254,7 @@ function onSignIn(googleUser) {
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function() {
+    start();
     console.log("User signed out.");
   });
 }
