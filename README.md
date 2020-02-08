@@ -249,7 +249,7 @@ $ live-server --host=localhost
 
 - **Method:** `POST`
 
-- **Description:** `Create new task on user to-do list`
+- **Description:** `Create new task on user to-do list, integrated with google calendar if logged in with google or permission granted to access calendar`
 
 - **Request Header:**
 
