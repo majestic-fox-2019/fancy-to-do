@@ -4,12 +4,14 @@ const { Todo } =require('../models')
 
 class todoCOntroller {
     static create (req, res, next) {
-        const {tittle, description, status, due_date} = req.body
+        console.log(req.body)
+        console.log(req.id)
         Todo.create({
-            tittle,
-            description,
-            status,
-            due_date
+            tittle: req.body.title,
+            description: req.body.description,
+            status: 'not yet',
+            due_date: req.body.due_date,
+            UserId: req.id
         })
         .then(result => {
             res.status(201).json(result)
@@ -17,8 +19,14 @@ class todoCOntroller {
         .catch(next)
     }
     static readAll (req, res, next){
+        // Todo.findAll({
+        //     order: [['due_date', 'DESC']]
+        // })
         Todo.findAll({
-            order: [['due_date', 'DESC']]
+            where: {
+                UserId: req.id
+            },
+            order: [['due_date']]
         })
         .then(result => {
             res.status(200).json(result)
