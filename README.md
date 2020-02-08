@@ -68,6 +68,25 @@ response: {
 }
 
 ```
+##### POST `/todo/users/googleSignIn`
+
+```
+url: 'http://localhost:3000/users/googleSignIn',
+method:'POST',
+body:{
+	'googleToken': 'your token'
+}
+
+response: {
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMzJkOWNkZTg4NzU5MjI3Yjc2YjQwZCIsInVzZXJuYW1lIjoidXNlcnRlc3Rkb2MiLCJpYXQiOjE1ODAzOTA4NjF9.BQy_CFlWbEN3_HR9i2hiYnledD2ojH3YPFmp7iHj36Q",
+	"user":{
+		name: "your name"
+		email: "your@mail.com"
+	}
+}
+
+```
+
 
 ### Todo
 
