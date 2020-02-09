@@ -36,10 +36,10 @@ class Project {
     })
   }
 
-  static getProjectDetail(todoId) {
+  static getProjectDetail(projectId) {
     $.ajax({
       type: 'GET',
-      url: `${localhost}/projects/${todoId}/details`,
+      url: `${localhost}/projects/${projectId}/details`,
       headers: {
         token: token
       },
@@ -49,6 +49,7 @@ class Project {
         $('#project-detail-list').append(
           Component.projectDetailSegment(projectDetails)
         )
+        $('#projects').hide()
         $('#project-detail').show()
       },
       error: function(err) {
@@ -117,7 +118,7 @@ class Project {
 
   static createTodo(event) {
     event.preventDefault()
-    const todoId = $('#project-id').data('id')
+    const projectId = window.location.hash.substring(9)
     Swal.fire({
       title: 'Are you sure want to add this todo ?',
       icon: 'question',
@@ -148,11 +149,12 @@ class Project {
               showConfirmButton: true,
               timer: 1500
             }).then(() => {
-              $('input[name="title-create-project-todo"]').val(''),
-                $('input[name="description-create-project-todo"]').val(''),
-                $('input[name="due_date-create-project-todo"]').val('')
+              $('input[name="title-create-project-todo"]').val('')
+              $('textarea[name="description-create-project-todo"]').val('')
+              $('input[name="due_date-create-project-todo"]').val('')
               $('#add-todo-project-modal').modal('hide')
-              Project.getAllProjects(todoId)
+              const projectId = window.location.hash.substring(9)
+              Navigation.toProjectDetail(projectId)
             })
           },
           error: function(err) {
@@ -225,6 +227,7 @@ class Project {
                 showConfirmButton: true,
                 timer: 1500
               }).then(() => {
+                $('#add-project-member-modal').modal('hide')
                 Project.getProjectDetail(projectId)
               })
             },

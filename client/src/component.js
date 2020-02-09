@@ -110,7 +110,7 @@ class Component {
           ${todo.title}
         </div>
         <div class="content">
-          <form class="ui form" id="update" onsubmit=(Homepage.update(event)) data-id="${
+          <form class="ui form" id="update" onsubmit="Homepage.update(event)" data-id="${
             todo.id
           }">
             <div class="field">
@@ -152,8 +152,7 @@ class Component {
                 type="button"
                 class="ui negative right labeled icon button ml-10"
                 id="delete-personal-todo"
-                onclick="Homepage.deleteTodo(event)"
-                data-id="${todo.id}"
+                onclick="Homepage.deleteTodo(${todo.id})"
               >
                 <i class="trash alternate icon"></i>
                 Delete

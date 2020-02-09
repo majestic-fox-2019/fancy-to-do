@@ -37,7 +37,7 @@ class ControllerProject {
       }
     })
       .then((result) => {
-        if (result.hasOwnProperty('id')) {
+        if (result) {
           let err = createError(400, 'Already joined this project')
           next(err)
         } else {

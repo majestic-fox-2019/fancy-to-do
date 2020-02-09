@@ -304,9 +304,9 @@ class Homepage {
               showConfirmButton: true,
               timer: 1500
             }).then(() => {
-              $('input[name="title-create-todo"]').val(''),
-                $('textarea[name="description-create-todo"]').val(''),
-                $('input[name="due_date-create-todo"]').val('')
+              $('input[name="title-create-todo"]').val('')
+              $('textarea[name="description-create-todo"]').val('')
+              $('input[name="due_date-create-todo"]').val('')
               Homepage.getAllPersonalTodos()
             })
           },
@@ -436,9 +436,9 @@ class Homepage {
     })
   }
 
-  static deleteTodo(event) {
-    event.preventDefault()
-    const todoId = $('#delete-personal-todo').data('id')
+  static deleteTodo(todoId) {
+    // event.preventDefault()
+    // const todoId = $('#delete-personal-todo').data('id')
     Swal.fire({
       title: 'Delete todo ?',
       text: 'Are you sure want to delete this todo?',
