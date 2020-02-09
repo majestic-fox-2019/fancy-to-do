@@ -76,7 +76,7 @@ class ControllerTodo {
 
   static updateAll(req, res, next) {
     let id = req.params.id
-    console.log('idddddz', id)
+    // console.log('idddddz', id)
     let { title, description, status, due_date } = req.body
     Todo
       .update({ title, description, status, due_date }, { where: { id: id }, returning: true })
