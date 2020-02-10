@@ -3,7 +3,7 @@ const User = Model.User
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const axios = require('axios')
-require('dotenv').config()
+// require('dotenv').config()
 const instance = axios.create({
   baseURL: `https://api.mailboxvalidator.com/v1/validation/single?key=${process.env.APIkey}`
 });
