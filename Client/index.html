@@ -1,57 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="687687542092-6epifb9ifb41u7g6dalqo4vi79gnofok.apps.googleusercontent.com">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <title>Document</title>
 </head>
+
+  
 <body>
-    <div class ='registration'>
-    <form method="POST" id="submitForm">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Username</label>
-          <input name ='username' type="text" class="form-control" id="username">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Name</label>
-          <input name = 'name'type="text" class="form-control" id="name">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input name='email'type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input name='password'type="password" class="form-control" id="password">
-        </div>
-        <button type="submit" class="btn btn-primary" id="create">Register</button>
-      </form>
-    </div>
-
-    <div class='login'>
-        <form method="POST" id="loginForm">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email</label>
-              <input name ='email' type="text" class="form-control" id="emailLogin">
+      <div class="containerRegis">
+        <div class ="registration">
+          <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+              <div class="card card-signin my-5">
+                <div class="card-body">
+                  <h5 class="card-title text-center">Sign Up</h5>
+                  <form method="POST" id="submitForm">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Username</label>
+                      <input name ='username' type="text" class="form-control" id="username">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Name</label>
+                      <input name = 'name'type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email address</label>
+                      <input name='email'type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Password</label>
+                      <input name='password'type="password" class="form-control" id="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="create">Register</button>
+                  </form>
+                  <button type="submit" class="btn btn-primary pull-right" id="showLogin">Login</button>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input name='password'type="password" class="form-control" id="passwordLogin">
-            </div>
-            <button type="submit" class="btn btn-primary" id="login">Login</button>
-            <!-- <a id="showRegis" href="#">Doesnt have account?</a> -->
-            <button type="submit" class="btn btn-primary" id="showRegis">Register</button>
-          </form>
-    </div>
+          </div>
+        </div>
+      </div>
     
+    
+  <div id="belumMasuk">
+    <div class="containerLogin">
+      <div class ="Login">
+        <div class="row">
+          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h5 class="card-title text-center">Sign In</h5>
+                <form id="loginForm" method="POST">
+                  <div class="form-label-group">
+                    <input type="email" name ='emailLogin' id="emailLogin" class="form-control" placeholder="Email address" required autofocus>
+                    <label for="emailLogin">Email address</label>
+                  </div>
 
-<!-- Add Form -->
-    <!-- Button trigger modal -->
-    <button id = "addbutton"type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-        Add
-      </button>
+                  <div class="form-label-group">
+                    <input type="password" id="passwordLogin" class="form-control" placeholder="Password" required>
+                    <label for="passwordLogin">Password</label>
+                  </div>
+                  <button id="login" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Login</button>
+                  <hr class="my-4">
+                </form>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <button type="submit" class="btn btn-primary" id="showRegis">Register</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    
+    <div id="masuk">
+
+      <!-- Jumbotron -->
+      <div class="card card-image view" >
+        <div class="text-white text-center rgba-stylish-strong py-5 px-4">
+          <div class="py-5">
+  
+            <!-- Content -->
+            <h2 class="card-title h2 my-4 py-2">ToDo List Fancy</h2>
+            <button id = "addbutton"type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#addModal">
+              Add
+            </button>
+            <button id="logout"type="button" class="btn btn-outline-light" >LogOut</button>
+          </div>
+        </div>
+      </div>
+  
       
       <!-- Modal -->
       <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,7 +132,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary" id="Add">Add</button>
             </div>
             
@@ -94,6 +139,8 @@
           </div>
         </div>
       </div>
+
+      
 
       <!-- Table -->
     <div class='table_todo'>
@@ -114,6 +161,7 @@
             </tbody>
           </table>
     </div>
+  </div>
 
     <!-- edit modal -->
     <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -144,7 +192,10 @@
                             <label>due_date</label>
                             <input name='status'type="date" class="form-control" id="due_dateEdit">
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                          </div>
+                        
                     </form>
                 </div>
             </div>
@@ -156,10 +207,12 @@
 
     
     
-</body>
+    </body>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 <script src="index.js"></script>
 </html>
                            

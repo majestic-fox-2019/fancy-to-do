@@ -1,78 +1,102 @@
-$(document).ready(function(){
 
-var submitForm = $('#submitForm')
+var submitForm = $('.containerRegis')
 var loginForm = $('#loginForm')
 var showRegis = $('#showRegis')
-var add = $('#addbutton')
-var Login= $('.login')
-var table = $('.table_todo')
+var Login= $('.containerLogin')
+var masuk = $('#masuk')
 const server = 'http://localhost:3000'
-
-
+var logout = $('#logout')
+var belumMasuk = $('#belumMasuk')
+// Swal
 submitForm.hide()
+// logout.hide()
 if(!localStorage.getItem('token')){
-    Login.show()
-    table.hide()
-    add.hide()
+    belumMasuk.show()
+    masuk.hide()
+    $('.container').show()
 }
 else{
     // registration.hide()
-    showToDoList()
     Login.hide()
-    table.show()
-    add.show()
+    // belumMasuk.hide()
+    showToDoList()
+    masuk.show()
+    $('.container').hide()
 }
 
 
-
-var add = function(username,password,email,name){
+var register = function(username,password,email,name){
     $.ajax({
         method: 'POST',
         url:`${server}/register`,
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json; charset=utf-8",
         data:
-        JSON.stringify({
+        {
             username:username,
             name: name,
             email:email,
             password:password,
 
-        }),
+        }
          // this
     })
     .done(function(data){
-        console.log(data)
         submitForm.hide()
         Login.show()
+        // console.log('masuk cuy')
     })
-    .fail(function(error) {
-        console.log(error)
+    .fail(error=> {
+        // console.log(JSON.parse(error.responseText))
+        let msg = JSON.parse(error.responseText)
+        console.log(msg)
+        Swal.fire({
+            icon: "error",
+          title: "Oops...",
+          text: `${msg.message}`
+        })
     })
     
 }
 
-var login = function(email,password){
+logout.on('click',function (e) {
+    localStorage.clear()
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    Login.show()
+    masuk.hide()
+    belumMasuk.show()
+})
+
+var login = function(email,password){ 
     $.ajax({
         method: 'POST',
         url:`${server}/login`,
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json; charset=utf-8",
         data:
-        JSON.stringify({
+        {
             email:email,
             password:password,
 
-        }),
+        }
          // this
     })
     .done(function(data){
-        console.log(data)
-        Login.hide()
+        // console.log(data)
         localStorage.setItem("token",data)
-        table.show()
+        belumMasuk.hide()
         showToDoList()
+        masuk.show()
     })
     .fail(function(error) {
-        console.log(error)
+        let msg = JSON.parse(error.responseText)
+        Swal.fire({
+            icon: "error",
+          title: "Oops...",
+          text: "Periksa kembali Email atau Password Anda"
+        })
+        // console.log(msg)
     })
 }
 
@@ -81,6 +105,10 @@ showRegis.on('click',function(e){
     Login.hide()
 
 })
+$('#showLogin').on('click',function(e){
+    submitForm.hide()
+    Login.show()
+})
 
 submitForm.on('submit',function(e){
     e.preventDefault()
@@ -88,7 +116,7 @@ submitForm.on('submit',function(e){
     var username = $('#username').val()
     var email = $('#email').val()
     var password = $('#password').val()
-    add(username,password,email,name)
+    register(username,password,email,name)
 })
 
 loginForm.on('submit',function(e){
@@ -122,7 +150,7 @@ function showTemplate(data){
         $item.find('.title').text(data[i].title)
         $item.find('.description').text(data[i].description)
         $item.find('.status').text(data[i].status)
-        $item.find('.due_date').text(data[i].due_date)
+        $item.find('.due_date').text(`${new Date(data[i].due_date).toISOString().substr(0,10)}`)
         $item.find('.temperature').text(data[i].temperature)
         $item.find('#deletetodo').prop('href',`${server}/todos/${data[i].id}`)
         $item.find('#updatetodo').prop('href',`${server}/todos/${data[i].id}`)
@@ -144,10 +172,10 @@ function showToDoList(){
     })
     .done(function(data){
         // console.log('masuk')
-        console.log(data)
+        // console.log(data)
         showTemplate(data)
     })
-    .fail(function(data){
+    .fail(function(error){
         console.log(error)
     })
 }
@@ -181,9 +209,18 @@ var addTodo = function(title,description,status,due_date){
          // this
     })
     .done(function(data){
+        console.log('masuk')
+        $('#addModal').modal('hide')
         showToDoList()
     })
     .fail(function(error) {
+        // console.log('error ni')
+        let msg = JSON.parse(error.responseText)
+        Swal.fire({
+            icon: "error",
+          title: "Oops...",
+          text: `${msg.message}`
+        })
         console.log(error)
     })
     
@@ -227,7 +264,7 @@ $('#editForm').on('submit',function(e){
     e.preventDefault()
     $.ajax({
         method:'PUT',
-        url:`http://localhost:3000/todos/${localStorage.id}`,
+        url:`${server}/todos/${localStorage.id}`,
         headers:{
             token:localStorage.token
         },
@@ -242,13 +279,19 @@ $('#editForm').on('submit',function(e){
         })
     })
     .done(function(data){
-        console.log("masuk")
-        // localSt
+        // console.log("masuk")
+        localStorage.removeItem('id')
         $('#updateModal').modal('hide')
         showToDoList()
     })
     .fail(function(err){
-        console.log(err)
+        let msg = JSON.parse(error.responseText)
+        Swal.fire({
+            icon: "error",
+          title: "Oops...",
+          text: `${msg.message}`
+        })
+        console.log(error)
     })
 
 })
@@ -264,12 +307,31 @@ $.ajax({
     $('#titleEdit').val(data.title)
     $('#descriptionEdit').val(data.description)
     $('#statusEdit').val(data.status)
+    $('#due_dateEdit').val(`${new Date(data.due_date).toISOString().substr(0,10)}`)
 })
 .fail(function (error) {
     console.log(error)
 })
 }
-})
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    $.ajax({
+        method:"POST",
+        url:`http://localhost:3000/googleLogin`,
+        data:{token:id_token}
+    })
+    .done(function (data) {
+        // console.log(data)
+        localStorage.setItem('token',data)
+        // Login.hide()
+        masuk.show()
+        showToDoList()
+        belumMasuk.hide()
+    })
+    .fail(function (err) {
+        console.log(err)
+    })
+  }
 
 
     
