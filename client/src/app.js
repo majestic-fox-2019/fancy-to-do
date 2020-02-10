@@ -1,5 +1,6 @@
 $('.error').hide()
 $("#registerForm").hide()
+$('.container-home').hide()
 var $todos = []
 var idUpdate = 0
 var $err = ""
@@ -49,7 +50,7 @@ $('.create-todo').on('click', function(event) {
     }
 })
 
-$('.update-btn').on('submit', function(event) {
+$('.update-btn').on('click', function(event) {
     event.preventDefault()
      
     var tittle = $(".update-title").val()
@@ -57,8 +58,8 @@ $('.update-btn').on('submit', function(event) {
     var status = $(".update-status").val()
     var date = $(".update-date").val()
     console.log("masuk update")
-    // console.log(tittle, description, status, date)
-    updateTodo(idUpdate, tittle, description, status, date)
+    // console.log(idUpdate ,tittle, description, status, date)
+    updateTodo(tittle, description, status, date)
     
 })
 
@@ -109,9 +110,12 @@ function reloadData(){
 
 function checkLogin(){
     if(localStorage.getItem("token")){
-        $('.container-login').hide()   
+        $('.container-login').hide()
+        $('.container-home').show()  
+        reloadData() 
     } else {
         $('.container-login').show()
+        $(".container-home").hide()
     }
 }
 
@@ -245,20 +249,22 @@ function showUpdateForm(id) {
         }
     })
     .done(response => {
+        var date = response.due_date.toSting()
         console.log(response)
         $(".update-title").val(response.tittle)
         $(".update-description").val(response.description)
         $(".update-status").val(response.status)
         $(".update-date").val(response.due_date)
-        $idUpdate = response.id
+        idUpdate = response.id
         $('.update-todo').show()
     })
 }
 
-function updateTodo(id, tittle, description, status, due_date) {
-    console.log(tittle, description, status, date)
+function updateTodo(tittle, description, status, due_date) {
+    // console.log(tittle, description, status, date)
     $.ajax({
-        url: `http://localhost:3000/todo/${id}`,
+        url: `http://localhost:3000/todo/${idUpdate}`,
+        method: 'PUT',
         headers: {
             "Authorization": localStorage.getItem("token")
         },
@@ -271,10 +277,11 @@ function updateTodo(id, tittle, description, status, due_date) {
     })
     .done(response => {
         console.log(response)
-        $('update-todo').hide()
+        $('.update-todo').hide()
         reloadData()
     })
     .fail(err => {
+        $('.update-todo').hide()
         console.log(err)
     })
 }
