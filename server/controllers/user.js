@@ -27,9 +27,10 @@ class userController {
                 }
             })
             .then(result => {
-                
+                console.log(result)
                 const user = result.dataValues
-                if(result === null){
+                if(result === 'null'){
+                    console.log(result)
                     throw {code: 400, message:'email/password is wrong'}
                 } else {
                     const compare = bcryptPass.compare(req.body.password, user.password)

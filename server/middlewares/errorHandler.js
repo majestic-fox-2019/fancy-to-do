@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports= function (err, req, res, next){
-    // console.log(err)
+    console.log(err)
     const error = []
     if(err.name == 'SequelizeValidationError'){
         err.errors.forEach(err => {

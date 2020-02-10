@@ -9,8 +9,8 @@ function generateToken (id) {
     return token
 }
 
-function verifyToken (token) {
-    const token = jwt.verify(token, process.env.JWT_KEY)
+function verifyToken (tokenUser) {
+    const token = jwt.verify(tokenUser, process.env.JWT_KEY)
     console.log("masuk verify")
     return token
 }
