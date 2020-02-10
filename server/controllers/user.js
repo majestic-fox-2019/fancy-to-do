@@ -13,9 +13,7 @@ const { OAuth2Client } = require('google-auth-library');
 
 class ControllerUser {
   static register(req, res, next) {
-
     let body = req.body
-
     instance.get(`&email=${req.body.email}`)
       .then(validateResult => {
         if (validateResult.data.is_verified == "True") {
@@ -45,6 +43,9 @@ class ControllerUser {
         next(err)
       })
   }
+
+
+
 
   static login(req, res, next) {
     let email = req.body.email

@@ -1,5 +1,6 @@
 
-const server = 'https://murmuring-basin-72616.herokuapp.com/';
+const server = 'https://murmuring-basin-72616.herokuapp.com'
+// const server = 'http://localhost:3000'
 
 
 // showAll todos
@@ -104,7 +105,7 @@ $(document).ready(function () {
 
         localStorage.setItem('token', data)
         showAllTodos()
-        // $('#loginClass').hide()
+        $('#loginClass').hide()
         $('#todolistPage').show()
 
       },
@@ -112,7 +113,7 @@ $(document).ready(function () {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!',
+          text: err.responseText,
           // footer: '<a href>Why do I have this issue?</a>'
         })
 
@@ -378,11 +379,6 @@ $(document).ready(function () {
 //   event.preventDefault()
 //   gitHubSignIn()
 // })
-
-
-
-
-
 
 
 // $('#btn_google').on('submit', function (event) {
