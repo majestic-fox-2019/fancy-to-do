@@ -1,15 +1,73 @@
 const server = 'http://localhost:3000';
 
 
+
+// showAll todos
+function showAllTodos() {
+  $.ajax({
+    method: 'GET',
+    url: `${server}/todos`,
+    headers: {
+      token: localStorage.token
+    },
+    success: function (data) {
+      showTableTodos(data)
+      $('#todolistPage').show()
+      // $('#addTodosDiv').hide()
+      // $('#editTodosDiv').hide()
+      // console.log(data, 'ini data showall')
+    },
+    error: function (err) {
+      console.log(err)
+    }
+  })
+}
+
+var table = $('#tableTodos')
+var template = `
+<tr>
+        <td class='id'></td>
+        <td class='title'></td>
+        <td class='description'></td>
+        <td class='status'></td>
+        <td class='due_date'></td>
+        <td>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" id="editTodos">Edit</button>
+            <button type="button" class="btn btn-secondary" id="deleteTodos">Delete</button>
+          </div>
+        </td>
+      </tr>
+`
+
+function showTableTodos(data) {
+  table.empty()
+  // itemArray = [];
+  for (let i = 0; i < data.length; i++) {
+    var $item = $(template)
+    // set text ke DOM
+    $item.find('.id').text(data[i].id)
+    $item.find('.title').text(data[i].title)
+    $item.find('.description').text(data[i].description)
+    $item.find('.status').text(data[i].status)
+    $item.find('.due_date').text(data[i].due_date.split('T')[0])
+    $item.find('#deleteTodos').prop('href', `${server}/todos/${data[i].id}`)
+    $item.find('#editTodos').prop('href', `${server}/todos/${data[i].id}`)
+
+    table.append($item)
+  }
+}
+
+
+
+
+
+
 $(document).ready(function () {
 
   var username = $('#username')
   var email = $('#email')
   var password = $('#password')
-
-
-
-
   var registerClass = $('#registerClass')
   var loginClass = $('#loginClass')
   registerClass.hide()
@@ -20,17 +78,19 @@ $(document).ready(function () {
 
 
 
+
   if (!localStorage.getItem('token')) {
     $('#addTodosDiv').hide()
     $('#editTodosDiv').hide()
     $('#loginClass').show()
   } else {
-    showAllTodos()
     $('#todolistPage').show()
     $('#loginClass').hide()
     $('#addTodos').hide()
-    // $('.container').hide()
+    showAllTodos()
   }
+
+
 
 
   // Register
@@ -57,7 +117,7 @@ $(document).ready(function () {
           icon: 'error',
           title: 'Oops...',
           text: 'Something went wrong!',
-          footer: '<a href>Why do I have this issue?</a>'
+          // footer: '<a href>Why do I have this issue?</a>'
         })
 
         // console.log(err, 'error')
@@ -93,7 +153,7 @@ $(document).ready(function () {
       success: function (data) {
         localStorage.setItem('token', data)
         loginClass.hide()
-        showAllTodos()
+        showAllTodos(data)
         $('#todolistPage').show()
         $('#editTodosDiv').hide()
       },
@@ -166,63 +226,6 @@ $(document).ready(function () {
   })
 
 
-
-  // showAll todos
-  function showAllTodos() {
-    $.ajax({
-      method: 'GET',
-      url: `${server}/todos`,
-      headers: {
-        token: localStorage.token
-      },
-      success: function (data) {
-        showTableTodos(data)
-        // $('#todolistPage').show()
-        // $('#addTodosDiv').hide()
-        // $('#editTodosDiv').hide()
-        // console.log(data, 'ini data showall')
-      },
-      error: function (err) {
-        console.log(err)
-      }
-    })
-  }
-
-
-  var table = $('#tableTodos')
-  var template = `
-  <tr>
-          <td class='id'></td>
-          <td class='title'></td>
-          <td class='description'></td>
-          <td class='status'></td>
-          <td class='due_date'></td>
-          <td>
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-secondary" id="editTodos">Edit</button>
-              <button type="button" class="btn btn-secondary" id="deleteTodos">Delete</button>
-            </div>
-          </td>
-        </tr>
-  `
-
-  function showTableTodos(data) {
-    table.empty()
-    // itemArray = [];
-    for (let i = 0; i < data.length; i++) {
-      var $item = $(template)
-      // set text ke DOM
-      $item.find('.id').text(data[i].id)
-      $item.find('.title').text(data[i].title)
-      $item.find('.description').text(data[i].description)
-      $item.find('.status').text(data[i].status)
-      $item.find('.due_date').text(data[i].due_date.split('T')[0])
-      $item.find('#deleteTodos').prop('href', `${server}/todos/${data[i].id}`)
-      $item.find('#editTodos').prop('href', `${server}/todos/${data[i].id}`)
-
-      table.append($item)
-    }
-  }
 
 
 
@@ -340,10 +343,56 @@ $(document).ready(function () {
         console.log(err)
       }
     })
-
   })
 
+
+
 })
+
+
+
+// github login
+function gitHubSignIn() {
+  if (window.location.search) {
+    const query = window.location.search.substring(1)
+    const token = query.split('token=')[1].split('&')[0]
+    const name = query
+      .split('name=')[1]
+      .split('&')[0]
+      .split('%20')
+      .join(' ')
+    const email = query.split('email=')[1].split('&')[0]
+    if (token) {
+      localStorage.setItem('token', token)
+      localStorage.setItem('name', name)
+      localStorage.setItem('email', email)
+      window.location = 'http://localhost:8080'
+    }
+  }
+
+  if (localStorage.getItem('token')) {
+    showAllTodos()
+    $('#todolistPage').show()
+    $('#editTodosDiv').hide()
+    $('#loginClass').hide()
+  }
+}
+
+$('#btn_gitHub').on('submit', function (event) {
+  event.preventDefault()
+  gitHubSignIn()
+})
+
+
+
+
+
+
+
+// $('#btn_google').on('submit', function (event) {
+//   event.preventDefault()
+//   onSignIn()
+// })
 
 function onSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
@@ -355,8 +404,13 @@ function onSignIn(googleUser) {
     },
     success: function (data) {
       localStorage.setItem('token', data)
-      $('#loginClass').hide()
       $('#todolistPage').show()
+      $('#editTodosDiv').hide()
+      $('#loginClass').hide()
+      showAllTodos()
     }
   })
 }
+
+
+
