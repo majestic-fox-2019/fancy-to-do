@@ -59,11 +59,11 @@ module.exports = class {
   }
 
   static findOne(req, res, next) {
-    let id = req.params.id
+    let { email } = req.query
     user
       .findOne({
         where: {
-          id
+          email
         }
       })
       .then(result => {

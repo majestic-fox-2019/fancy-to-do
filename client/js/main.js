@@ -9,8 +9,10 @@ function setting(params) {
 $(document).ready(function() {
   if (!localStorage.token) {
     showLoginPage()
+    getHolidayDate()
   } else {
     showPrivateTodo()
+    getHolidayDate()
   }
   $('#button').click(function() {
     showHideLogin()
@@ -59,12 +61,20 @@ $(document).ready(function() {
     let due_date = $('#dateProjectTodo').val()
     addProjectTodo(title, description, due_date)
   })
-  // $('#project').click(function(e) {
-  //   let projectId = this.id
-  //   console.log(this.id)
-  //   getProjectTodos()
-  //   showProjectTodos()
-  // })
+
+  $('#searchUser').click(function(e) {
+    e.preventDefault()
+    let email = $('#inputUserSearch').val()
+    searchOne(email)
+  })
+
+  $('#addHolidayPlan').click(function(e) {
+    e.preventDefault()
+    let title = $('#titleHolidayTodo').val()
+    let description = $('#descriptionHolidayTodo').val()
+    let due_date = $('#dateHolidayTodo').val()
+    addHolidaysPlan(title, description, due_date)
+  })
 })
 
 // function sidebar() {
@@ -269,6 +279,7 @@ function showPrivateTodo() {
   $('#registerLoginPage').hide()
   $('#privateTodo').show()
   $('#projectTodo').hide()
+  $('#holidayTodo').hide()
   $('#project').hide()
 }
 
@@ -276,6 +287,7 @@ function showLoginPage() {
   $('#registerLoginPage').show()
   $('#privateTodo').hide()
   $('#projectTodo').hide()
+  $('#holidayTodo').hide()
   $('#project').hide()
 }
 
@@ -429,6 +441,7 @@ function showProjectTodos(projectId) {
   $('#registerLoginPage').hide()
   $('#privateTodo').hide()
   $('#project').hide()
+  $('#holidayTodo').hide()
   $('#projectTodo').show()
 }
 
@@ -502,9 +515,170 @@ function addProjectTodo(title, description, due_date) {
     },
     success: function(data) {
       console.log('ini dari function add project', data)
+      showProjectTodos(projectIdLive)
     },
     error: function(err) {
       console.log('ini dari error function add project todo', err)
+    }
+  })
+}
+
+function searchOne(email) {
+  $.ajax(`${baseUrl}/users/`, {
+    type: 'get',
+    data: {
+      email
+    },
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    success: function(data) {
+      $('#UserMemberToAddDiv').empty()
+      if (!data) {
+        $('#UserMemberToAddDiv').append(`
+           <h4 id="userToAdd">email is not exist</h4>
+        `)
+      } else {
+        $('#UserMemberToAddDiv').append(`
+        <h4 id="userToAdd">${data.email}</h4>
+         <i onclick="inviteMember('${data.email}')" id="addProjectMember" class="grey plus circle alternate icon cursorNya"></i>
+     `)
+      }
+      console.log(data, 'ini datanya')
+    },
+    error: function(err) {
+      console.log(err)
+    }
+  })
+}
+
+function inviteMember(email) {
+  $.ajax(`${baseUrl}/projects/${projectIdLive}/invitemember`, {
+    type: 'post',
+    data: {
+      email
+    },
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    success: function(data) {
+      $('#UserMemberToAddDiv').empty()
+    },
+    error: function(err) {}
+  })
+}
+
+function showHoliday() {
+  getHolidaysPlan()
+  $('#registerLoginPage').hide()
+  $('#privateTodo').hide()
+  $('#projectTodo').hide()
+  $('#project').hide()
+  $('#holidayTodo').show()
+}
+
+function getHolidayDate() {
+  $.ajax(`${baseUrl}/holidays/date`, {
+    type: 'get',
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    success: function(data) {
+      data.forEach(el => {
+        $('#dateHolidayTodo').append(`
+            <option value ="${el.date.iso}">${el.name} - ${el.date.iso}</option>
+        `)
+      })
+    }
+  })
+}
+
+function addHolidaysPlan(title, description, due_date) {
+  $.ajax(`${baseUrl}/holidays`, {
+    type: 'post',
+    data: {
+      title,
+      description,
+      due_date
+    },
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    success: function(data) {
+      console.log('ini dari function add project', data)
+      getHolidaysPlan()
+    },
+    error: function(err) {
+      console.log('ini dari error function add project todo', err)
+    }
+  })
+}
+
+function getHolidaysPlan() {
+  $.ajax(`${baseUrl}/holidays`, {
+    type: 'get',
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    success: function(data) {
+      console.log('ini dari find user holidays plan')
+      // console.log(data)
+      $('#holidayTodoList').empty()
+      // let $newPrivateTodo = $(todoTemplate)
+      if (data.length == 0) {
+        $('#holidayTodoList').append(`
+        <div id="emptyPrivateTodo" class="col-6 ui card mx-3 animated flipInY delay-1s">
+          <div class="content">
+              <!-- <i class="right floated star icon"></i> -->
+              <div class="header">You Still not have any todo</div>
+              <div class="description">
+                  <p>Add yours :)</p>
+              </div>
+          </div>
+        </div>
+        `)
+      } else {
+        data.forEach(element => {
+          $('#holidayTodoList').append(`
+          <div id="${element.id}" class="col-3 ui card mx-3 animated flipInY delay-1s">
+            <div class="content">
+                <span class="tandaSelesai"></span>
+                <!-- <i class="right floated star icon"></i> -->
+                <div class="header">${element.title}</div>
+                <div class="description">
+                    <p>${element.description}</p>
+                </div>
+                <div class="right floated author">
+                    <img class="ui avatar image"
+                        src="${element.user.imageUrl}">
+                    ${element.user.name}
+                </div>
+            </div>
+            <div class="extra content">
+                <span onclick="deletePrivateTodo('${element.id}')" class="left floated star cursorNya">
+                    <i class="red trash alternate icon"></i>
+                    Delete
+                </span>
+                <span onclick="privateTodoDone('${element.id}')" class="right floated like cursorNya">
+                    <i class="green check icon"></i>
+                    Done
+                </span>
+            </div>
+          </div>
+          `)
+
+          if (element.status === 'done') {
+            $(`#${element.id} .tandaSelesai`).prepend(`
+              <i class="bounceIn right floated check icon"></i>
+              `)
+            $(`#${element.id}`).css({ 'background-color': 'grey' })
+          }
+        })
+      }
+    },
+    error: function(err) {
+      console.log('ini error user todo')
+      console.log(err)
     }
   })
 }
