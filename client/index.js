@@ -1,5 +1,5 @@
-const server = 'http://localhost:3000';
 
+const server = 'https://murmuring-basin-72616.herokuapp.com/';
 
 
 // showAll todos
@@ -57,10 +57,6 @@ function showTableTodos(data) {
     table.append($item)
   }
 }
-
-
-
-
 
 
 $(document).ready(function () {
@@ -352,36 +348,36 @@ $(document).ready(function () {
 
 
 // github login
-function gitHubSignIn() {
-  if (window.location.search) {
-    const query = window.location.search.substring(1)
-    const token = query.split('token=')[1].split('&')[0]
-    const name = query
-      .split('name=')[1]
-      .split('&')[0]
-      .split('%20')
-      .join(' ')
-    const email = query.split('email=')[1].split('&')[0]
-    if (token) {
-      localStorage.setItem('token', token)
-      localStorage.setItem('name', name)
-      localStorage.setItem('email', email)
-      window.location = 'http://localhost:8080'
-    }
-  }
+// function gitHubSignIn() {
+//   if (window.location.search) {
+//     const query = window.location.search.substring(1)
+//     const token = query.split('token=')[1].split('&')[0]
+//     const name = query
+//       .split('name=')[1]
+//       .split('&')[0]
+//       .split('%20')
+//       .join(' ')
+//     const email = query.split('email=')[1].split('&')[0]
+//     if (token) {
+//       localStorage.setItem('token', token)
+//       localStorage.setItem('name', name)
+//       localStorage.setItem('email', email)
+//       window.location = 'http://localhost:8080'
+//     }
+//   }
 
-  if (localStorage.getItem('token')) {
-    showAllTodos()
-    $('#todolistPage').show()
-    $('#editTodosDiv').hide()
-    $('#loginClass').hide()
-  }
-}
+//   if (localStorage.getItem('token')) {
+//     showAllTodos()
+//     $('#todolistPage').show()
+//     $('#editTodosDiv').hide()
+//     $('#loginClass').hide()
+//   }
+// }
 
-$('#btn_gitHub').on('submit', function (event) {
-  event.preventDefault()
-  gitHubSignIn()
-})
+// $('#btn_gitHub').on('submit', function (event) {
+//   event.preventDefault()
+//   gitHubSignIn()
+// })
 
 
 
