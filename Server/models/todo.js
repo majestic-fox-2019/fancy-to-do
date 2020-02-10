@@ -99,10 +99,7 @@ module.exports = (sequelize, DataTypes) => {
           url: `https://api.darksky.net/forecast/${process.env.API_key}/-6.267116,106.760727,${date}?exclude=[minutely,hourly,alerts]&units=si`,
         })
           .then((data)=> {
-            // console.log("masuk")
-            // console.log(data.data.currently)
-            // console.log(data.data)
-            // res.send({data:data.data.currently.temperature})
+            
             user.temperature = Math.floor(data.data.currently.temperature)
             // console.log(el)
             
