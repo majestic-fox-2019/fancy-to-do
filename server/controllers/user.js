@@ -112,62 +112,62 @@ class ControllerUser {
   }
 
 
-  static gitHub(req, res, next) {
-    const { code } = req.query
-    axios({
-      method: 'POST',
-      url: `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENTID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
-      headers: {
-        Accept: "application/json"
-      }
-    })
-      .then(result => {
-        // console.log(result.data.access_token)
-        return axios({
-          method: 'GET',
-          url: `https://api.github.com/user`,
-          headers: {
-            Authorization: `token ${result.data.access_token}`
-          }
-        })
-      })
-      .then(gitHubUserData => {
-        return User
-          .findOne({
-            where: { email: gitHubUserData.data.email }
-          })
-          .then(resultUser => {
-            if (resultUser) {
-              let dataUserFromGitHub = resultUser.dataValues
-              const token = jwt.sign({ email: dataUserFromGitHub.email, id: dataUserFromGitHub.id }, process.env.JWT_RAHAYU)
-              // res.status(200).json(token)
-              res.redirect(`http://localhost:8080/?token=${token}&email=${dataUserFromGitHub.email}&id=${dataUserFromGitHub.id}`)
-            } else {
+  // static gitHub(req, res, next) {
+  //   const { code } = req.query
+  //   axios({
+  //     method: 'POST',
+  //     url: `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENTID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
+  //     headers: {
+  //       Accept: "application/json"
+  //     }
+  //   })
+  //     .then(result => {
+  //       // console.log(result.data.access_token)
+  //       return axios({
+  //         method: 'GET',
+  //         url: `https://api.github.com/user`,
+  //         headers: {
+  //           Authorization: `token ${result.data.access_token}`
+  //         }
+  //       })
+  //     })
+  //     .then(gitHubUserData => {
+  //       return User
+  //         .findOne({
+  //           where: { email: gitHubUserData.data.email }
+  //         })
+  //         .then(resultUser => {
+  //           if (resultUser) {
+  //             let dataUserFromGitHub = resultUser.dataValues
+  //             const token = jwt.sign({ email: dataUserFromGitHub.email, id: dataUserFromGitHub.id }, process.env.JWT_RAHAYU)
+  //             // res.status(200).json(token)
+  //             res.redirect(`http://localhost:8080/?token=${token}&email=${dataUserFromGitHub.email}&id=${dataUserFromGitHub.id}`)
+  //           } else {
 
-              return User
-                .create({
-                  username: gitHubUserData.data.name,
-                  email: gitHubUserData.data.email,
-                  password: process.env.DefaultPassword
-                })
-                .then(newUserGithub => {
-                  // console.log(newUserGithub.dataValues, 'masuk ga')
-                  const { email, id, username } = newUserGithub.dataValues
-                  const token = jwt.sign({ email, id }, process.env.JWT_RAHAYU)
-                  res.redirect(`http://localhost:8080/?token=${token}&usernam=${username}&email=${email}&id=${id}`)
-                  // res.status(201).json(token)
-                })
-            }
+  //             return User
+  //               .create({
+  //                 username: gitHubUserData.data.name,
+  //                 email: gitHubUserData.data.email,
+  //                 password: process.env.DefaultPassword
+  //               })
+  //               .then(newUserGithub => {
+  //                 // console.log(newUserGithub.dataValues, 'masuk ga')
+  //                 const { email, id, username } = newUserGithub.dataValues
+  //                 const token = jwt.sign({ email, id }, process.env.JWT_RAHAYU)
+  //                 res.redirect(`http://localhost:8080/?token=${token}&usernam=${username}&email=${email}&id=${id}`)
+  //                 // res.status(201).json(token)
+  //               })
+  //           }
 
-          })
+  //         })
 
-      })
-      .catch(err => {
-        // next(err)
-        console.log(err)
-      })
+  //     })
+  //     .catch(err => {
+  //       // next(err)
+  //       console.log(err)
+  //     })
 
-  }
+  // }
 
 }
 
