@@ -8,7 +8,7 @@ const app = express()
 const routes = require("./routes")
 const cors = require("cors")
 const errorHandler = require("./middleware/errorHandler")
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded

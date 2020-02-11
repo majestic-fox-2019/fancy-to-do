@@ -11,15 +11,13 @@
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "username": "pxskqpytdbieeg",
+    "password": "88922f248ba1eaa8e81d08a75807493bf008dbc11125d7160647bbc1a14c1fff",
+    "database": "d2gimu4r4mja0d",
+    "host": "ec2-50-17-178-87.compute-1.amazonaws.com",
+    "dialect": "postgres"
   }
 }
