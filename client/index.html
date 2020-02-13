@@ -6,38 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="google-signin-client_id"
-    content="860696417205-u7fpcq12ltr5kak3e0e5b5bvjthrjf5i.apps.googleusercontent.com">
+    content="976500841607-9lbrbjitpc510722q07nb6n8qa24efuc.apps.googleusercontent.com">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/7c336076cf.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
   <title>Fancy Todo</title>
 </head>
 
 <body>
+
+  <!-- Navbar -->
+  <div class="navigation">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#" style="font-weight: 200;">FANCY TODO</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="addButton" data-toggle="modal" data-target="#addModal"><i
+                class="fas fa-plus" style="margin-right: 5px;"></i>Add Task</a>
+          </li>
+        </ul>
+        <a href="#" onclick="signOut();" class="signOut btn btn-outline-danger btn-sm my-2 my-sm-0 "> <i
+            class="fas fa-sign-out-alt"></i> Sign out</a>
+      </div>
+    </nav>
+  </div>
+  <!--  -->
+
+
   <div class="container">
+
+    <!-- Register Form -->
     <div class="registerForm">
       <form method="POST" id="register">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" class="form-control" id="name">
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email">
+          <input type="text" class="form-control" id="nameRegister">
         </div>
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" class="form-control" id="username">
+          <input type="text" class="form-control" id="usernameRegister">
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="emailRegister">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="text" class="form-control" id="password">
+          <input type="password" class="form-control" id="passwordRegister">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a class="link" href="#">Have account?</a>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <a class="loginLink" href="#">Have account?</a>
       </form>
     </div>
+    <!--  -->
 
+    <!-- Login Form -->
     <div class="loginForm">
       <form method="POST" id="login">
         <div class="form-group">
@@ -46,17 +79,19 @@
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="text" class="form-control" id="passwordLogin">
+          <input type="password" class="form-control" id="passwordLogin">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
       </form>
     </div>
+    <!--  -->
 
-
+    <!-- Table Add -->
     <div class="add">
-      <button id="addButton" type="button" class="btn btn-info" style="margin: 20px;" data-toggle="modal"
-        data-target="#addModal">Add New Task</button>
-      <table class="table" style="text-align: center;">
+      <h5 class="titleBar">MY TODO LIST</h5>
+
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -79,7 +114,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">Update</h5>
+              <h5 class="modal-title" id="staticBackdropLabel">Add New Task</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -100,8 +135,8 @@
                 <div class="form-group">
                   <label for="status">Status</label>
                   <select class="form-control" id="status">
-                    <option value="false">False</option>
-                    <option value="true">True</option>
+                    <option value="false">Unfinish</option>
+                    <option value="true">Finish</option>
                   </select>
                 </div>
 
@@ -110,15 +145,15 @@
                   <input type="date" class="form-control" id="duedate">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-outline-info">Add</button>
               </form>
             </div>
           </div>
         </div>
       </div>
+      <!--  -->
     </div>
-
-
+    <!--  -->
 
 
     <!-- Modal Update -->
@@ -149,8 +184,8 @@
               <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="statusUpdate">
-                  <option value="false">False</option>
-                  <option value="true">True</option>
+                  <option value="false">Unfinish</option>
+                  <option value="true">Finished</option>
                 </select>
               </div>
 
@@ -158,16 +193,19 @@
                 <label for="description">Due Date</label>
                 <input type="date" class="form-control" id="duedateUpdate">
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-outline-info">Update</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <!--  -->
 
 
   </div>
+
 </body>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
@@ -175,7 +213,8 @@
   integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
+<script src="user.js"></script>
+<script src="todo.js"></script>
 <script src="app.js"></script>
 
 </html>

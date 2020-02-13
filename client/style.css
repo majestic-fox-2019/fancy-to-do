@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.titleBar { 
+  text-align: center;
+  margin-top: 20px;
+  word-spacing: 5px;
+  letter-spacing: 20px;
+  font-weight: 300;
+}
+
+.table {
+  text-align: center;
+  margin-top: 20px;
+}
+
+th {
+  font-weight: 200;
+}

@@ -1,261 +1,154 @@
-$(document).ready(function () {
+let $loginForm = $('.loginForm')
+let $registerForm = $('.registerForm')
+let $tableTodo = $('.add')
+let $register = $('#register')
+let $addTodo = $('#addTodo')
+let $updateForm = $('.updateForm')
+let $login = $('#login')
+let $signOut = $('.signOut')
+let $gSignIn = $('.g-signin2')
+let $navbar = $('.navigation')
 
-  const server = 'http://localhost:3000'
+if (!localStorage.getItem("token")) {
+  $registerForm.show()
+  $loginForm.hide()
+  $tableTodo.hide()
+  $signOut.hide()
+  $updateForm.hide()
+  $navbar.hide()
+} else {
+  $loginForm.hide()
+  $registerForm.hide()
+  $signOut.show()
+  $navbar.show()
+  $tableTodo.show()
+  $updateForm.show()
+  TodoApps.showTodoList()
+}
 
-  var loginForm = $('.loginForm')
-  var registerForm = $('.registerForm')
-  var tableTodo = $('.add')
-  // var todolist = $('.todolist')
-  var register = $('#register')
-  var addTodo = $('#addTodo')
-  var updateForm = $('.updateForm')
 
-  if (!localStorage.getItem("token")) {
-    registerForm.show()
-    loginForm.hide()
-    tableTodo.hide()
-    updateForm.hide()
-  } else {
-    loginForm.hide()
-    registerForm.hide()
-    showTodoList()
-    // todolist.show()
-    tableTodo.show()
-    updateForm.show()
+let redirectToLogin = $('.loginLink')
+redirectToLogin.on('click', function (e) {
+  $loginForm.show()
+  $registerForm.hide()
+})
+
+
+// Register new User
+$register.on('submit', (e) => {
+  e.preventDefault()
+  let $name = $("#nameRegister").val()
+  let $email = $('#emailRegister').val()
+  let $username = $('#usernameRegister').val()
+  let $password = $('#passwordRegister').val()
+
+  const user = {
+    name: $name,
+    email: $email,
+    username: $username,
+    password: $password
   }
+  User.register(user)
+})
 
-  register.on('submit', function (e) {
+
+// Login User
+$login.on('submit', (e) => {
+  e.preventDefault()
+  let $email = $('#emailLogin').val()
+  let $password = $('#passwordLogin').val()
+
+  const user = {
+    email: $email,
+    password: $password
+  }
+  User.login(user)
+})
+
+// Signin Google
+function onSignIn(googleUser) {
+  let id_token = googleUser.getAuthResponse().id_token
+  $.ajax({
+    method: 'POST',
+    url: `${server}/login/google`,
+    data: { id_token }
+  })
+    .done(token => {
+      localStorage.setItem('token', token)
+      $tableTodo.show()
+      $loginForm.hide()
+      $navbar.show()
+      TodoApps.showTodoList()
+    })
+    .fail(function (result) {
+      console.log(result)
+    })
+}
+
+// Signout
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+    localStorage.removeItem('token')
+    $navbar.hide()
+    $registerForm.show()
+    $tableTodo.hide()
+  })
+}
+
+
+// add new Todo list
+$addTodo.on('submit', function (e) {
+  e.preventDefault()
+  let title = $("#title").val()
+  let description = $("#description").val()
+  let status = $("#status").val()
+  let due_date = $("#duedate").val()
+
+  const addNew = { title, description, status, due_date }
+
+  TodoApps.addTodo(addNew)
+  Swal.fire({
+    icon: 'success',
+    title: 'Added to your todolist!',
+    showConfirmButton: false,
+    timer: 1500
+  })
+})
+
+
+// Button click (delete or update)
+$(this).click(function (e) {
+  if (document.activeElement.id === 'deletetodo') {
     e.preventDefault()
-    var name = $("#name").val()
-    var email = $('#email').val()
-    var username = $('#username').val()
-    var password = $('#password').val()
-
-    const user = {
-      name: name,
-      email: email,
-      username: username,
-      password: password
-    }
-
-    $.ajax({
-      method: 'POST',
-      url: `${server}/register`,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(user),
-    })
-      .done(function (data) {
-        console.log(data)
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
-  })
-
-
-  var redirectToLogin = $('.link')
-  redirectToLogin.on('click', function (e) {
-    loginForm.show()
-    registerForm.hide()
-  })
-
-  if (localStorage.getItem('token')) {
-    loginForm.hide()
-
+    TodoApps.deleteTodo(document.activeElement.href)
   }
-
-  var login = $('#login')
-  login.on('submit', function (e) {
+  else if (document.activeElement.id === 'updatetodo') {
     e.preventDefault()
-    var email = $('#emailLogin').val()
-    var password = $('#passwordLogin').val()
-
-    const user = {
-      email: email,
-      password: password
-    }
-
-    $.ajax({
-      method: 'POST',
-      url: `${server}/login`,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(user)
-    })
-      .done(function (data) {
-        localStorage.setItem("token", data)
-
-        tableTodo.show()
-        loginForm.hide()
-
-        showTodoList()
-
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
-  })
-
-  var template = `<tr>
-                <td class = "id"></td>
-                <td class = "title"></td>
-                <td class = "description"></td>
-                <td class = "status"></td>
-                <td class = "due_date"></td>
-                <td class = "language"></td>
-                <td class = "action"> 
-                <a type="button" id="deletetodo" class="btn btn-danger btn-sm" role="button">Delete</a> 
-                <a type="button" id="updatetodo" class="btn btn-warning btn-sm" role="button" data-toggle="modal" data-target="#updateModal">Update</a> 
-                </td>
-                </tr>`
-
-
-  function showTodoList() {
-    return $.ajax({
-      method: 'GET',
-      url: `${server}/todos`,
-      headers: {
-        token: localStorage.token
-      }
-    })
-      .done(function (data) {
-        showTemplate(data)
-        // console.log(data, '< ini data yaaa')
-      })
-      .fail(function (data) {
-        console.log(data, '< ini fail')
-      })
+    console.log(document.activeElement.href, "yang mau di update")
+    TodoApps.findTodoById(document.activeElement.href)
   }
+})
 
 
-  let tbody = $('#tbody')
+// update Todo list
+let $update = $('#updateTodo')
+$update.on('submit', function (e) {
+  e.preventDefault()
+  let id = $("#edit_id").val()
+  let title = $("#titleUpdate").val()
+  let description = $("#descriptionUpdate").val()
+  let status = $("#statusUpdate").val()
+  let due_date = $("#duedateUpdate").val()
 
-  function showTemplate(todos) {
-    tbody.empty()
-    for (let i = 0; i < todos.length; i++) {
-      let $item = $(template)
-      $item.find(".id").text(todos[i].id)
-      $item.find(".title").text(todos[i].title)
-      $item.find(".description").text(todos[i].description)
-      $item.find(".status").text(todos[i].status)
-      $item.find(".due_date").text(todos[i].due_date)
-      $item.find(".language").text(todos[i].language)
-      $item.find('#deletetodo').prop('href', `${server}/todos/${todos[i].id}`)
-      $item.find('#updatetodo').prop('href', `${server}/todos/${todos[i].id}`)
-      // $item.find('#updatetodo').prop('onclick', updateTodo(todos[i].id))
-      tbody.append($item)
-    }
-  }
+  const updateData = { title, description, status, due_date }
 
-
-  addTodo.on('submit', function (e) {
-    e.preventDefault()
-    var title = $("#title").val()
-    var description = $("#description").val()
-    var status = $("#status").val()
-    var due_date = $("#duedate").val()
-
-    const addNew = { title, description, status, due_date }
-
-    $.ajax({
-      headers: {
-        token: localStorage.token
-      },
-      method: 'POST',
-      url: `${server}/todos`,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify(addNew),
-    })
-      .done(function (data) {
-        showTodoList()
-        console.log(data)
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
+  TodoApps.updateTodo(id, updateData)
+  Swal.fire({
+    icon: 'success',
+    title: 'Successfully update your todolist!',
+    showConfirmButton: false,
+    timer: 1500
   })
-
-  console.log(document.activeElement.id, 'ini')
-
-
-  $(this).click(function (e) {
-    if (document.activeElement.id === 'deletetodo') {
-      e.preventDefault()
-      deleteTodo(document.activeElement.href)
-    }
-    else if (document.activeElement.id === 'updatetodo') {
-      e.preventDefault()
-      console.log(document.activeElement.href, "yang mau di update")
-      getSingleTodo(document.activeElement.href)
-    }
-  })
-
-  function deleteTodo(url) {
-    return $.ajax({
-      method: 'DELETE',
-      url: url,
-      headers: {
-        token: localStorage.token
-      },
-      contentType: "application/json; charset=utf-8",
-    })
-      .done(function (data) {
-        // console.log('yes')
-        showTodoList()
-
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
-  }
-
-  function getSingleTodo(url) {
-    $.ajax({
-      headers: {
-        token: localStorage.token,
-      },
-      url: url
-    })
-      .done(function (data) {
-        $('#edit_id').val(data.id)
-        $('#titleUpdate').val(data.title)
-        $('#descriptionUpdate').val(data.description)
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
-  }
-
-  var update = $('#updateTodo')
-
-  update.on('submit', function (e) {
-    e.preventDefault()
-    var id = $("#edit_id").val()
-    var title = $("#titleUpdate").val()
-    var description = $("#descriptionUpdate").val()
-    var status = $("#statusUpdate").val()
-    var due_date = $("#duedateUpdate").val()
-
-    const updateData = { title, description, status, due_date }
-
-    $.ajax({
-      method: 'PUT',
-      url: `${server}/todos/${id}`,
-      headers: {
-        token: localStorage.token
-      },
-      data: JSON.stringify(updateData),
-      contentType: "application/json; charset=utf-8",
-    })
-      .done(function (data) {
-        console.log(data)
-        $('#updateModal').modal('hide')
-        showTodoList()
-      })
-      .fail(function (data) {
-        console.log(data)
-      })
-
-
-  })
-
 })
