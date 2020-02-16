@@ -105,7 +105,6 @@ class Component {
   }
 
   static detailModal(todo) {
-    // console.log(todo)
     const content = `
         <div class="header">
           ${todo.title}
@@ -293,7 +292,7 @@ class Component {
   static projectDetailTodosSegment(projectDetails, isMember) {
     $.ajax({
       type: 'GET',
-      url: `${localhost}/todos/projects/${projectDetails[0].ProjectId}`,
+      url: `${url}/todos/projects/${projectDetails[0].ProjectId}`,
       headers: {
         token: token
       },
@@ -335,7 +334,6 @@ class Component {
                 </div>
           `
           }
-          // console.log(todo.status)
           let appendTarget
           if (todo.status == 'doing') {
             appendTarget = '#project-todo-doing'
@@ -344,7 +342,6 @@ class Component {
           } else {
             appendTarget = '#project-todo-undone'
           }
-          // // console.log(appendTarget)
           let tag = `
               <div class="ui center aligned segment">
                 <div class="card">
@@ -368,7 +365,6 @@ class Component {
         })
       },
       error: function(err) {
-        console.log(err.responseJSON)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',

@@ -13,12 +13,11 @@ class Project {
   static getAllProjects() {
     $.ajax({
       type: 'GET',
-      url: `${localhost}/projects/`,
+      url: `${url}/projects/`,
       headers: {
         token: token
       },
       success: function(projects) {
-        // console.log(projects)
         $('#project-list').empty()
         projects.forEach((project) => {
           $('#project-list').append(Component.projectcards(project))
@@ -26,7 +25,6 @@ class Project {
         $('#projects').show()
       },
       error: function(err) {
-        // console.log(err)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -39,12 +37,11 @@ class Project {
   static getProjectDetail(projectId) {
     $.ajax({
       type: 'GET',
-      url: `${localhost}/projects/${projectId}/details`,
+      url: `${url}/projects/${projectId}/details`,
       headers: {
         token: token
       },
       success: function(projectDetails) {
-        // console.log(projectDetails)
         $('#project-detail-list').empty()
         $('#project-detail-list').append(
           Component.projectDetailSegment(projectDetails)
@@ -53,7 +50,6 @@ class Project {
         $('#project-detail').show()
       },
       error: function(err) {
-        console.log(err.responseJSON)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -76,7 +72,7 @@ class Project {
       if (result.value) {
         $.ajax({
           type: 'POST',
-          url: `${localhost}/projects/`,
+          url: `${url}/projects/`,
           headers: {
             token: token
           },
@@ -84,7 +80,6 @@ class Project {
             name: $('input[name="name-create-project"]').val()
           },
           success: function(response) {
-            // console.log(response)
             Swal.fire({
               icon: 'success',
               title: 'Project successfully created',
@@ -97,7 +92,6 @@ class Project {
             })
           },
           error: function(err) {
-            // console.log(err.responseJSON)
             $('#err-create-project').empty()
             err.responseJSON.forEach((msg) => {
               let error = Component.error(msg)
@@ -130,7 +124,7 @@ class Project {
       if (result.value) {
         $.ajax({
           type: 'POST',
-          url: `${localhost}/todos/projects/${projectId}`,
+          url: `${url}/todos/projects/${projectId}`,
           headers: {
             token: token
           },
@@ -142,7 +136,6 @@ class Project {
             due_date: $('input[name="due_date-create-project-todo"]').val()
           },
           success: function(response) {
-            // console.log(response)
             Swal.fire({
               icon: 'success',
               title: 'Todo successfully added',
@@ -158,7 +151,6 @@ class Project {
             })
           },
           error: function(err) {
-            // console.log(err.responseJSON)
             $('#err-create-project-todo').empty()
             err.responseJSON.forEach((msg) => {
               let error = Component.error(msg)
@@ -180,14 +172,12 @@ class Project {
   static getAllNonMemberUsers(projectId) {
     $.ajax({
       type: 'GET',
-      url: 'http://localhost:3000/users/project/' + projectId,
+      url: `${url}/users/project/${projectId}`,
       async: false,
       success: function(response) {
-        console.log(response)
         saveNonMemberUsers(response)
       },
       error: function(err) {
-        console.log(err.responseJSON)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -212,7 +202,7 @@ class Project {
         if (result.value) {
           $.ajax({
             type: 'POST',
-            url: `${localhost}/projects/${projectId}/invite`,
+            url: `${url}/projects/${projectId}/invite`,
             headers: {
               token: token
             },
@@ -257,12 +247,11 @@ class Project {
         if (result.value) {
           $.ajax({
             type: 'POST',
-            url: `${localhost}/projects/${projectId}/join`,
+            url: `${url}/projects/${projectId}/join`,
             headers: {
               token: token
             },
             success: function(response) {
-              // console.log(response)
               Swal.fire({
                 icon: 'success',
                 title: 'Successfully join project',
@@ -273,7 +262,6 @@ class Project {
               })
             },
             error: function(err) {
-              // console.log(err.responseJSON)
               Swal.fire({
                 icon: 'error',
                 text: err.responseJSON

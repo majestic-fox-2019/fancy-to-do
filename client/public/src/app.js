@@ -1,4 +1,4 @@
-const localhost = 'http://localhost:3000'
+const url = 'https://todoapp-muhafa.herokuapp.com/'
 var token = localStorage.getItem('token')
 $(document).ready(function() {
   if (!token) {
@@ -23,12 +23,11 @@ function onSignIn(googleUser) {
   const id_token = googleUser.getAuthResponse().id_token
   $.ajax({
     type: 'post',
-    url: `${localhost}/users/g-sign-in`,
+    url: `${url}/users/g-sign-in`,
     data: {
       idToken: id_token
     },
     success: function(res) {
-      // console.log(res)
       localStorage.setItem('token', res.token)
       token = localStorage.getItem('token')
       localStorage.setItem('username', res.username)
@@ -52,7 +51,6 @@ function onSignIn(googleUser) {
 class Navigation {
   static toHome() {
     window.location.hash = '#'
-    // console.log(window.location.href)
     $('#home').hide()
     $('#project-detail').hide()
     $('#projects').hide('fast', function() {
@@ -70,7 +68,6 @@ class Navigation {
 
   static toProjects() {
     window.location.hash = '#'
-    // console.log(window.location.href)
     $('#projects').hide()
     $('#project-detail').hide()
     $('#home').hide('fast', function() {
@@ -88,7 +85,6 @@ class Navigation {
 
   static toProjectDetail(projectId) {
     window.location.hash = 'project-' + projectId
-    // console.log(window.location)
     $('#projects').hide('fast', function() {
       $('#loading').show('fast', function() {
         Project.getProjectDetail(projectId)
@@ -145,7 +141,7 @@ class Frontpage {
     }
     $.ajax({
       type: 'post',
-      url: `${localhost}/users/login`,
+      url: `${url}/users/login`,
       data: loginData,
       success: function(res) {
         $('input[name="email-login"]').val('')
@@ -190,14 +186,13 @@ class Frontpage {
       if (result.value) {
         $.ajax({
           type: 'post',
-          url: `${localhost}/users/register`,
+          url: `${url}/users/register`,
           data: {
             username: $('input[name="username-register"]').val(),
             email: $('input[name="email-register"]').val(),
             password: $('input[name="password-register"]').val()
           },
           success: function(res) {
-            // console.log(res);
             $('.ui.basic.modal').modal('hide')
             $('input[name="username-register"]').val()
             $('input[name="email-register"]').val()
@@ -212,7 +207,6 @@ class Frontpage {
             })
           },
           error: function(err) {
-            console.log(err)
             $('.err-register').empty()
             err.responseJSON.forEach((msg) => {
               let error = Component.error(msg)
@@ -236,12 +230,11 @@ class Homepage {
   static getAllPersonalTodos() {
     $.ajax({
       type: 'GET',
-      url: `${localhost}/todos/`,
+      url: `${url}/todos/`,
       headers: {
         token: token
       },
       success: function(todos) {
-        // console.log(todos)
         let undone = []
         let doing = []
         let done = []
@@ -265,7 +258,6 @@ class Homepage {
         $('#homepage').show()
       },
       error: function(err) {
-        console.log(err.responseJSON)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -288,7 +280,7 @@ class Homepage {
       if (result.value) {
         $.ajax({
           type: 'POST',
-          url: `${localhost}/todos/`,
+          url: `${url}/todos/`,
           headers: {
             token: token
           },
@@ -298,7 +290,6 @@ class Homepage {
             due_date: $('input[name="due_date-create-todo"]').val()
           },
           success: function(response) {
-            console.log(response)
             Swal.fire({
               icon: 'success',
               title: 'Todo successfully added',
@@ -312,7 +303,6 @@ class Homepage {
             })
           },
           error: function(err) {
-            // console.log(err.responseJSON)
             $('#err-create-personal-todo').empty()
             err.responseJSON.forEach((msg) => {
               let error = Component.error(msg)
@@ -334,7 +324,6 @@ class Homepage {
   static update(event) {
     event.preventDefault()
     const todoId = $('#update').data('id')
-    console.log(todoId)
     Swal.fire({
       title: 'Update todo ?',
       text: 'Are you sure want to update this todo?',
@@ -347,7 +336,7 @@ class Homepage {
       if (result.value) {
         $.ajax({
           type: 'PUT',
-          url: `${localhost}/todos/${todoId}`,
+          url: `${url}/todos/${todoId}`,
           headers: {
             token: token
           },
@@ -409,7 +398,7 @@ class Homepage {
       if (result.value) {
         $.ajax({
           type: 'PATCH',
-          url: `${localhost}/todos/${todoId}`,
+          url: `${url}/todos/${todoId}`,
           headers: {
             token: token
           },
@@ -458,7 +447,7 @@ class Homepage {
       if (result.value) {
         $.ajax({
           type: 'DELETE',
-          url: `${localhost}/todos/${todoId}`,
+          url: `${url}/todos/${todoId}`,
           headers: {
             token: token
           },
