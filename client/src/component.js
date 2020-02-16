@@ -1,3 +1,4 @@
+'use strict'
 class Component {
   static showRegister() {
     $('.ui.basic.modal')
@@ -290,7 +291,6 @@ class Component {
   }
 
   static projectDetailTodosSegment(projectDetails, isMember) {
-    let content = ''
     $.ajax({
       type: 'GET',
       url: `${localhost}/todos/projects/${projectDetails[0].ProjectId}`,
@@ -298,9 +298,9 @@ class Component {
         token: token
       },
       success: function(todos) {
-        // console.log(todos)
         $('#todo-list-project').empty()
         todos.forEach((todo) => {
+          let content = ''
           let date = Component.dateFormatter(todo.due_date)
           let status = Component.statusToUpdate(todo.status)
 
@@ -311,16 +311,14 @@ class Component {
                   <div class="ui two buttons">
                     <button class="ui basic green button ${
                       status.downgradeDisable
-                    }" 
+                    }"
                     onclick="Homepage.updateStatus(${todo.id}, '${
               status.downgrade
             }')">
                     ${status.downgrade.toUpperCase()}
                     </button>
-                    
-                    <button class="ui basic red button ${
-                      status.upgradeDisable
-                    }" 
+
+                    <button class="ui basic red button ${status.upgradeDisable}"
                     onclick="Homepage.updateStatus(${todo.id}, '${
               status.upgrade
             }')">
@@ -337,13 +335,16 @@ class Component {
                 </div>
           `
           }
-          let appendTarget = '#project-todo-undone'
+          // console.log(todo.status)
+          let appendTarget
           if (todo.status == 'doing') {
             appendTarget = '#project-todo-doing'
           } else if (todo.status == 'done') {
             appendTarget = '#project-todo-done'
+          } else {
+            appendTarget = '#project-todo-undone'
           }
-          // console.log(appendTarget)
+          // // console.log(appendTarget)
           let tag = `
               <div class="ui center aligned segment">
                 <div class="card">
@@ -403,6 +404,10 @@ class Component {
         allowMultiple: true
       })
       .modal('show')
+  }
+
+  static closeAddMemberModal() {
+    $('input[name="add-user-project"]').val('')
   }
 }
 

@@ -130,7 +130,7 @@ class Project {
       if (result.value) {
         $.ajax({
           type: 'POST',
-          url: `${localhost}/todos/projects/${todoId}`,
+          url: `${localhost}/todos/projects/${projectId}`,
           headers: {
             token: token
           },
@@ -220,7 +220,6 @@ class Project {
               username: $('input[name="add-user-project"]').val()
             },
             success: function(response) {
-              console.log(response)
               Swal.fire({
                 icon: 'success',
                 title: 'Successfully add member',
@@ -232,10 +231,9 @@ class Project {
               })
             },
             error: function(err) {
-              console.log(err.responseJSON)
               Swal.fire({
                 icon: 'error',
-                text: err.responseJSON
+                title: err.responseJSON
               })
             }
           })

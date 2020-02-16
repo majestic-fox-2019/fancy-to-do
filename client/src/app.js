@@ -127,6 +127,7 @@ class Navigation {
           $('#projects').hide()
           $('#project-detail').hide()
           $('.ui.labeled.icon.sidebar').sidebar('hide')
+          window.location.reload()
           $('#frontpage').fadeIn('fast')
         })
       }
@@ -333,6 +334,7 @@ class Homepage {
   static update(event) {
     event.preventDefault()
     const todoId = $('#update').data('id')
+    console.log(todoId)
     Swal.fire({
       title: 'Update todo ?',
       text: 'Are you sure want to update this todo?',
@@ -372,11 +374,16 @@ class Homepage {
           },
           error: function(err) {
             $('#err-update-personal-todo').empty()
-            err.responseJSON.forEach((msg) => {
-              let error = Component.error(msg)
-              $('#err-update-personal-todo').append(error)
+            if (Array.isArray(err.responseJSON)) {
+              err.responseJSON.forEach((msg) => {
+                let error = Component.error(msg)
+                $('#err-update-personal-todo').append(error)
+                $('.error').slideDown('fast')
+              })
+            } else {
+              $('#err-update-personal-todo').append(err.responseJSON)
               $('.error').slideDown('fast')
-            })
+            }
             setTimeout(() => {
               $('.error').slideUp('fast')
               setTimeout(() => {

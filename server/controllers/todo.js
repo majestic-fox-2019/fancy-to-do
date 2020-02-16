@@ -62,14 +62,7 @@ class ControllerTodo {
     }
     Todo.update(value, {
       where: {
-        [Op.and]: [
-          {
-            id: req.params.id
-          },
-          {
-            UserId: req.userInfo.id
-          }
-        ]
+        id: req.params.id
       },
       returning: true,
       plain: true
@@ -88,14 +81,7 @@ class ControllerTodo {
     }
     Todo.update(value, {
       where: {
-        [Op.and]: [
-          {
-            id: req.params.id
-          },
-          {
-            UserId: req.userInfo.id
-          }
-        ]
+        id: req.params.id
       },
       returning: true,
       plain: true
@@ -112,22 +98,14 @@ class ControllerTodo {
     let todoData
     Todo.findOne({
       where: {
-        [Op.and]: [
-          {
-            id: req.params.id
-          },
-          {
-            UserId: req.userInfo.id
-          }
-        ]
+        id: req.params.id
       }
     })
       .then((todo) => {
         todoData = todo
         return Todo.destroy({
           where: {
-            id: todo.id,
-            UserId: req.userInfo.id
+            id: todo.id
           }
         })
       })

@@ -10,7 +10,7 @@ function authorize(req, res, next) {
       if (!todo) {
         let err = createError(404, 'Todo Not Found')
         next(err)
-      } else if (todo.UserId != req.userInfo.id) {
+      } else if (todo.UserId != req.userInfo.id && !todo.ProjectId) {
         let err = createError(401, 'Unauthorized user')
         next(err)
       } else {

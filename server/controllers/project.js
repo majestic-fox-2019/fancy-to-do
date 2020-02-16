@@ -85,6 +85,9 @@ class ControllerProject {
           return ProjectUser.create(data)
         }
       })
+      .then((result) => {
+        res.status(201).json(result)
+      })
       .catch((err) => {
         next(err)
       })
