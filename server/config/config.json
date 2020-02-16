@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "fancy-todo",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "qirshbkmocidzf",
+    "password": "8fabd6fdc39f289a2684d0c49562f518edcbd9cb96f9e1a1ae8e0baab3662929",
+    "database": "dcj4te21gme2ss",
+    "host": "ec2-184-72-235-159.compute-1.amazonaws.com",
+    "dialect": "postgres"
+  }
+}
