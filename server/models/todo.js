@@ -38,12 +38,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     UserId : {
       type : DataTypes.INTEGER
+    },
+    ProjectId : {
+      type : DataTypes.INTEGER
     }
   }, 
   {sequelize});
 
   Todo.associate = function(models) {
     Todo.belongsTo(models.User)
+
+    Todo.belongsTo(models.Project)
   };
   return Todo;
 };

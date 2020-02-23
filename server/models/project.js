@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type : DataTypes.INTEGER,
       defaultValue : 0
+    },
+    AuthorId: {
+      type : DataTypes.INTEGER,
     }
   }, {sequelize});
 
@@ -40,6 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     Project.belongsToMany(models.User, {
       through : 'UserProject'
     })
+
+    Project.hasMany(models.Todo)
   };
   return Project;
 };

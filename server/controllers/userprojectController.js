@@ -1,4 +1,5 @@
 const UserProject = require('../models').UserProject;
+const db = require('../models');
 
 class UserProjectController{
     static create(req,res,next){
@@ -51,6 +52,42 @@ class UserProjectController{
         UserProject.destroy({
             where : {
                 id : req.params.id
+            }
+        })
+    }
+
+    static invite(req,res,next){
+        db.User.findByPk(req.body.UserId)
+        .then(response => {
+            if(response){
+                UserProject.create({
+                    ProjectId : req.params.ProjectId,
+                    UserId : req.body.UserId
+                })
+                .then(response => {
+                    res.status(201).json(response)
+                })
+            } else {
+                next('user-not-found')
+            }
+        })
+    }
+    
+    static uninvite(req,res,next){
+        db.User.findByPk(req.body.UserId)
+        .then(response => {
+            if(response){
+                UserProject.destroy({
+                    where : {
+                        ProjectId : req.params.ProjectId,
+                        UserId : req.body.UserId
+                    }
+                })
+                .then(response => {
+                    res.status(201).json(response)
+                })
+            } else {
+                next('user-not-found')
             }
         })
     }
