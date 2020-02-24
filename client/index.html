@@ -1,0 +1,190 @@
+<html>
+
+<head>
+	<title>Fancy To Do |</title>
+	<meta name="google-signin-client_id"
+		content="965844152707-ir059r4l11ldabhinan92sippi5ejb80.apps.googleusercontent.com">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="./public/css/index.css">
+</head>
+
+<body>
+	<div id="errorStatus"></div>
+	<div id="login">
+		<div class="login-bg">
+			<div class="cover"></div>
+		</div>
+		<div class="loginDiv" id="loginDiv">
+			<h3>Welcome to Fancy TODO!</h3>
+			<div class="line"></div>
+			<div class="providerLogin">
+				<div class="g-signin2 center2" data-onsuccess="onSignIn"></div>
+			</div>
+			<p>--------- Or --------</p>
+			<form class="form">
+				<div class="input">
+					<input type="email" id="emailLogin" placeholder="Enter Your Email">
+				</div>
+				<div class="input">
+					<input type="password" id="passwordLogin" placeholder="Enter Your Password">
+				</div>
+				<button class="submit" id="submitLogin" type="submit">Login</button>
+			</form>
+			<p style="text-align: left;padding: 0px 5%;margin-top: 20px;">Don't have any account yet? Let's take it
+				easy, just <a id="registerButton" href="#">Register New
+					Account.</a></p>
+		</div>
+		<div class="registerDiv" id="registerDiv">
+			<h3>Get New Account!</h3>
+			<div class="line"></div>
+			<form class="form">
+				<div class="input">
+					<input type="email" id="emailRegister" placeholder="Enter Your New Email">
+				</div>
+				<div class="input">
+					<input type="password" id="passwordRegister" placeholder="Enter Your Password">
+				</div>
+				<button class="submit" id="submitRegister" type="submit">Register</button>
+			</form>
+			<p style="text-align: left;padding: 0px 5%;margin-top: 30px;">Have an account, let's go back and <a
+					id="loginButton" href="#">Login With Your Account.</a></p>
+		</div>
+	</div>
+	<div id="todo">
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLabel">Add TODO</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="formAdd">
+							<div class="form-group">
+								<label for="titleAdd">TODO Title</label>
+								<input type="text" class="form-control" id="titleAdd" placeholder="Enter Title">
+							</div>
+							<div class="form-group">
+								<label for="descriptionAdd">TODO Description</label>
+								<textarea class="form-control" id="descriptionAdd" rows="5"></textarea>
+							</div>
+							<br>
+							<div class="form-group">
+								<label for="due_dateAdd">TODO Due Date</label>
+								<input type="date" class="form-control" id="due_dateAdd">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" id="submitAdd" form="formAdd" class="btn btn-primary">Save TODO</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLabel">Edit TODO</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="formEdit">
+							<div class="form-group">
+								<label for="titleEdit">TODO Title</label>
+								<input type="text" class="form-control" id="titleEdit" placeholder="Enter Title">
+							</div>
+							<div class="form-group">
+								<label for="descriptionEdit">TODO Description</label>
+								<textarea class="form-control" id="descriptionEdit" rows="5"></textarea>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="statusEdit">
+								<label class="form-check-label" for="statusEdit">
+									Status
+								</label>
+							</div>
+							<br>
+							<div class="form-group">
+								<label for="due_dateEdit">TODO Due Date</label>
+								<input type="date" class="form-control" id="due_dateEdit">
+							</div>
+							<input type="hidden" id="idEdit">
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" id="submitEdit" form="formEdit" class="btn btn-primary">Save
+							changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light absolute">
+			<a class="navbar-brand" href="#">Navbar</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+					</li>
+				</ul>
+				<div class="user" id="dropdown">
+					<p id="userEmail"></p>
+				</div>
+
+			</div>
+		</nav>
+		<div id="logout">
+			<a href="">logout</a>
+		</div>
+		<div class="todoDiv">
+			<h3 style="float: left;">Todo List</h3>
+			<!-- Button trigger modal -->
+			<button style="float: right;margin-bottom: 30px;" type="button" class="btn btn-outline-primary"
+				data-toggle="modal" data-target="#modalAdd">
+				Add TODO
+			</button>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Title</th>
+						<th scope="col" width="40%">Description</th>
+						<th scope="col">Status</th>
+						<th scope="col">Due Date</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody id="data">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+
+<script src="./public/js/index.js"></script>
+
+</html>
