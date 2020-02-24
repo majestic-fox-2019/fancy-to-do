@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta class="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Fancy Todo</title>
+	<meta name="google-signin-client_id"
+		content="592106891218-vq77uvddah08giem2sio0i29ogduv7f3.apps.googleusercontent.com">
+	<!-- <link rel='stylesheet' href='css/style.min.css' /> -->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<link rel='stylesheet' href='css/style.css' />
+</head>
+
+<body>
+	<!-- navbar -->
+	<div class="navbar">
+		<nav class="nav__mobile"></nav>
+		<div class="container">
+			<div class="navbar__inner">
+				<a href="#" class="navbar__logo">Fancy Todo</a>
+				<nav class="navbar__menu" id="navbar_menu">
+					<ul>
+						<li><a href="#" id="username">Username</a></li>
+						<li><a href="#" id="logout">Logout</a></li>
+					</ul>
+				</nav>
+				<div class="navbar__menu-mob"><a href="#" id='toggle'><svg role="img" xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 448 512">
+							<path fill="currentColor"
+								d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+								class=""></path>
+						</svg></a></div>
+			</div>
+		</div>
+	</div>
+	<!-- Authentication pages -->
+	<div class="auth" id="landing_page">
+		<div class="container">
+			<div class="auth__inner">
+				<div class="auth__media">
+					<img src="./images/undraw_selfie.svg">
+				</div>
+				<div class="auth__auth" id="login_page">
+					<h1 class="auth__title">Login to your account</h1>
+					<br>
+					<form id="login_form" class="form">
+						<label>Email</label>
+						<input type="text" name="email" id='email' placeholder="you@example.com">
+						<label>Password</label>
+						<input type="password" name="password" id='password'
+							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+							autocomplete="off">
+						<button type='submit' class="button button__accent">Log in</button>
+					</form>
+					<small>Atau login menggunakan</small>
+					<br>
+					<div class="g-signin2 d-flex flex-column" data-onsuccess="onSignIn"></div>
+
+					<p class="left-align">Don't have an account?
+						<a href="#" id="register_link" style="font-weight: bold;">Register
+						</a>
+					</p>
+				</div>
+
+				<div class="auth__auth" id="register_page">
+					<h1 class="auth__title">Create new account</h1>
+					<br>
+					<form id="register_form" class="form">
+						<label>Email</label>
+						<input type="text" name="email" id='reg-email' placeholder="you@example.com">
+						<label>Password</label>
+						<input type="password" name="password" id='reg-password'
+							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+							autocomplete="off">
+						<button type='submit' class="button button__accent">Register</button>
+					</form>
+					<p class="left-align">Already have an account?
+						<a href="#" id="login_link" style="font-weight: bold;">Login
+						</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Page content -->
+	<div id="user_page">
+		<div class="app__header">
+			<div class="hero__overlay hero__overlay--gradient"></div>
+			<div class="hero__mask"></div>
+			<div class="app__header__inner">
+				<div class="container">
+					<div class="app__header__content">
+						<div class="app__header__content__inner" id='navConverter'>
+							<h1 class="app__header__title">Welcome to Fancy Todo List App</h1>
+							<p class="app__header__text">Start every activity with good planning, because failure in
+								planning is the same as planning failure.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="app">
+			<div class="container">
+				<div class="app__inner">
+					<div class="app__menu">
+						<ul class="vMenu">
+							<li><a href="#" class="vMenu" id="my_todo">My Todo</a></li>
+							<li><a href="#" class="vMenu" id="holiday">Holiday Calendar</a></li>
+						</ul>
+					</div>
+					<div class="app__main">
+						<div class="container" id="my_todo_page">
+							<div>
+								<h3 class="app__main__title">My Todo List</h3>
+								<p class="right-align"><input type="button" id='add_form' class="button button__accent"
+										value="add todo">
+								</p>
+							</div>
+							<hr>
+							<!-- list todo -->
+							<div>
+								<div class="double" id="list-todo"></div>
+							</div>
+							<!-- form add todo -->
+							<br>
+							<form id="form_add_todo" class="form">
+								<label>Title</label>
+								<input type="text" id='title' placeholder="your todo title">
+								<label for='description'>Description</label>
+								<textarea placeholder="Description" id='description'></textarea>
+								<label>Due Date</label>
+								<input type="date" id='due_date'
+									style="margin-bottom: 1em; padding: 1em; border-radius: 1.5em;border-style: solid; background-color: #f7f7f7;">
+								<br>
+								<p class="center"><input type='submit' class="button button__accent" value="Save"></p>
+							</form>
+
+							<!-- form add todo -->
+							<br>
+							<form id="form_edit_todo" class="form">
+								<h3>Update Todo</h3>
+								<hr>
+								<br>
+								<label>Title</label>
+								<input type="text" id='edit-title' placeholder="your todo title">
+								<label for='description'>Description</label>
+								<textarea placeholder="Description" id='edit-description'></textarea>
+								<label>Due Date</label>
+								<input type="date" id='edit-due_date'
+									style="margin-bottom: 1em; padding: 1em; border-radius: 1.5em;border-style: solid; background-color: #f7f7f7;">
+								<br>
+								<button class="button button__delete" id="cancel-edit">Cancel</button>
+								<input type='submit' class="button button__accent" value="Save">
+							</form>
+						</div>
+
+						<div class="container" id="holiday_page">
+							<div>
+								<h3 class="app__main__title">Holiday Calendar</h3>
+							</div>
+							<hr>
+							<!-- list holiday -->
+							<div>
+								<div class="double" id="holiday-list"></div>
+							</div>
+
+							<form id="add_form_holiday" class="form">
+								<label>Title</label>
+								<input type="text" id='title-add-holiday' placeholder="your todo title">
+								<label for='description'>Description</label>
+								<textarea placeholder="Description" id='description-add-holiday'></textarea>
+								<label>Due Date</label>
+								<input type="date" id='due_date-add-holiday'
+									style="margin-bottom: 1em; padding: 1em; border-radius: 1.5em;border-style: solid; background-color: #f7f7f7;">
+								<br>
+								<a class="button button__delete" id="cancel-add">Cancel</a>
+								<input type='submit' class="button button__accent" value="Save">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src='js/index.js'></script>
+	<script src="js/auth.js"></script>
+	<script src="js/request.js"></script>
+	<script src="js/alert.js"></script>
+</body>
+
+</html>
