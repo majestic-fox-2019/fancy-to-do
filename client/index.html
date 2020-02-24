@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="google-signin-client_id"
+        content="227371574673-irnv4lkgpfirc9eeiukjgpok0mt27kcg.apps.googleusercontent.com">
+    <link rel="stylesheet" href="./style/style.css">
+    <title>My Todo</title>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <div id="loginRegister">
+        <div class="container">
+            <!-- LOGIN -->
+            <div id="loginPage"
+                style="display: flex; justify-content: center; align-items: center; align-content: center;">
+                <div class="row">
+                    <div class="col"
+                        style="margin-top: 60px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);padding: 25px 15px 25px; border: ridge; border-radius: 10px; position: absolute; width: 30vw; right: 50%; transform: translate(50%, 50%);">
+                        <form id="loginForm" action="" method="POST">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                    placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: space-between;margin-top: -18px">
+                                <div style="margin-top: 7px;">
+                                    <p>you have't account?<a id="goRegister"
+                                            style="color: white;margin-bottom: 0 !important;" href="">
+                                            <b>register</b></a>
+                                    </p>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="g-signin2" style="margin-top: -13px;" data-onsuccess="onSignIn">
+                                            </div>
+                                        </div>
+                                        <div class="fb-login-button" data-width="" data-size="medium"
+                                            data-button-type="login_with" data-auto-logout-link="true"
+                                            data-use-continue-as="true"></div>
+                                        <!-- LOGIN FB -->
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dark"
+                                    style="max-height: 38px; margin-top: 32px;">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- REGISTER -->
+            <div id="registerPage"
+                style="display: flex; justify-content: center; align-items: center; align-content: center; display: none;">
+                <div class="row">
+                    <div class="col"
+                        style="margin-top: 60px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);padding: 25px 15px 25px; border: ridge; border-radius: 10px; position: absolute; width: 30vw; right: 50%; transform: translate(50%, 30%);">
+                        <form id="registerForm" action="" method="POST">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp"
+                                    placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="passwordRegister"
+                                    placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="fullnameRegister" placeholder="Fullname">
+                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                <div style="margin-top: 20px;">
+                                    <p>you have account?<a href="" style="color: white;" id="goLogin"><b> login</b></a>
+                                    </p>
+                                </div>
+                                <button type="submit" class="btn btn-dark"
+                                    style="margin-top: 12px; max-height: 39px;">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tampilanDalem" style="display: none;">
+        <nav id="navbarApp" class="navbar navbar-expand-lg navbar-dark bg-dark" style="display: none;">
+            <img src="https://to-do-cdn.microsoft.com/static-assets/c87265a87f887380a04cf21925a56539b29364b51ae53e089c3ee2b2180148c6/icons/logo.png"
+                width="40" height="30" alt="">
+            <div class="collapse navbar-collapse ml-3" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a href="" style="text-decoration: none;">
+                            <div class="nav-link" onclick="allProject()" id="myProject"
+                                style="color: rgba(255, 255, 255, 0.856);"><b>Project</b>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" style="text-decoration: none;">
+                            <div class="nav-link" onclick="allTodo()" id="myTodo"
+                                style="color: rgba(255, 255, 255, 0.856);"><b>My Todo</b></div>
+                        </a>
+                    </li>
+                </ul>
+                <button onclick="signOut();" class="btn btn-outline-danger btn-sm fas fa-sign-out-alt" type="submit">
+                    Logout</button>
+            </div>
+        </nav>
+
+
+        <div class="container-fluid mt-4" id="mainPage">
+            <div class="row ml-5">
+                <div id="colProject" class="col ml-5" style="display: none;">
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Project</h4>
+                        <div id="project">
+
+                        </div>
+                    </div>
+                    <div class="task-list task-container"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Member</h4>
+                        <div id="member">
+
+                        </div>
+                    </div>
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Add a Project</h4>
+                        <form id="addProject" method="POST">
+                            <input id="nameProject" type="text" placeholder="Name Project" />
+                            <input type="submit" class="btn btn-dark btn-sm" value="Add Project" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- TODO PRIBADI -->
+            <div class="row ml-5 mt-4" id="myTodoPrivate" style="display: none;">
+                <div class="col ml-5">
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Todo List</h4>
+                        <div id="todo">
+
+                        </div>
+                    </div>
+                    <div class="task-list task-container"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Completed</h4>
+                        <div id="completed">
+
+                        </div>
+                    </div>
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <div id="addTask">
+                            <h4>Add a task</h4>
+                            <form id="addTodo">
+                                <input id="title" type="text" placeholder="Title" />
+                                <textarea id="description" placeholder="Descrtipion"></textarea>
+                                <input id="dueDate" type="date" />
+                                <input type="submit" class="btn btn-dark btn-sm" value="Add Task" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- TODO PROJECT -->
+            <div class="row ml-5 mt-4" id="myTodoProject" style="display: none;">
+                <div class="col ml-5">
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Project Todo List</h4>
+                        <div id="todoProject">
+
+                        </div>
+                    </div>
+                    <div class="task-list task-container"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <h4>Completed</h4>
+                        <div id="completeTodoProject">
+
+                        </div>
+                    </div>
+                    <div class="task-list"
+                        style="border: ridge;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <div id="addTask">
+                            <h4>Add Todo Project</h4>
+                            <form id="addTodoProject">
+                                <input type='hidden' id='projectIdTodo' />
+                                <input id="titleTodoProject" type="text" placeholder="Title" />
+                                <textarea id="descriptionTodoProject" placeholder="Descrtipion"></textarea>
+                                <input id="dueDateTodoProject" type="date" />
+                                <input type="submit" class="btn btn-dark btn-sm" value="Add Todo Project" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateTodo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Edit Todo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div id="idTodo"></div>
+                        <div id="idProjectUpdate"></div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3" id="exampleModalCenterTitle">
+                            <label for="validationServer03">Title :</label>
+                            <input type="text" class="form-control" id="titleUpdate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="validationTextarea">Description : </label>
+                            <textarea class="form-control" id="descriptionUpdate"></textarea>
+                        </div>
+                        <label for="validationTextarea">Due Date : </label>
+                        <input type="date" id="dueDateUpdate">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal"
+                            onclick="updateTodo()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Add New Member</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div id="idProject"></div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3" id="exampleModalCenterTitle">
+                            <label for="validationServer03">Email :</label>
+                            <input type="text" class="form-control" id="emailMember" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" onclick="addMember()">Add
+                            Member</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0&appId=592402587974937&autoLogAppEvents=1"></script>
+
+    <script src="https://code.createjs.com/easeljs-0.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://kit.fontawesome.com/9c97b4f45c.js" crossorigin="anonymous"></script>
+    <script src="./script/todo.js"></script>
+    <script src="./script/display.js"></script>
+    <script src="./script/loginRegister.js"></script>
+    <script src="./script/myProject.js"></script>
+    <script src="./script/todoProject.js"></script>
+</body>
+
+</html>
