@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="544953722655-sbs727qv049uuk8mfoj51rpqb413vcbq.apps.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <title>Fancy Todo v2</title>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <nav class="blue darken-3 fadeIn animated" role="navigation">
+            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Fancy Todo!</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#loginModal" class="modal-trigger" style="font-size: 20px;" id="login-btn">Login</a></li>
+                    <li><a href="#" style="font-size: 20px;" id="logout-btn">Logout</a></li>
+                </ul>
+        
+              <ul id="nav-mobile" class="sidenav" style="font-size: 24px;">
+                <li><a href="#loginModal" class="modal-trigger" style="font-size: 20px;" class="login-btn">Login</a></li>
+                <li><a href="#" style="font-size: 20px;" class="logout-btn">Logout</a></li>
+              </ul>
+              <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Homepage & Register -->
+    <section id="homepage">
+        <div class="content">
+            <div class="row">
+                <div class="col m8 s12 fadeInLeft animated" id="left">
+                    <img src="./task.svg" alt="task" class="responsive-img">
+                    <h5 class="center">Fancy Todo! Create a task, collaborate with others!</h5>
+                </div>
+                <div class="col m4 s12 fadeIn animated delay-1s" id="right">
+                    <div class="row">
+                        <form class="col s12">
+                            <h2 class="center-align">Welcome</h2>
+                            <h5 class="center-align">Create an account to start</h5>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">email</i>
+                                    <input id="email" type="email" class="validate">
+                                    <label for="email">Email</label>
+                                    <span class="helper-text" data-error="wrong" data-success="right">Must a valid email</span>
+                                </div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">lock</i>
+                                    <input id="password" type="password" class="validate">
+                                    <label for="password">Password</label>
+                                    <span class="helper-text" data-error="wrong" data-success="right">Password minimum 6 character</span>
+                                </div>
+                                <a class="waves-effect waves-light btn blue darken-3 col m12 hoverable" id="register" style="margin-bottom: 10px;">Register</a>
+                                <h6>Already have an account? <span><a class="modal-trigger" href="#loginModal">Login here</a></span></h6>
+                                <h6>Sign up with your <span> <div class="g-signin2 col s12 m12" style="margin-top: 10px;" data-onsuccess="onSignIn"></div></span></h6>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col s12">
+                        <h2 class="center-align">Login</h2>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input id="email-login" type="email" class="validate">
+                                <label for="email-login">Email</label>
+                                <span class="helper-text" data-error="wrong" data-success="right">Must a valid email</span>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock</i>
+                                <input id="password-login" type="password" class="validate">
+                                <label for="password-login">Password</label>
+                                <span class="helper-text" data-error="wrong" data-success="right">Password minimum 6 character</span>
+                            </div>
+                            <a class="waves-effect waves-light btn blue darken-3 col m12 hoverable" id="login" style="margin-bottom: 10px;">Login</a>
+                            <h6>Sign up with your <span> <div class="g-signin2 col s12 m12" style="margin-top: 10px;" data-onsuccess="onSignIn"></div></span></h6>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mainpage">
+        <div class="row">
+
+            <div class="col m3">
+                <div class="collection animated fadeInDown">
+                    <a href="#!" class="collecction-header"><h5 style="margin-left: 10px;">Hello, welcome!</h5></a>
+                    <a href="#!" class="collection-item active" id="my-todos">Active Todos</a>
+                    <a href="#!" class="collection-item" id="expired-todos">Expired Todos</a>
+                    <a href="#projectModal" class="collection-item modal-trigger" id="create-project">Create Project</a>
+                </div>
+                <div id="notes-img">
+                    <img src="./notes.svg" alt="notes" class="responsive-img slideInUp animated">
+                </div>
+            </div>
+
+            <div class="col m5" style="max-height: 89vh; overflow-y: scroll;">
+                <h3><a href="#modal-task" class="btn blue darken-3 modal-trigger" id="showModalAdd">Add new task</a></h3>
+                <div class="row" id="todo-item"></div>
+            </div>
+
+            <div class="col m4" style="max-height: 79vh; overflow-y: scroll;">
+                <div class="projects">
+                    <h3 class="center">My Projects</h3>
+                    <ul class="collapsible" id="myProjects"></ul>
+                </div>
+                <div id="invitations">
+                    <h5>Project invitations</h5>
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal Add Task -->
+        <div id="modal-task" class="modal">
+            <div class="modal-content">
+              <h4 id="add-title">Add new task</h4>
+              <h4 id="edit-title" style="display: none;">Edit task</h4>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <i class="material-icons prefix">create</i>
+                                <textarea id="name" class="materialize-textarea" required></textarea>
+                                <label for="name">What to do ...</label>
+                            </div>
+                            <div class="input-field col m12">
+                                <i class="material-icons prefix">assignment</i>
+                                <textarea id="description" class="materialize-textarea" required></textarea>
+                                <label for="description">Description</label>
+                            </div>
+                            <div class="input-field col m12">
+                                <i class="material-icons prefix">timer</i>
+                                <input type="text" id="due_date" class="datepicker" required>
+                                <label for="due_date">Due Date</label>
+                            </div>
+                            <button class="btn waves-effect waves-light col s12 blue darken-3" type="submit" id="add-todo">Add</button>
+                            <button class="btn waves-effect waves-light col s12 blue darken-3" type="submit" id="edit-btn" style="display: none;">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <form class="col s12">
+                    <h2 class="center-align">Create a project</h2>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">task</i>
+                            <input id="project-name" type="text" class="validate">
+                            <label for="project-name">Project Name</label>
+                            <span class="helper-text" data-error="wrong" data-success="right">Enter the project name</span>
+                        </div>
+                        <a class="waves-effect waves-light btn blue darken-3 col s12 hoverable" id="projectCreate" style="margin-bottom: 10px;">create</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Invite Members -->
+    <div id="inviteModal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <form class="col s12">
+                    <h4 class="center-align">Invite Member</h4>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">people</i>
+                            <input id="user-email" type="email" class="validate">
+                            <label for="user-email">User Email</label>
+                            <span class="helper-text" data-error="wrong" data-success="right">Please provide a vallid email</span>
+                        </div>
+                        <a class="waves-effect waves-light btn blue darken-3 col s12 hoverable" id="inviteMember" style="margin-bottom: 10px;">invite</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="./js/base.js"></script>
+    <script src="./js/functions.js"></script>
+    <script src="./js/append.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>
