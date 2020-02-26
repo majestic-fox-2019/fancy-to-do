@@ -1,0 +1,42 @@
+*{
+    overflow: hidden;
+}
+
+.header{
+    text-align: center;
+}
+
+.ui.inverted.orange.menu{
+    background-color: #0E6EB8;
+}
+
+.container{
+    width: 100% !important;
+}
+
+.menu {
+    border-radius: 0 !important;
+}
+
+.align-right{
+    margin-left: 90% !important;
+}
+
+.btn{
+    cursor: pointer;
+}
+
+/* Table Scroll */
+tbody {
+    display: block;
+    height: 400px;
+    overflow: auto;
+  }
+  
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  

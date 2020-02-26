@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="scripts/semantic-ui-css/semantic.min.css">
+        <link rel="stylesheet" href="root_folder/css/main.css">
+        <title>Todo Apps</title>
+        <meta name="google-signin-client_id" content="131639698609-9ng0adgrma9ptfv728m8orgugu42tfj9.apps.googleusercontent.com">
+    </head>
+    <body>
+        <div class="ui container">
+            <div class="ui four item inverted orange menu">
+                <!-- <a id="btnHome" class="item" href="/">
+                    <i class="home icon"></i>
+                    Home
+                </a> -->
+                <a id="todo" class="item" href="/todos">
+                    <i class="calendar outline icon"></i>
+                    Todos
+                </a>
+                <a class="item" href="/users">
+                    <i class="user outline icon"></i>
+                    Users
+                </a>        
+                <a class="item" href="/projects">
+                    <i class="sitemap icon"></i>
+                    Projects
+                </a>
+                <div id="btnLogin" class="btn header item">
+                    <i class="sign-in icon"></i>
+                    Login / Register
+                </div>         
+                <div id="btnLogout" class="btn header item">
+                    <i class="sign-out icon"></i>
+                    Logout [<span id="emailLoggedIn">admin@todo.com</span>]
+                </div>                                
+            </div>
+
+            <!-- Login Modal -->
+            <div class="ui modal modalLogin">
+                <i class="close icon"></i>    
+                <div class="header">
+                  Login
+                </div>
+                <div id="alert" class="ui negative message messageClass" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="user icon"></i>
+                          <input type="email" id="email" placeholder="E-mail address">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="lock icon"></i>
+                          <input type="password" id="password" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="ui fluid large teal submit button" id="btnSubmitLogin">Login</div>
+                    </div>              
+                  </form>
+                  <div class="ui message">
+                    Belum punya akun? 
+                    <div>
+                      <button  style="float: left; margin-right: 1%;"  id="btnRegister" class="ui primary button">Register</button  style="float: left; margin-right: 1%;" >
+                       <!-- <button onclick="document.querySelector('.abcRioButton').click();">
+                         <div class="abcRioButtonContentWrapper"><div class="abcRioButtonIcon" style="padding:8px"><div style="width:18px;height:18px;" class="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg"><g><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></g></svg></div></div><span style="font-size:13px;line-height:34px;" class="abcRioButtonContents"><span id="not_signed_intwljdejx5fsu" style="display: none;">Sign Up</span><span id="connectedtwljdejx5fsu">Register / Login</span></span></div>
+                       </button> -->
+                        <div id="tombolAsli" class="g-signin2" data-onsuccess="onSignIn"></div> 
+                        <br>*Jika anda sign in dengan akun google, akun anda langsung <b>terdaftar otomatis</b> didatabase todo, default password: <b>123</b>
+                        <br>*Jika anda register dengan akun yang sudah ada kami tidak akan membuatnya lagi</b>
+
+                    </div>
+                 </div>
+            </div>
+            <!-- End Login Modal -->
+
+            <!-- Register Modal -->
+            <div class="ui modal modalRegister">
+                <i class="close icon"></i>    
+                <div class="header">
+                  Register
+                </div>
+                <div id="alertRegister" class="ui negative message messageClass" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="user icon"></i>
+                          <input type="text" id="emailRegister" placeholder="E-mail address">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="lock icon"></i>
+                          <input type="password" id="passwordRegister" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="ui fluid large teal submit button" id="btnSubmitRegister">Register</div>
+                      <br>
+                      <div class="ui fluid large teal submit button" id="btnLogin2">Form Login</div>
+                    </div>              
+                  </form>
+            </div>
+            <!-- End Register Modal -->
+
+            <!-- Todo Modal -->
+            <div class="ui modal modalTodo">
+                <i class="close icon"></i>    
+                <div class="header">
+                  <i class="calendar plus icon"></i>
+                  <span class="title-modal">Add Todo</span>
+                </div>
+                <div id="alertTodo" class="ui negative message messageClass" style="display: none;">
+                    <i class="close icon"></i>
+                    <div class="header">
+                      
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <input type="hidden" id="input_id">
+                    <div class="ui stacked segment">
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="clipboard icon"></i>
+                          <input type="text" id="input_title" placeholder="Title">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="pencil icon"></i>
+                          <input type="text" id="input_description" placeholder="Description">
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui left icon input">
+                          <i class="calendar times icon"></i>
+                          <input type="date" id="input_due_date" placeholder="Due Date: (format: YYYY-MM-DD)">
+                        </div>
+                      </div>                      
+                      <div class="field">
+                        Status
+                        <div class="ui left icon input">
+                          <select id="input_status">
+                            <option value="To Do">To Do</option>
+                            <option value="Hold">Hold</option>
+                            <option value="Done">Done</option>
+                          </select>
+                        </div>
+                      </div>                      
+
+                      <div class="ui fluid large teal submit button" id="btnSubmitForm">Save</div>
+                    </div>              
+                  </form>
+            </div>
+            <!-- End Todo Modal -->
+            
+            <!-- Application Root -->
+            <div id="app"></div>
+        </div>
+        
+        <!-- Templates -->
+        <script id="unauthorized" type="text/x-handlebars-template">
+            <div class="ui {{color}} inverted segment" style="height:250px;">
+            <br>
+            <h2 class="ui center aligned icon header">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                Unauthorized
+                <div class="sub header">You are not authorized to access the page!</div>
+                </div>
+            </h2>
+            </div>
+        </script>     
+
+        <script id="error" type="text/x-handlebars-template">
+            <div class="ui {{color}} inverted segment" style="height:250px;">
+            <br>
+            <h2 class="ui center aligned icon header">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                {{title}}
+                <div class="sub header">{{message}}</div>
+                </div>
+            </h2>
+            </div>
+        </script>
+
+        <script id="home" type="text/x-handlebars-template">
+            <h1 class="ui header" id="welcome">Welcome to Todo Apps</h1>
+            <hr>
+            <p>
+                <h2>This is world class todo apps!</h2><br><br>
+                Core of the Core<br>
+                Inti dari Inti<br>
+                Ahlinya Ahli<br>
+            </p>
+        </script>
+
+        <script id="todos" type="text/x-handlebars-template">
+            <h1 class="ui header">Todo List</h1>
+            <hr>
+            <button id="addTodo" class="ui primary button align-right">
+              <i class="calendar plus icon"></i>
+                Add Todo
+            </button>
+            <div id="alertTodoTable" class="ui negative message messageClass" style="display: none;">
+                <i class="close icon"></i>
+                <div class="header">
+                  
+                </div>
+            </div>
+            <table class="ui padded table">
+                <thead>
+                    <tr>
+                        <th class="single line">No</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+                        <th>Created</th>
+                        <th>Modified</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTodos" style="overflow-y: 500px">
+                  
+                </tbody>
+                <!-- <tfoot>
+                  <tr><th colspan="7"> -->
+                    <!-- <div class="ui right floated pagination menu">
+                      <a class="icon item">
+                        <i class="left chevron icon"></i>
+                      </a>
+                      <a class="item">1</a>
+                      <a class="item">2</a>
+                      <a class="item">3</a>
+                      <a class="item">4</a>
+                      <a class="icon item">
+                        <i class="right chevron icon"></i>
+                      </a>
+                    </div> -->
+                  <!-- </th>
+                </tr></tfoot> -->
+            </table>
+            <script src="root_folder/js/todo.js"></script>
+        </script>
+        
+        <script id="users" type="text/x-handlebars-template">
+            <h1 class="ui header">User List</h1>
+            <hr>
+            <table class="ui padded table">
+              <thead>
+                  <tr>
+                      <th class="single line">No</th>
+                      <th>Email</th>
+                      <th>Created</th>
+                      <th>Modified</th>
+                  </tr>
+              </thead>
+              <tbody id="dataUsers" style="overflow-y: 500px">
+                
+              </tbody>
+          </table>
+          <script src="root_folder/js/user.js"></script>
+        </script>
+
+        <script src="scripts/jquery/dist/jquery.min.js"></script>
+        <script src="scripts/semantic-ui-css/semantic.min.js"></script>
+        <script src="scripts/handlebars/dist/handlebars.min.js"></script>
+        <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
+        <script src="root_folder/config/configurations.js"></script>
+        <script src="root_folder/helpers/formatDate.js"></script>
+        
+        <script src="root_folder/js/app.js"></script>
+        
+        <script src="root_folder/js/login.js"></script>
+        <script src="root_folder/js/common.js"></script>
+        <script src="root_folder/js/register.js"></script>
+        <script src="root_folder/js/logout.js"></script>
+
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </body>
+</html>

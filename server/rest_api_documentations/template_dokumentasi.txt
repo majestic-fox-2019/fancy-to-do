@@ -1,0 +1,17 @@
+Example URL: 
+    
+    [Method] localhost:3000/
+
+
+Request header:
+
+{
+    "Content-Type": "application/json"
+}
+
+Request body:
+
+
+
+Response:
+
