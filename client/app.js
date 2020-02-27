@@ -1,6 +1,7 @@
 // import { register } from "../server/controllers/user"
 
-var baseUrl = 'http://localhost:3000'
+var baseUrl = 'https://obscure-thicket-24073.herokuapp.com'
+// var baseUrl = 'http://localhost:3000'
 
 var emailLogin = $('#emailLogin')
 var passwordLogin = $('#passwordLogin')
@@ -177,7 +178,6 @@ function getDataSolat() {
       token: localStorage.getItem('token')
     },
     success: function(res) {
-      console.log(res)
       let dataWeather =       
       `
       <i class="fas fa-calendar-week"></i>  ${res.items[0].date_for}<br>
@@ -391,6 +391,7 @@ function showAll() {
       token: localStorage.getItem('token')
     },
     success: function (todos) {
+      $('#todoList').empty()
       todos.forEach(todo => {
         $('#todoList').append(todocards(todo))
       });
@@ -435,40 +436,47 @@ function deleteTodo(id) {
 }
 
 function editTodo(id) {
-  $.ajax(`${baseUrl}/todos/${id}`, {
-    method:"PUT",
-    data:{
-      title: $('#titleEdit').val(),
-      desctiption: $('#desctiptionEdit').val(),
-      status: $('#statusEdit').val(),
-      due_date: $('#due_dateEdit').val()
-    },
-    headers: {
-      token: localStorage.getItem("token")
-    },
-    success: function(response){
-      $("#editTodo").modal("hide")
-      showAll()
-    },
-    error: function(err){
-      console.log(err)
-      let errors = '<div class="flex-column" style="color:red">'
-      err.responseJSON.errMsg.forEach(salah => {
-        errors += `<div class="col"> ${salah} </div>`
-      })
-      errors += "</div>"
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...', 
-        html: errors
-      })
-    }
+  console.log(id)
+  $(`#editform${id}`).submit(function(e){
+    e.preventDefault()
+    console.log($('#titleEdit').val() , "<<<<<<<<<")
+    $.ajax(`${baseUrl}/todos/${id}`, {
+      method:"PUT",
+      data:{
+        title: $('#titleEdit').val(),
+        desctiption: $('#desctiptionEdit').val(),
+        status: $('#statusEdit').val(),
+        due_date: $('#due_dateEdit').val()
+      },
+      headers: {
+        token: localStorage.getItem("token")
+      },
+      success: function(response){
+        $("#editTodo").modal("hide")
+        showAll()
+      },
+      error: function(err){
+        console.log(err)
+        let errors = '<div class="flex-column" style="color:red">'
+        err.responseJSON.errMsg.forEach(salah => {
+          errors += `<div class="col"> ${salah} </div>`
+        })
+        errors += "</div>"
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...', 
+          html: errors
+        })
+      }
+    })
   })
+ 
 }
 
 function showEdit(id, title, desctiption, status, due_date) {
   console.log(id, title, desctiption, status, due_date)
   const modal = editModal({id, title, desctiption, status, due_date})
+  $('#editTodo').empty()
   $('#editTodo').append(modal)
   $("#editTodo").modal("show")
 }
@@ -484,7 +492,7 @@ function editModal(todo) {
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="editform${todo.id}">
           <div class="form-group">
             <label for="exampleInputEmail1">Title</label>
             <input type="text" class="form-control" id="titleEdit" value="${todo.title}" >
@@ -507,7 +515,7 @@ function editModal(todo) {
             value="${new Date(todo.due_date).toISOString().substr(0,10)}"
             >
           </div>   
-          <button type="submit" class="btn btn-primary" onClick="editTodo(${todo.id})">Edit</button>
+          <button type="submit" class="btn btn-primary" onClick="editTodo(${todo.id})" >Edit</button>
         </form>
       </div>
       <div class="modal-footer">
