@@ -1,0 +1,57 @@
+.center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.tengahHorizontally{
+    vertical-align: middle
+}
+
+#logout:hover{
+    cursor: pointer;
+    color: red
+}
+
+#headerDone{
+    background-color: lightgreen;
+    font-weight: bold;
+    text-align: center
+}
+
+#notDone{
+    background-color: lightcoral;
+    font-weight: bold;
+    text-align: center
+}
+
+.card{
+    height: 55vh
+}
+
+.diNavBar:hover{
+    cursor: pointer;
+}
+
+.cardIsian{
+    height: 40vh
+}
+
+.cardProject{
+    height: 200vh;
+}
+
+.left{
+    background-image: url("./assets/patternLoginPage2.png")
+}
+
+#loginRegPage{
+    height: 100vh;
+}
+
+/* .navbar-light{
+    background-color: pink!important;
+} */
+
