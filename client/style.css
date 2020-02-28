@@ -1,0 +1,102 @@
+body {
+    background-image: url('https://wallarthd.com/wp-content/uploads/2015/04/Black-And-White-Abstract-Wallpaper-Pics.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#Container {
+    height: 98vh;
+    display:flex;
+    justify-content: center;
+}
+
+#login {
+    height: 98vh;
+    width: 75vw;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#header {
+    width: 100vw;
+    height: 10vh;
+    padding-top: 1%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#mini-login-box {
+    height: 30vh;
+    width: 50vw;
+    padding-top: 6%;
+}
+
+#startButton1 {
+    width: 15vw;
+    height: 5vh;
+    font-size: 1.6vw;
+    padding-top: 0;
+}
+
+#startButton1:hover {
+    
+}
+
+#sidebar {
+    height: 75vh;
+    overflow: scroll;
+    background-color: #727272a8;
+}
+
+.menu-item {
+    height: 5vh;
+    cursor: pointer;
+}
+
+#menu-toggler {
+    cursor: default;
+}
+
+#content-spinner {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-item {
+    height: 10vh;
+    width: 100%;
+    padding: 0;
+}
+
+.check-button {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.todo-item:hover {
+    transform: scale(1.03);
+    transition-duration: 1s;
+}
+
+.todo-check {
+    padding: 0;
+    margin: 0;
+}
+
+#forTodos {
+    max-height: 75vh;
+}
+
+.closed{
+    position: absolute;
+    right: 0.3%;
+}
+
+.project-menu {
+    height: 50%;
+}
