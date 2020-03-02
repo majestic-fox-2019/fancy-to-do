@@ -1,0 +1,29 @@
+{
+  "name": "fancy-todos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^3.0.7",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "google-auth-library": "^5.9.2",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.18.1",
+    "sequelize": "^5.21.3",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
