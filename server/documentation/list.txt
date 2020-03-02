@@ -1,0 +1,31 @@
+Request header:
+
+{
+  Content-Type: application/json
+}
+
+Request body:
+
+
+Response:
+
+[
+  {
+    "id": 2,
+    "title": "study",
+    "description": "",
+    "status": "asasa",
+    "due_date": "2020-02-02T00:00:00.000Z",
+    "createdAt": "2020-02-03T10:39:10.916Z",
+    "updatedAt": "2020-02-03T10:39:10.916Z"
+  },
+  {
+    "id": 1,
+    "title": "study",
+    "description": "coding",
+    "status": "undone",
+    "due_date": "2020-02-02T00:00:00.000Z",
+    "createdAt": "2020-02-03T08:32:04.885Z",
+    "updatedAt": "2020-02-03T11:09:59.421Z"
+  }
+]
