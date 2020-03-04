@@ -1,0 +1,44 @@
+#containerLoginRegister {
+    margin-top: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border: 1px solid rgba(200,200,200,1);
+    border-radius: 10px;
+    box-shadow: 5px 8px 18px rgba(200,200,200,1);
+    background-color: rgb(88, 78, 78);
+    color: white;
+}
+
+#messageForm {
+    margin-top: 50px;
+}
+
+#landingPage {
+    margin-top: 75px;
+}
+
+#detailProject {
+    width: 1400px;
+    height: 700px;
+    border: 1px solid rgb(245, 239, 239);
+}
+
+#detailProjectID {
+    width: 1400px;
+    height: 70px;
+    border: 1px solid rgb(245, 239, 239);
+}
+
+#detailProjectUser {
+    width: 400px;
+    height: 630px;
+    border: 1px solid rgb(245, 239, 239);
+    overflow: scroll;
+}
+
+#detailProjectTodo {
+    width: 1000px;
+    height: 630px;
+    border: 1px solid rgb(245, 239, 239);
+    overflow: scroll;
+}
